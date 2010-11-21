@@ -3,9 +3,13 @@ package core;
 /**
  * Представляет собой корректное решение задачи.
  */
-public interface Solution extends Comparable<Solution> {
+public abstract class Solution implements Comparable<Solution> {
 	/**
 	 * @return значение целевой функции для данного решения
 	 */
-	double getFitness();
+	public abstract double getFitness();
+	
+	public int compareTo(Solution that) {
+		return Double.compare(this.getFitness(), that.getFitness());
+	}	
 }

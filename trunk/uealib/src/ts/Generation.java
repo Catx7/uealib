@@ -2,7 +2,7 @@ package ts;
 
 import java.util.ArrayList;
 
-public class Generation extends ArrayList<Solution> implements core.Generation<Solution> {
+public class Generation extends ArrayList<core.Solution> implements core.Generation {
 
 	private static final long serialVersionUID = 1L;
 

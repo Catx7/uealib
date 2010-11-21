@@ -1,4 +1,4 @@
-package ts;
+package taboosearch;
 
 import java.util.LinkedList;
 

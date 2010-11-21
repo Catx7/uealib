@@ -1,8 +1,7 @@
-package ts;
-
+package taboosearch;
 import java.util.ArrayList;
 
-public class Generation extends ArrayList<core.Solution> implements core.Generation {
+public class Generation extends ArrayList<Solution> implements core.Generation<Solution> {
 
 	private static final long serialVersionUID = 1L;
 

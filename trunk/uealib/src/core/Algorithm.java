@@ -18,6 +18,7 @@ public class Algorithm {
 		this.transitionCriteria = trans;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Generation solve() {
 		Generation currentGeneration = this.init.getInitialGeneration();
 

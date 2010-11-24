@@ -9,7 +9,6 @@ import java.util.Scanner;
  */
 public class CoordsGraphReader extends GraphReader {
 	
-
 	protected Graph readGraph(Scanner s) {
 		int n = s.nextInt();
 		double[][] coords = new double[n][2];
@@ -46,7 +45,7 @@ public class CoordsGraphReader extends GraphReader {
 	}
 	
 	/**
-	 * Возвращает расстояние между двумя точками, округлённое до int
+	 * Возвращает расстояние между двумя точками
 	 */
 	private double distance(double[] a, double[] b) {
 		return Math.sqrt( Math.pow(b[0] - a[0], 2) + Math.pow(b[1] - a[1], 2) );

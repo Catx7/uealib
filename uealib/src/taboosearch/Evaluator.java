@@ -22,4 +22,30 @@ public class Evaluator {
 		return value;
 	}
 	
+	public double evaluate(SolutionDiff s) {
+		Solution solution = s.getSolution();
+		Move move = s.getMove();
+		int i = move.getI();
+		int j = move.getJ();
+		
+		double fitness = solution.getFitness();
+		int v1 = solution.get(i); 
+		int v2 = solution.get(j);
+		int t1 = solution.get(i - 1);
+		int w1 = solution.get(i + 1);
+		int t2 = solution.get(j + 1);
+		int w2 = solution.get(j - 1);
+		
+		if (Math.abs(i - j) == 1) {
+			fitness += - weights[t1][w2] - weights[t2][w1]
+			           + weights[t1][w1] + weights[t2][w2];
+		} else {
+			fitness += - weights[v1][w1] - weights[v2][w2]
+			           - weights[v1][t1] - weights[v2][t2]
+			           + weights[v1][w2] + weights[v2][w1]
+			           + weights[v1][t2] + weights[v2][t1];
+		}
+		return fitness;
+	}
+	
 }

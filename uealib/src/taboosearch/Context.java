@@ -1,7 +1,7 @@
 package taboosearch;
 
 public class Context extends core.Context {
-		
+	
 	private static Context instance;
 
 	/**
@@ -14,6 +14,18 @@ public class Context extends core.Context {
 		return instance;
 	}
 	
+	private int ticks = 0;
+	
+	public void tick() {
+		this.ticks++;
+		tr.tick();
+	}
+	
+	public int getTicks() {
+		return ticks;
+	}
+	
 	Evaluator e;
+	Taboolator tr;
 	
 }

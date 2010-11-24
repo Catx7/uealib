@@ -2,12 +2,14 @@ package core;
 
 public class Algorithm {
 
-	private Initializator init;
-	private Generator generator;
-	private StoppingCriteria stoppingCriteria;
-	private Selector selector;
-	private TransitionCriteria transitionCriteria;
+	protected Initializator init;
+	protected Generator generator;
+	protected StoppingCriteria stoppingCriteria;
+	protected Selector selector;
+	protected TransitionCriteria transitionCriteria;
 
+	public Algorithm() {}
+	
 	public Algorithm(Initializator i, Generator g, StoppingCriteria stop,
 			Selector selector, TransitionCriteria trans) {
 

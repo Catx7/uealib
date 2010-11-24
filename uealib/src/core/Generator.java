@@ -6,5 +6,5 @@ public interface Generator {
      * конструирует новое поколение.
      */
 	@SuppressWarnings("unchecked")
-	public<T extends Solution> Generation getNext(Generation g);
+	public Generation getNext(Generation g);
 }

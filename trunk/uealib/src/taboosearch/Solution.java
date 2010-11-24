@@ -3,6 +3,7 @@ package taboosearch;
 public class Solution extends core.Solution {
 
 	private int[] tour;
+	private Double fitness;
 	
 	public Solution(int[] initialTour) {
 		this.tour = initialTour.clone();
@@ -12,10 +13,20 @@ public class Solution extends core.Solution {
 		return this.tour[index];
 	}
 	
+	public int[] getTour() {
+		return this.tour.clone();
+	}
+	
+	public int length() {
+		return this.tour.length - 1;
+	}
+	
 	public double getFitness() {
-		Context c = Context.getInstance();
-		return c.e.evaluate(this);
-		//return this.tour.length;
+		if (this.fitness == null) {
+			Context c = Context.getInstance();
+			this.fitness = c.e.evaluate(this);
+		}
+		return this.fitness;
 	}
 	
 	public Solution clone() {		

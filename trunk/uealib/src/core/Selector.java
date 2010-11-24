@@ -6,5 +6,5 @@ public interface Selector {
 	 * наилучших решений.
 	 */
 	@SuppressWarnings("unchecked")
-	public Generation keepTheBestSolutions(Generation g);
+	public Generation keepTheBestSolutions(Generation g, Generation currentGeneration);
 }

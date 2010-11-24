@@ -25,7 +25,7 @@ public class Algorithm {
 		while (!stoppingCriteria.isSatisfied(currentGeneration)) {
 
 			Generation g = generator.getNext(currentGeneration);
-			Generation h = selector.keepTheBestSolutions(g);
+			Generation h = selector.keepTheBestSolutions(g, currentGeneration);
 
 			if (transitionCriteria.isSatisfied(currentGeneration, h)) {
 				currentGeneration = h;

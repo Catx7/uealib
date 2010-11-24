@@ -4,20 +4,20 @@ public class Graph {
 	/**
 	 * Матрица весов.
 	 */
-	private int[][] m;
+	private double[][] m;
 
 	/**
 	 * Устанавливает матрицу весов.
 	 * @param m
 	 */
-	public void setWeights(int[][] m) {
+	public void setWeights(double[][] m) {
 		this.m = m;
 	}
 
 	/**
 	 * Возвращает матрицу весов.
 	 */
-	public int[][] getWeights() {
+	public double[][] getWeights() {
 		return m;
 	}
 	

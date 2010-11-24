@@ -2,16 +2,16 @@ package taboosearch;
 
 public class Evaluator {
 
-	int[][] weights;
+	double[][] weights;
 	int n;
 	
-	public Evaluator(int[][] graph) {
+	public Evaluator(double[][] graph) {
 		this.weights = graph;
 		this.n = graph.length;
 	}
 	
-	public int evaluate(Solution s) {
-		int value = 0;
+	public double evaluate(Solution s) {
+		double value = 0;
 		int v = s.get(0);
 		int w;
 		for ( int i = 1; i < n + 1; ++i ) {

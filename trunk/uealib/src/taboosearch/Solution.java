@@ -13,12 +13,10 @@ public class Solution extends core.Solution {
 	}
 	
 	public double getFitness() {
-		//Context c = Context.getInstance();
-		//return c.e.evaluate(this);
-		return this.tour.length;
+		Context c = Context.getInstance();
+		return c.e.evaluate(this);
+		//return this.tour.length;
 	}
-	
-	
 	
 	public Solution clone() {		
 		return new Solution(this.tour.clone());

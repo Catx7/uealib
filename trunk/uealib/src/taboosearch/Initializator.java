@@ -4,10 +4,10 @@ import java.util.LinkedList;
 
 public class Initializator implements core.Initializator {
 	
-	private int[][] weights = null;
+	private double[][] weights = null;
 	private int n = 0;
 	
-	public Initializator(int[][] weights) {
+	public Initializator(double[][] weights) {
 		assert weights.length == weights[0].length;
 		
 		this.weights = weights;
@@ -21,7 +21,8 @@ public class Initializator implements core.Initializator {
 		LinkedList<Integer> path = new LinkedList<Integer>();
 		int v = begin;
 	    int nearest_v = v;
-		int w, min;
+		int w;
+		double min;
 		
 		path.offerLast(v);
 		for (int times = 1; times < n; ++times) {

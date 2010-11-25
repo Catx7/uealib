@@ -8,7 +8,7 @@ public class SimulatedAnnealingAlgorithm extends core.Algorithm {
 	
 	private int iterationsPerStage;
 	public SimulatedAnnealingAlgorithm(Initializator i, Generator g) {
-		super(i, g, new StabilyzedStoppingCriteria(), new DummySelector(), new MetropolisRule());
+		super(i, g, new StabilyzedStoppingCriteria(20), new DummySelector(), new MetropolisRule());
 		iterationsPerStage = 20000; // TODO: по хорошему должно зависеть от степеней свободы задачи
 		
 	}
@@ -16,7 +16,8 @@ public class SimulatedAnnealingAlgorithm extends core.Algorithm {
 	@SuppressWarnings("unchecked")
 	public Generation solve() {
 		Generation currentGeneration = this.init.getInitialGeneration();
-
+		SimulatedAnnealingContext ctx = SimulatedAnnealingContext.getInstance();
+		
 		while (!stoppingCriteria.isSatisfied(currentGeneration)) {
 			for(int i = 0; i < iterationsPerStage; ++i) {
 				Generation g = generator.getNext(currentGeneration);
@@ -26,6 +27,8 @@ public class SimulatedAnnealingAlgorithm extends core.Algorithm {
 				}
 			}
 			
+			
+			ctx.getShedule().anneal();
 		}
 
 		return currentGeneration;

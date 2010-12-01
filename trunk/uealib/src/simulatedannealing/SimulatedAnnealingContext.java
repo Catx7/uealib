@@ -1,10 +1,16 @@
 package simulatedannealing;
 
+import core.Generator;
+import core.Initializator;
+
 
 class SimulatedAnnealingContext extends core.Context{
 	private static SimulatedAnnealingContext instance;
 	private TemperatureShedule shedule;
 	private int stabilyzedCount;
+	
+	private core.Initializator i;
+	private core.Generator g;
 	
 	/**
 	 * Возвращает экземпляр контекста.
@@ -17,7 +23,7 @@ class SimulatedAnnealingContext extends core.Context{
 	}
 	
 	private SimulatedAnnealingContext() {
-		shedule = new DefaultShedule();
+		shedule = new DefaultShedule(0.5);
 		stabilyzedCount = 0;
 	}
 	
@@ -27,6 +33,14 @@ class SimulatedAnnealingContext extends core.Context{
 	
 	public TemperatureShedule getShedule() {
 		return shedule;
+	}
+	
+	public Initializator getInitializator() {
+		return i;
+	}
+	
+	public Generator getGenerator() {
+		return g;
 	}
 
 }

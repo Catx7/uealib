@@ -1,10 +1,9 @@
 package core;
 
-public interface Generator {
+public interface Generator <T extends Generation<? extends Solution>> {
     /**
      * Основываясь на данных о переданном ему поколении g и, может быть, контексте,
      * конструирует новое поколение.
      */
-	@SuppressWarnings("unchecked")
-	public Generation getNext(Generation g);
+	public T getNext(T g);
 }

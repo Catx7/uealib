@@ -1,10 +1,10 @@
 package core;
 
-public interface Selector {
+public interface Selector<T extends Generation<? extends Solution>> {
 	/**
 	 * "Процеживает" полученное поколение g, оставляя в нём одно или больше
 	 * наилучших решений.
 	 */
-	@SuppressWarnings("unchecked")
-	public Generation keepTheBestSolutions(Generation g, Generation currentGeneration);
+	
+	public T keepTheBestSolutions(T g, T currentGeneration);
 }

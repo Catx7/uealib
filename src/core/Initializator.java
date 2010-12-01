@@ -1,9 +1,9 @@
 package core;
 
-public interface Initializator {
+public interface Initializator<T extends Generation<? extends Solution>> {
 	/**
 	 * @return Generation, содержащее множество начальных решений.
 	 */
-	@SuppressWarnings("unchecked")
-	public Generation getInitialGeneration();
+	
+	public T getInitialGeneration();
 }

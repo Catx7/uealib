@@ -1,11 +1,8 @@
 package taboosearch;
 
-import core.Generation;
+public class TransitionCriteria implements core.TransitionCriteria<LazyGeneration> {
 
-public class TransitionCriteria implements core.TransitionCriteria {
-
-	@SuppressWarnings("unchecked")
-	public boolean isSatisfied(Generation g, Generation h) {
+	public boolean isSatisfied(LazyGeneration g, LazyGeneration h) {
 		return true;
 	}
 	

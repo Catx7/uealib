@@ -16,7 +16,7 @@ public class Taboolator {
 		this.taboo = new HashMap<Integer, Integer>();
 	}
 	
-	public void setTabu(final SolutionDiff s) {
+	public void setTabu(final LazySolution s) {
 		int v1 = s.getSolution().get( s.getMove().getI() );
 		int v2 = s.getSolution().get( s.getMove().getJ() );
 		taboo.remove(v1);
@@ -25,7 +25,7 @@ public class Taboolator {
 		taboo.put(v2, this.strategy.getTenure());
 	}
 	
-	public boolean isTabu(final SolutionDiff s) {
+	public boolean isTabu(final LazySolution s) {
 		int v1 = s.getSolution().get( s.getMove().getI() );
 		int v2 = s.getSolution().get( s.getMove().getJ() );
 		boolean res = taboo.containsKey(v1) &&

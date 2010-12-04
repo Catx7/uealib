@@ -3,28 +3,27 @@ package taboosearch;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Selector implements core.Selector {
+public class Selector implements core.Selector<LazyGeneration> {
 
-	@SuppressWarnings("unchecked")
-	public Generation keepTheBestSolutions(core.Generation g,
-										   core.Generation currentGeneration) {
+	public LazyGeneration keepTheBestSolutions(LazyGeneration g,
+											   LazyGeneration currentGeneration) {
 				
-		HashSet<SolutionDiff> notTabooSolutions = new HashSet<SolutionDiff>();
+		HashSet<LazySolution> notTabooSolutions = new HashSet<LazySolution>();
 		
 		Taboolator tr = Context.getInstance().tr;
-		Iterator<SolutionDiff> it = g.iterator();
+		Iterator<LazySolution> it = g.iterator();
 		
 		while (it.hasNext()) {
-			SolutionDiff s = it.next();
+			LazySolution s = it.next();
 			if (!tr.isTabu(s)) {
 				notTabooSolutions.add(s);
 			}
 		}
 		
 		double candidateFitness = Double.MAX_VALUE;
-		SolutionDiff candidate = null;
+		LazySolution candidate = null;
 		
-		for (SolutionDiff m : notTabooSolutions) {
+		for (LazySolution m : notTabooSolutions) {
 			if (m.getFitness() < candidateFitness) {
 				candidateFitness = m.getFitness();
 				candidate = m;
@@ -33,8 +32,8 @@ public class Selector implements core.Selector {
 		
 		tr.setTabu(candidate);
 		
-		Generation result = new Generation();
-		result.add(candidate.castToSolution());
+		LazyGeneration result = new LazyGeneration();
+		result.add(candidate);
 		
 		return result;
 	}

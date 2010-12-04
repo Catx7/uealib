@@ -5,9 +5,11 @@ public class Generation extends ArrayList<Solution> implements core.Generation<S
 
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	public Generation getBest() {
-		// TODO ! :)
-		return this;
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 
 }

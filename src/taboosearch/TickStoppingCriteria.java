@@ -1,8 +1,6 @@
 package taboosearch;
 
-import core.Generation;
-
-public class TickStoppingCriteria implements core.StoppingCriteria {
+public class TickStoppingCriteria implements core.StoppingCriteria<LazyGeneration> {
 
 	private int ticks;
 	
@@ -10,8 +8,7 @@ public class TickStoppingCriteria implements core.StoppingCriteria {
 		this.ticks = ticks;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public boolean isSatisfied(Generation g) {
+	public boolean isSatisfied(LazyGeneration g) {
 		Context ctx = Context.getInstance();
 		return (ctx.getTicks() == ticks);
 	}

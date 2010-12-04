@@ -38,7 +38,7 @@ public class Solution extends core.Solution {
 		result.append("[ " + this.tour[0]);
 		
 		for (int i = 1; i < tour.length; ++i)
-			result.append(", " + this.tour[i]);
+			result.append(", " + (this.tour[i] + 1));
 
 		result.append(" ] ");
 		return result.toString();	

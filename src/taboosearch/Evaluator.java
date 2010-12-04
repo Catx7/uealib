@@ -22,7 +22,7 @@ public class Evaluator {
 		return value;
 	}
 	
-	public double evaluate(SolutionDiff s) {
+	public double evaluate(LazySolution s) {
 		Solution solution = s.getSolution();
 		Move move = s.getMove();
 		int i = move.getI();

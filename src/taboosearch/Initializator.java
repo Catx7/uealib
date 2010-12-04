@@ -2,7 +2,7 @@ package taboosearch;
 
 import java.util.LinkedList;
 
-public class Initializator implements core.Initializator {
+public class Initializator implements core.Initializator<LazyGeneration> {
 	
 	private double[][] weights = null;
 	private int n = 0;
@@ -45,9 +45,11 @@ public class Initializator implements core.Initializator {
 		return new Solution(result);
 	}
 
-	public Generation getInitialGeneration() {
-		Generation g = new Generation();
-		g.add(this.getInitSolutionBeginFrom(0));
+	public LazyGeneration getInitialGeneration() {
+		LazyGeneration g = new LazyGeneration();
+		Solution ss = this.getInitSolutionBeginFrom(0);
+		LazySolution s = new LazySolution(ss, new Move(0, 0));
+		g.add(s);
 		return g;
 	}
 	

@@ -6,13 +6,13 @@ package taboosearch;
  * которое приводит от solution к следующему решению newSolution.
  * SolutionDiff ведёт себя как newSolution.
  */
-public class SolutionDiff extends core.Solution {
+public class LazySolution extends core.Solution {
 	
 	private Solution solution;
 	private Move move;
 	private Double fitness;
 	
-	public SolutionDiff(Solution s, Move m) {
+	public LazySolution(Solution s, Move m) {
 		this.solution = s;
 		this.move = m;
 	}

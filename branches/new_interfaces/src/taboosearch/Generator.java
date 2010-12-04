@@ -2,9 +2,9 @@ package taboosearch;
 
 import java.util.Vector;
 
-public class Generator implements core.Generator {
+public class Generator implements core.Generator<LazyGeneration> {
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public LazyGeneration getNext(core.Generation g) {
 		assert g.size() == 1;
 		
@@ -17,7 +17,7 @@ public class Generator implements core.Generator {
 		}
 		
 		return res;
-	}
+	}*/
 	
 	/**
 	 * Возвращает все сочетания по два из натурального ряда от 1 до n
@@ -30,6 +30,21 @@ public class Generator implements core.Generator {
 				result.add(new Move(i, j));
 		
 		return result;	
+	}
+
+	@Override
+	public LazyGeneration getNext(LazyGeneration g) {
+		assert g.size() == 1;
+		
+		Solution s = g.get(0).castToSolution();
+		Vector<Move> moves = this.getAllMoves(s.length());
+		LazyGeneration res = new LazyGeneration();
+		
+		for (Move m : moves) {
+			res.add(new LazySolution(s, m));
+		}
+		
+		return res;
 	}
 
 }

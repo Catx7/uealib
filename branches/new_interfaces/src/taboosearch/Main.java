@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		GraphReader gr = new CoordsGraphReader();
-		Graph g = gr.readFromFile("graphs/burma14.txt");
+		Graph g = gr.readFromFile("/home/rrhu/burma14.txt");
 		
 		TabooSearchAlgorithm ts = new TabooSearchAlgorithm(g);
 		ts.solve();

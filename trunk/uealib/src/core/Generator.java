@@ -7,4 +7,6 @@ public interface Generator {
      */
 	@SuppressWarnings("unchecked")
 	public Generation getNext(Generation g);
+	
+	
 }

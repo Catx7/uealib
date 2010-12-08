@@ -7,7 +7,7 @@ public class Context extends core.Context {
 	public static int Gn = 10;
 	public static double F;
 	public static double Cr = 0.8;
-	private int count = 5000;
+	private int count = 10000;
 	
 	Evaluator e;
 	/**

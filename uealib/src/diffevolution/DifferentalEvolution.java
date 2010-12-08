@@ -1,6 +1,7 @@
 package diffevolution;
 
 import readers.Graph;
+import diffevolution.Solution;
 import diffevolution.Context;
 import diffevolution.Evaluator;
 import diffevolution.Generator;
@@ -48,7 +49,13 @@ public class DifferentalEvolution extends Algorithm {
 			Generation result = new Generation();
 			result.add(((Generation) currentGeneration).get(0));
 			
+			for (int i = 0; i < Context.Gn; ++i){
+				System.out.print(((Solution)currentGeneration.get(i)).toString());
+				System.out.println(((Solution)currentGeneration.get(i)).getFitness());
+				System.out.println();
+			}
 			return result;
+
 	    }
 	
 }

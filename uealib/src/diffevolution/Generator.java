@@ -9,11 +9,13 @@ import java.util.Random;
 
 public class Generator implements core.Generator{
 
-	private int[] mutation(int[] leh_1, int[] leh_2, int[] leh_3, int n )
+	private int[] mutation(Solution leh_1, Solution leh_2, Solution leh_3, int n )
 	{
 		int[] result = new int[n];
 	    for(int i = 0; i < n; ++i)
-	        result[i] = (int) Math.abs((leh_1[i] + Context.F*(leh_2[i] - leh_3[i]) % (n - i)) % (n - i));
+	        result[i] = (int) Math.abs((leh_1.get(i) + Context.F*(leh_2.get(i) - leh_3.get(i)) % (n - i)) % (n - i));
+	   // for(int i = 0; i < n; ++i)
+	    //System.out.print(result[i]);
 	     return result;
 	}
 	
@@ -25,23 +27,27 @@ public class Generator implements core.Generator{
 		    int x=1, y=1, z=1;
 		    Random rand = new Random();
 	
-		    while(x == y || y == z || z == x){
+		    while(x == y || y == z ){
 		        x = rand.nextInt(Context.Gn - 1);
 		    	y = rand.nextInt(Context.Gn - 1);
 		    	z = rand.nextInt(Context.Gn - 1);
 		    }
-		    int n = ((Generation) g.get(0)).size();
-		    int[] leh_mut = new int[n];	// после mutation
-		    int[] leh_curr = new int[n];	// после Crossover
-		    leh_mut = mutation(Solution.route2leh(((Generation) g).get(x)), Solution.route2leh(((Generation) g).get(y)), Solution.route2leh(((Generation) g).get(z)), n);
-		    leh_curr = Solution.route2leh(((Generation) g).get(k));	
+		    int n = (((Generation) g).get(0)).size();
+		  
+		  
+		    Solution leh_mut = new Solution(mutation(new Solution(Solution.route2leh(((Generation) g).get(x))), new Solution(Solution.route2leh(((Generation) g).get(y))),new Solution(Solution.route2leh(((Generation) g).get(z))), n));
+		    Solution leh_curr = new Solution (Solution.route2leh(((Generation) g).get(k)));	 // после Crossover
 		    
+		    int[] cross = new int[n];
 		    for(int i = 0; i < n; ++i){
 		       double p = Math.random();
-		       if (p <= Context.Cr) leh_curr[i] = leh_mut[i];
+		       if (p <= Context.Cr) 
+		    	   cross[i] = leh_curr.get(i);
+		       else
+		    	   cross[i] = leh_mut.get(i);
 		    }
-		    Solution.leh2route(leh_curr, n);
-		    newGen.add(new Solution(leh_curr));
+		    Solution new_sol = new Solution(Solution.leh2route(cross, n));
+		    newGen.add(new_sol);
 		}
 	    return newGen;
 	}

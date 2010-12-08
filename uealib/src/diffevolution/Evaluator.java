@@ -16,11 +16,12 @@ public class Evaluator {
 		double value = 0;
 		int v = s.get(0);
 		int w;
-		for ( int i = 1; i < n + 1; ++i ) {
+		for ( int i = 1; i < n; ++i ) {
 			w = s.get(i);
 			value += weights[v][w];
 			v = w;
 		}
+		value += weights[n-1][0];
 		return value;
 	}
 }

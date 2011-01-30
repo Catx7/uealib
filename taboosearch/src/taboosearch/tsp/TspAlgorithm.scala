@@ -1,4 +1,4 @@
-package tsp
+package taboosearch.tsp
 import core._
 
 class TspAlgorithm(initializator : TspInitializator,
@@ -7,6 +7,12 @@ class TspAlgorithm(initializator : TspInitializator,
                    transitionCriteria : TransitionCriteria[TspSolution],
                    selector : TspSelector,
 				   context : Context[TspSolution])
-  extends Algorithm[TspSolution](initializator, generator, stoppingCriteria, transitionCriteria, selector, context) {
+  extends Algorithm[TspSolution](
+		  initializator,
+		  generator,
+		  stoppingCriteria,
+		  transitionCriteria,
+		  selector,
+		  context) {
 
 }

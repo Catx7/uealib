@@ -1,4 +1,5 @@
-package core
+package taboosearch
+import core._
 import scala.annotation.unchecked.uncheckedVariance
 
 abstract class Taboolator[+S <: Solution] {

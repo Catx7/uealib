@@ -1,4 +1,4 @@
-package tsp
+package taboosearch.tsp
 import core._
 
 trait TspGenerationBuilder extends GenerationBuilder[TspSolution] {

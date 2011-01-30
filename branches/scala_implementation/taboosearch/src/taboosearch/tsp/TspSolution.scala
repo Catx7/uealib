@@ -1,4 +1,4 @@
-package tsp
+package taboosearch.tsp
 
 import scala.collection.immutable
 import core._

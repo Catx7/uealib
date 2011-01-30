@@ -1,6 +1,8 @@
-package tsp
+package taboosearch.tsp
 
 import core._;
+import taboosearch.tenures._
+import taboosearch._;
 import scala.collection.mutable.{ListBuffer, HashMap};
 
 class TspTaboolator(val strategy : TenureStrategy) extends Taboolator[TspSolution] {

@@ -1,4 +1,4 @@
-package tsp
+package taboosearch.tsp
 import core._
 
 object Main {
@@ -11,13 +11,13 @@ object Main {
 		var sc 	= new common.TicksStoppingCriteria(2000);
 		var s 	= new TspSelector();
 		var ev 	= new TspEvaluator(graph);
-		var tr 	= new TspTaboolator(new common.ConstantTenureStrategy(5));
+		var tr 	= new TspTaboolator(new taboosearch.tenures.ConstantTenureStrategy(5));
 		
 		var initialGeneration = i.getInitialGeneration();
 		var initialSolution = initialGeneration.head;
 		var initialSolutionFitness = ev.evaluate(initialSolution);
 		
-		val c = new Context(ev, tr, initialSolution, initialSolutionFitness);
+		val c = new taboosearch.Context(ev, tr, initialSolution, initialSolutionFitness);
 	
 		println("Result:");
 		val resultGeneration = (new TspAlgorithm(i, g, sc, tc, s, c)).solve(initialGeneration);

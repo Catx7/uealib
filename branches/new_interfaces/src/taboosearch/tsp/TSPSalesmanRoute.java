@@ -2,15 +2,14 @@ package taboosearch.tsp;
 
 import java.util.List;
 
-public class TspSalesmanRoute {
-	// immutable
-	final private int[] route;
+public class TSPSalesmanRoute { // immutable
+	final protected int[] route;
 	
-	public TspSalesmanRoute(int[] route) {
+	public TSPSalesmanRoute(int[] route) {
 		this.route = route.clone();
 	}
 	
-	public TspSalesmanRoute(List<Integer> route) {
+	public TSPSalesmanRoute(List<Integer> route) {
 		this.route = new int[route.size()];
 		for (int i = 0; i < this.route.length; ++i)
 			this.route[i] = route.get(i);

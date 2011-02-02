@@ -1,22 +1,22 @@
 package taboosearch.tsp;
 
-public class TspSolution extends taboosearch.Solution {
+public class TSPSolution extends taboosearch.Solution {
 	// immutable
-	final private TspSalesmanRoute route;
+	final private TSPSalesmanRoute route;
 	final private double routeCost;
-	final private TspSwapMove move;
+	final private TSPSwapMove move;
 
-	public TspSolution(TspSalesmanRoute route, double routeCost, TspSwapMove move) {
+	public TSPSolution(TSPSalesmanRoute route, double routeCost, TSPSwapMove move) {
 		this.route = route;
 		this.routeCost = routeCost;
 		this.move = move;
 	}
 	
-	public TspSolution(TspSalesmanRoute route, double routeCost) {
+	public TSPSolution(TSPSalesmanRoute route, double routeCost) {
 		this(route, routeCost, null);
 	}
 	
-	public TspSalesmanRoute getRoute() {
+	public TSPSalesmanRoute getRoute() {
 		return this.route;
 	}
 	
@@ -24,7 +24,7 @@ public class TspSolution extends taboosearch.Solution {
 		return this.routeCost;
 	}
 	
-	public TspSwapMove getMove() {
+	public TSPSwapMove getMove() {
 		return move;
 	}
 	
@@ -32,7 +32,7 @@ public class TspSolution extends taboosearch.Solution {
 		return this.move != null;
 	}
 
-	public TspSalesmanRoute unlazify() {
+	public TSPSalesmanRoute unlazify() {
 		if (this.move != null) {
 			int[] routeArray = this.route.toArray();
 			int i = this.move.getI(),
@@ -42,7 +42,7 @@ public class TspSolution extends taboosearch.Solution {
 			routeArray[i] = routeArray[j];
 			routeArray[j] = tmp;
 			
-			return new TspSalesmanRoute(routeArray);
+			return new TSPSalesmanRoute(routeArray);
 		} else {
 			return this.route;
 		}
@@ -53,7 +53,7 @@ public class TspSolution extends taboosearch.Solution {
 		StringBuilder result = new StringBuilder();
 		result.append("[ ");
 		
-		TspSalesmanRoute route = this.unlazify();
+		TSPSalesmanRoute route = this.unlazify();
 		result.append(route.get(0) + 1);
 		for (int i = 1; i < route.length(); ++i) {
 			result.append(", ");
@@ -65,8 +65,8 @@ public class TspSolution extends taboosearch.Solution {
 	}
 
 	@Override
-	public TspSolution copy() {
-		return new TspSolution(route, routeCost, move);
+	public TSPSolution copy() {
+		return new TSPSolution(route, routeCost, move);
 	}
 
 }

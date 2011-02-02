@@ -1,11 +1,11 @@
 package taboosearch.tsp;
 
-public class TspSwapMove {
+public class TSPSwapMove {
 	// immutable
 	
 	private int i, j;
 	
-	public TspSwapMove(int i, int j) {
+	public TSPSwapMove(int i, int j) {
 		this.i = i;
 		this.j = j;
 	}

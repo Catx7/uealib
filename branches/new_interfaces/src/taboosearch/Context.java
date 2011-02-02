@@ -1,6 +1,6 @@
 package taboosearch;
 
-public abstract class Context<S extends Solution, G extends Generation<S>> extends core.Context {
+public abstract class Context<S extends Solution, G extends Generation<S>> implements common.TickableContext {
 	
 	public S bestSolutionEver;
 	

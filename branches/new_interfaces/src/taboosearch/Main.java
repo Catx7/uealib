@@ -1,17 +1,20 @@
 package taboosearch;
 
 
+import common.TicksStoppingCriteria;
+import common.UnconditionalTransitionCriteria;
+
 import readers.Graph;
 import readers.graphs.GeoCoordsGraphReader;
 import readers.graphs.GraphReader;
 import taboosearch.tenures.ConstantTenureStrategy;
-import taboosearch.tsp.TspContext;
-import taboosearch.tsp.TspEvaluator;
-import taboosearch.tsp.TspGeneration;
-import taboosearch.tsp.TspGenerator;
-import taboosearch.tsp.TspInitializator;
-import taboosearch.tsp.TspSolution;
-import taboosearch.tsp.TspTaboolator;
+import taboosearch.tsp.TSPContext;
+import taboosearch.tsp.TSPEvaluator;
+import taboosearch.tsp.TSPGeneration;
+import taboosearch.tsp.TSPGenerator;
+import taboosearch.tsp.TSPInitializator;
+import taboosearch.tsp.TSPSolution;
+import taboosearch.tsp.TSPTaboolator;
 
 public class Main {
 
@@ -19,29 +22,29 @@ public class Main {
 		GraphReader graphReader = new GeoCoordsGraphReader();
 		Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/burma14.txt");
 
-		TspEvaluator evaluator = new TspEvaluator(graph);
-		TspTaboolator taboolator = new TspTaboolator(new ConstantTenureStrategy(5));
+		TSPEvaluator evaluator = new TSPEvaluator(graph);
+		TSPTaboolator taboolator = new TSPTaboolator(new ConstantTenureStrategy(5));
 		
-		TspContext context = new TspContext();
+		TSPContext context = new TSPContext();
 		
 		context.setEvaluator(evaluator);
 		context.setTaboolator(taboolator);
 		context.bestSolutionEverFitness = Double.MAX_VALUE;
 		
-		TspInitializator initializator = new TspInitializator(graph, context);
-		TspGenerator generator = new TspGenerator(context);
+		TSPInitializator initializator = new TSPInitializator(graph, context);
+		TSPGenerator generator = new TSPGenerator(context);
 		
-		TicksStoppingCriteria<TspSolution, TspGeneration, TspContext> stoppingCriteria
-			= new TicksStoppingCriteria<TspSolution, TspGeneration, TspContext>(context, 2000);
+		TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext> stoppingCriteria
+			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 2000);
 		
-		Selector<TspSolution, TspGeneration, TspContext> selector
-			= new Selector<TspSolution, TspGeneration, TspContext>(context);
+		Selector<TSPSolution, TSPGeneration, TSPContext> selector
+			= new Selector<TSPSolution, TSPGeneration, TSPContext>(context);
 		
-		TransitionCriteria<TspSolution, TspGeneration, TspContext> transitionCriteria
-			= new TransitionCriteria<TspSolution, TspGeneration, TspContext>();
+		UnconditionalTransitionCriteria<TSPSolution, TSPGeneration, TSPContext> transitionCriteria
+			= new UnconditionalTransitionCriteria<TSPSolution, TSPGeneration, TSPContext>();
 		
-		TabooSearchAlgorithm<TspSolution, TspGeneration, TspContext> algorithm
-			= new TabooSearchAlgorithm<TspSolution, TspGeneration, TspContext>(
+		TabooSearchAlgorithm<TSPSolution, TSPGeneration, TSPContext> algorithm
+			= new TabooSearchAlgorithm<TSPSolution, TSPGeneration, TSPContext>(
 				initializator,
 				generator,
 				stoppingCriteria,

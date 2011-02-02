@@ -1,6 +1,8 @@
-package readers;
+package readers.graphs;
 
 import java.util.Scanner;
+
+import readers.Graph;
 
 /**
  * Читает полный граф, заданный матрицей весов.

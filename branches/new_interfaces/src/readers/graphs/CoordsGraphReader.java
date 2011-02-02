@@ -1,6 +1,9 @@
-package readers;
+package readers.graphs;
 
 import java.util.Scanner;
+
+import readers.Graph;
+import readers.graphs.points.Point2D;
 
 /**
  * Читает полный граф, заданный координатами вершин в двухмерном пространстве.
@@ -28,7 +31,7 @@ public class CoordsGraphReader extends GraphReader {
 		return result;
 	}
 	
-	private double[][] computeWeights(Point2D[] points) {
+	protected double[][] computeWeights(Point2D[] points) {
 		int n = points.length;
 		double[][] matrix = new double[n][n];
 		

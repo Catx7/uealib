@@ -1,10 +1,10 @@
-package readers;
+package readers.graphs.points;
 
 public class Point2D {
 	private double x;
 	private double y;
 	
-	Point2D(double x, double y) {
+	public Point2D(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -29,4 +29,5 @@ public class Point2D {
 		return Math.sqrt( Math.pow(this.getX() - that.getX(), 2) +
 						  Math.pow(this.getY() - that.getY(), 2) );
 	}
+	
 }

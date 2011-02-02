@@ -1,8 +1,10 @@
-package readers;
+package readers.graphs;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import readers.Graph;
 
 public abstract class GraphReader {
 	

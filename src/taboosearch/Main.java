@@ -1,9 +1,9 @@
 package taboosearch;
 
 
-import readers.GeoCoordsGraphReader;
 import readers.Graph;
-import readers.GraphReader;
+import readers.graphs.GeoCoordsGraphReader;
+import readers.graphs.GraphReader;
 import taboosearch.tenures.ConstantTenureStrategy;
 import taboosearch.tsp.TspContext;
 import taboosearch.tsp.TspEvaluator;
@@ -31,8 +31,8 @@ public class Main {
 		TspInitializator initializator = new TspInitializator(graph, context);
 		TspGenerator generator = new TspGenerator(context);
 		
-		TickStoppingCriteria<TspSolution, TspGeneration, TspContext> stoppingCriteria
-			= new TickStoppingCriteria<TspSolution, TspGeneration, TspContext>(context, 2000);
+		TicksStoppingCriteria<TspSolution, TspGeneration, TspContext> stoppingCriteria
+			= new TicksStoppingCriteria<TspSolution, TspGeneration, TspContext>(context, 2000);
 		
 		Selector<TspSolution, TspGeneration, TspContext> selector
 			= new Selector<TspSolution, TspGeneration, TspContext>(context);

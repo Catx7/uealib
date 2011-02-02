@@ -11,7 +11,7 @@ public class TabooSearchAlgorithm<S extends Solution,
 	public TabooSearchAlgorithm(
 			Initializator<S, G> initializator,
 			Generator<S, G> generator,
-			TickStoppingCriteria<S, G, C> stoppingCriteria,
+			TicksStoppingCriteria<S, G, C> stoppingCriteria,
 			Selector<S, G, C> selector,
 			TransitionCriteria<S, G, C> transitionCriteria,
 			C context) {
@@ -40,6 +40,7 @@ public class TabooSearchAlgorithm<S extends Solution,
 
 		}
 		System.out.println(context.bestSolutionEver.getStringRepresentation());
+		System.out.println(context.bestSolutionEverFitness);
 		return currentGeneration;
     }
 

@@ -1,6 +1,6 @@
 package readers;
 
-public class Graph implements Problem {
+public class Graph {
 	private double[][] weights;
 
 	public void setWeights(double[][] weights) {

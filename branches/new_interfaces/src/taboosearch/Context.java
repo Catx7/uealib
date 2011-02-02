@@ -1,31 +1,23 @@
 package taboosearch;
 
-public class Context extends core.Context {
+public abstract class Context<S extends Solution, G extends Generation<S>> extends core.Context {
 	
-	private static Context instance;
+	public S bestSolutionEver;
+	
+	public double bestSolutionEverFitness;
+	
+	public abstract void setTaboolator(Taboolator<S> taboolator);
 
-	/**
-	 * Возвращает экземпляр контекста.
-	 */
-	public static Context getInstance() {
-		if (instance == null) {
-			instance = new Context();
-		}
-		return instance;
-	}
+	public abstract Taboolator<S> getTaboolator();
 	
-	private int ticks = 0;
+	public abstract void setEvaluator(Evaluator<S> evaluator);
+
+	public abstract Evaluator<S> getEvaluator();
 	
-	public void tick() {
-		this.ticks++;
-		tr.tick();
-	}
+	public abstract GenerationFabric<S, G> getGenerationFabric();
 	
-	public int getTicks() {
-		return ticks;
-	}
+	public abstract void tick();
 	
-	Evaluator e;
-	Taboolator tr;
+	public abstract int getTicks();
 	
 }

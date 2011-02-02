@@ -1,24 +1,19 @@
 package readers;
 
-public class Graph {
-	/**
-	 * Матрица весов.
-	 */
-	private double[][] m;
+public class Graph implements Problem {
+	private double[][] weights;
 
-	/**
-	 * Устанавливает матрицу весов.
-	 * @param m
-	 */
-	public void setWeights(double[][] m) {
-		this.m = m;
+	public void setWeights(double[][] weights) {
+		assert weights.length == weights[1].length;
+		
+		this.weights = weights;
 	}
 
-	/**
-	 * Возвращает матрицу весов.
-	 */
 	public double[][] getWeights() {
-		return m;
+		return weights;
 	}
 	
+	public int getN() {
+		return weights.length;
+	}	
 }

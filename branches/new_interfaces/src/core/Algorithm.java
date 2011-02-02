@@ -1,6 +1,6 @@
 package core;
 
-public abstract class Algorithm<T extends Generation<? extends Solution<?>>> {
+public abstract class Algorithm<T extends Generation<? extends Solution>> {
 
 	protected Initializator<T> init;
 	protected Generator<T> generator;

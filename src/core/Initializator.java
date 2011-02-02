@@ -1,6 +1,6 @@
 package core;
 
-public interface Initializator<T extends Generation<? extends Solution<?>>> {
+public interface Initializator<T extends Generation<? extends Solution>> {
 	/**
 	 * @return Generation, содержащее множество начальных решений.
 	 */

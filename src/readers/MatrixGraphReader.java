@@ -7,21 +7,17 @@ import java.util.Scanner;
  */
 public class MatrixGraphReader extends GraphReader {
 
+	@Override
 	protected Graph readGraph(Scanner s) {
 		int n = s.nextInt();
 		double[][] matrix = new double[n][n];
-		double w;
 		
-		for ( int i = 0; i < n; ++i ) {
-			for ( int j = 0; j < n; ++j ) {
-				w = s.nextDouble();
-				matrix[i][j] = w;
-			}
-		}
-		
+		for ( int i = 0; i < n; ++i )
+			for ( int j = 0; j < n; ++j )
+				matrix[i][j] = s.nextDouble();
+
 		Graph result = new Graph();
 		result.setWeights(matrix);
-		
 		return result;
 	}
 	

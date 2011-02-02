@@ -1,16 +1,19 @@
 package taboosearch;
 
-public class TickStoppingCriteria implements core.StoppingCriteria<LazyGeneration> {
+public class TickStoppingCriteria<S extends Solution,
+								  G extends Generation<S>,
+								  C extends Context<S, G>> implements core.StoppingCriteria<G> {
 
 	private int ticks;
+	private C context;
 	
-	public TickStoppingCriteria(int ticks) {
+	public TickStoppingCriteria(C context, int ticks) {
+		this.context = context;
 		this.ticks = ticks;
 	}
 	
-	public boolean isSatisfied(LazyGeneration g) {
-		Context ctx = Context.getInstance();
-		return (ctx.getTicks() == ticks);
+	public boolean isSatisfied(G g) {
+		return (context.getTicks() == ticks);
 	}
 
 }

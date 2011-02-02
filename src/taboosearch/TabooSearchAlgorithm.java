@@ -1,50 +1,45 @@
 package taboosearch;
 
 import core.Algorithm;
-import readers.Graph;
-import taboosearch.tenures.ConstantTenureStrategy;
 
-
-public class TabooSearchAlgorithm extends Algorithm<LazyGeneration> {
+public class TabooSearchAlgorithm<S extends Solution,
+								  G extends Generation<S>,
+								  C extends Context<S, G>> extends Algorithm<G> {
 	
-	public TabooSearchAlgorithm(Graph g) {
-		Evaluator e = new Evaluator(g.getWeights());
-		Taboolator tr = new Taboolator(new ConstantTenureStrategy(5));
-		
-		Context ctx = Context.getInstance();
-		ctx.e = e;
-		ctx.tr = tr;
-		
-		Initializator init = new Initializator(g.getWeights());
-		Generator generator = new Generator();
-		TickStoppingCriteria stop = new TickStoppingCriteria(50);
-		Selector selector = new Selector();
-		TransitionCriteria trans = new TransitionCriteria();
-		
-		this.init = init;
-		this.generator = generator;
-		this.stoppingCriteria = stop;
-		this.selector = selector;
-		this.transitionCriteria = trans;
+	C context;
+	
+	public TabooSearchAlgorithm(
+			Initializator<S, G> initializator,
+			Generator<S, G> generator,
+			TickStoppingCriteria<S, G, C> stoppingCriteria,
+			Selector<S, G, C> selector,
+			TransitionCriteria<S, G, C> transitionCriteria,
+			C context) {
+		super(initializator, generator, stoppingCriteria, selector, transitionCriteria, context);
+		this.context = context;
 	}
 
-	public LazyGeneration solve() {
-		LazyGeneration currentGeneration = this.init.getInitialGeneration();
-		
+	public G solve() {
+		G currentGeneration = this.init.getInitialGeneration();
 		while (!this.stoppingCriteria.isSatisfied(currentGeneration)) {
-			LazyGeneration g = generator.getNext(currentGeneration);
-			LazyGeneration h = selector.keepTheBestSolutions(g, currentGeneration);
+			G g = generator.getNext(currentGeneration);
+			G h = selector.keepTheBestSolutions(g, currentGeneration);
 	
 	        if (transitionCriteria.isSatisfied(currentGeneration, h)) {
-	                currentGeneration = h;
+	        	currentGeneration = h;
 	        }
 	        
-			Context.getInstance().tick();
-			System.out.print(currentGeneration.get(0).castToSolution().toString());
-			System.out.println(currentGeneration.get(0).castToSolution().getFitness());
+	        this.context.tick();
+			S s = currentGeneration.get(0);
+			//System.out.println(s.getStringRepresentation());
 			
+			if (context.getEvaluator().evaluate(s) < context.bestSolutionEverFitness) {
+				context.bestSolutionEver = s;
+				context.bestSolutionEverFitness = context.getEvaluator().evaluate(s);
+			}
+
 		}
-		
+		System.out.println(context.bestSolutionEver.getStringRepresentation());
 		return currentGeneration;
     }
 

@@ -1,15 +1,13 @@
 package taboosearch;
+
 import java.util.ArrayList;
 
-public class Generation extends ArrayList<Solution> implements core.Generation<Solution> {
-
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public abstract class Generation<S extends Solution> extends ArrayList<S> implements core.Generation<S> {
 
 	@Override
-	public Generation getBest() {
-		// TODO Auto-generated method stub
+	public core.Generation<S> getBest() {
 		return null;
 	}
-
 
 }

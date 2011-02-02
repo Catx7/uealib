@@ -6,16 +6,16 @@ import java.util.Vector;
 import taboosearch.tenures.TenureStrategy;
 import taboosearch.Taboolator;
 
-public class TspTaboolator extends Taboolator<TspSolution> {
+public class TSPTaboolator extends Taboolator<TSPSolution> {
 	private TenureStrategy strategy;
 	private HashMap<Integer, Integer> taboo;
 	
-	public TspTaboolator(TenureStrategy strategy) {
+	public TSPTaboolator(TenureStrategy strategy) {
 		this.strategy = strategy;
 		this.taboo = new HashMap<Integer, Integer>();
 	}
 	
-	public void setTabu(final TspSolution s) {
+	public void setTabu(final TSPSolution s) {
 		int v1 = s.getRoute().get(s.getMove().getI()),
 			v2 = s.getRoute().get(s.getMove().getJ());
 		taboo.remove(v1);
@@ -24,7 +24,7 @@ public class TspTaboolator extends Taboolator<TspSolution> {
 		taboo.put(v2, this.strategy.getTenure());
 	}
 	
-	public boolean isTabu(final TspSolution s) {
+	public boolean isTabu(final TSPSolution s) {
 		int v1 = s.getRoute().get(s.getMove().getI()),
 			v2 = s.getRoute().get(s.getMove().getJ());
 		boolean result = taboo.containsKey(v1) &&

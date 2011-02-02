@@ -1,5 +1,8 @@
 package taboosearch;
 
+import common.TicksStoppingCriteria;
+import common.UnconditionalTransitionCriteria;
+
 import core.Algorithm;
 
 public class TabooSearchAlgorithm<S extends Solution,
@@ -13,7 +16,7 @@ public class TabooSearchAlgorithm<S extends Solution,
 			Generator<S, G> generator,
 			TicksStoppingCriteria<S, G, C> stoppingCriteria,
 			Selector<S, G, C> selector,
-			TransitionCriteria<S, G, C> transitionCriteria,
+			UnconditionalTransitionCriteria<S, G, C> transitionCriteria,
 			C context) {
 		super(initializator, generator, stoppingCriteria, selector, transitionCriteria, context);
 		this.context = context;

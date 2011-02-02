@@ -2,17 +2,17 @@ package taboosearch.tsp;
 import readers.Graph;
 import taboosearch.Evaluator;
 
-public class TspEvaluator extends Evaluator<TspSolution> {
+public class TSPEvaluator extends Evaluator<TSPSolution> {
 
 	private double[][] weights;
 	private int n;
 	
-	public TspEvaluator(Graph graph) {
+	public TSPEvaluator(Graph graph) {
 		this.weights = graph.getWeights();
 		this.n = graph.getN();
 	}
 	
-	public double evaluate(TspSalesmanRoute route) {
+	public double evaluate(TSPSalesmanRoute route) {
 		assert n == route.length();
 		
 		double value = 0;
@@ -27,7 +27,7 @@ public class TspEvaluator extends Evaluator<TspSolution> {
 		return value;
 	}
 	
-	public double evaluate(TspSalesmanRoute route, double routeCost, TspSwapMove move) {
+	public double evaluate(TSPSalesmanRoute route, double routeCost, TSPSwapMove move) {
 		int i = move.getI(),
 			j = move.getJ();
 		
@@ -52,7 +52,7 @@ public class TspEvaluator extends Evaluator<TspSolution> {
 		return cost;
 	}
 	
-	public double evaluate(TspSolution solution) {
+	public double evaluate(TSPSolution solution) {
 		if (solution.isLazy()) {
 			return evaluate(solution.getRoute(),
 							solution.getRouteCost(),

@@ -6,12 +6,12 @@ import java.util.List;
 import readers.Graph;
 import taboosearch.Initializator;
 
-public class TspInitializator extends Initializator<TspSolution, TspGeneration> {
+public class TSPInitializator extends Initializator<TSPSolution, TSPGeneration> {
 	private double[][] weights;
 	private int n = 0;
-	private TspContext context;
+	private TSPContext context;
 	
-	public TspInitializator(Graph graph, TspContext context) {	
+	public TSPInitializator(Graph graph, TSPContext context) {	
 		this.weights = graph.getWeights();
 		this.n = graph.getN();
 		this.context = context;
@@ -38,12 +38,12 @@ public class TspInitializator extends Initializator<TspSolution, TspGeneration> 
 		return route;
 	}
 
-	public TspGeneration getInitialGeneration() {
-		TspSalesmanRoute route = new TspSalesmanRoute(this.getSolution(0));
+	public TSPGeneration getInitialGeneration() {
+		TSPSalesmanRoute route = new TSPSalesmanRoute(this.getSolution(0));
 		double routeCost	   = context.getEvaluator().evaluate(route);
-		TspSolution s 		   = new TspSolution(route, routeCost);
+		TSPSolution s 		   = new TSPSolution(route, routeCost);
 		
-		TspGeneration result = new TspGeneration();
+		TSPGeneration result = new TSPGeneration();
 		result.add(s);
 		return result;
 	}

@@ -1,9 +1,8 @@
-package taboosearch;
+package common;
 
-public class TicksStoppingCriteria<S extends Solution,
-								  G extends Generation<S>,
-								  C extends Context<S, G>> implements core.StoppingCriteria<G> {
-
+public class TicksStoppingCriteria<S extends core.Solution,
+								   G extends core.Generation<S>,
+								   C extends TickableContext> implements core.StoppingCriteria<G> {
 	private int ticks;
 	private C context;
 	
@@ -15,5 +14,4 @@ public class TicksStoppingCriteria<S extends Solution,
 	public boolean isSatisfied(G g) {
 		return (context.getTicks() == ticks);
 	}
-
 }

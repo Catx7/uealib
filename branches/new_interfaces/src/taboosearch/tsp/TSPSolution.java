@@ -1,51 +1,32 @@
 package taboosearch.tsp;
 
-public class TSPSolution extends taboosearch.Solution {
-	// immutable
-	final private TSPSalesmanRoute route;
-	final private double routeCost;
-	final private TSPSwapMove move;
+import java.util.List;
+//import java.util.Vector;
 
-	public TSPSolution(TSPSalesmanRoute route, double routeCost, TSPSwapMove move) {
-		this.route = route;
-		this.routeCost = routeCost;
-		this.move = move;
+public class TSPSolution extends taboosearch.Solution { // immutable
+	final protected int[] route;
+	private double cost;
+	
+	public TSPSolution(int[] route) {
+		this.route = route.clone();
 	}
 	
-	public TSPSolution(TSPSalesmanRoute route, double routeCost) {
-		this(route, routeCost, null);
+	public TSPSolution(List<Integer> route) {
+		this.route = new int[route.size()];
+		for (int i = 0; i < this.route.length; ++i)
+			this.route[i] = route.get(i);
 	}
 	
-	public TSPSalesmanRoute getRoute() {
-		return this.route;
+	public int length() {
+        return this.route.length;
 	}
 	
-	public double getRouteCost() {
-		return this.routeCost;
+	public int get(int index) {
+		return this.route[index];
 	}
 	
-	public TSPSwapMove getMove() {
-		return move;
-	}
-	
-	public boolean isLazy() {
-		return this.move != null;
-	}
-
-	public TSPSalesmanRoute unlazify() {
-		if (this.move != null) {
-			int[] routeArray = this.route.toArray();
-			int i = this.move.getI(),
-				j = this.move.getJ();
-			
-			int tmp = routeArray[i];
-			routeArray[i] = routeArray[j];
-			routeArray[j] = tmp;
-			
-			return new TSPSalesmanRoute(routeArray);
-		} else {
-			return this.route;
-		}
+	public int[] toArray() {
+		return this.route.clone();
 	}
 
 	@Override
@@ -53,11 +34,10 @@ public class TSPSolution extends taboosearch.Solution {
 		StringBuilder result = new StringBuilder();
 		result.append("[ ");
 		
-		TSPSalesmanRoute route = this.unlazify();
-		result.append(route.get(0) + 1);
-		for (int i = 1; i < route.length(); ++i) {
+		result.append(route[0] + 1);
+		for (int i = 1; i < route.length; ++i) {
 			result.append(", ");
-			result.append(route.get(i) + 1);
+			result.append(route[i] + 1);
 		}
 
 		result.append(" ] ");
@@ -66,7 +46,15 @@ public class TSPSolution extends taboosearch.Solution {
 
 	@Override
 	public TSPSolution copy() {
-		return new TSPSolution(route, routeCost, move);
+		return new TSPSolution(route);
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public double getCost() {
+		return cost;
 	}
 
 }

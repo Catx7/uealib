@@ -1,50 +1,59 @@
 package taboosearch;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 import common.TicksStoppingCriteria;
 import common.UnconditionalTransitionCriteria;
 
 import readers.Graph;
+import readers.graphs.CoordsGraphReader;
 import readers.graphs.GeoCoordsGraphReader;
-import readers.graphs.GraphReader;
+
+import taboosearch.gui.GUI;
 import taboosearch.tenures.ConstantTenureStrategy;
-import taboosearch.tsp.TSPContext;
-import taboosearch.tsp.TSPEvaluator;
-import taboosearch.tsp.TSPGeneration;
-import taboosearch.tsp.TSPGenerator;
-import taboosearch.tsp.TSPInitializator;
-import taboosearch.tsp.TSPSolution;
-import taboosearch.tsp.TSPTaboolator;
+import taboosearch.tsp.*;
 
 public class Main {
 
-	public static void main(String[] args) {
-		GraphReader graphReader = new GeoCoordsGraphReader();
+	public static void main(String[] args) throws FileNotFoundException {
+		//List<Integer> list = new LinkedList<Integer>();
+		//FileInputStream fi = new FileInputStream("/home/rrhu/workspace/uealib/graphs/berlin52.opt.txt");
+		//Scanner s = new Scanner(fi, "utf-8");
+		//for (int times = 0; times < 52; ++times) list.add(s.nextInt() - 1);
+		//s.close();
+		
+		GeoCoordsGraphReader graphReader = new GeoCoordsGraphReader();
 		Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/burma14.txt");
 
+		//CoordsGraphReader graphReader = new CoordsGraphReader();
+		//Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/berlin52.txt");
+
 		TSPEvaluator evaluator = new TSPEvaluator(graph);
-		TSPTaboolator taboolator = new TSPTaboolator(new ConstantTenureStrategy(5));
+		TSPTaboolator taboolator = new TSPTaboolator(new ConstantTenureStrategy(6));
+		TSPFrequencyMemory frequencyMemory = new TSPFrequencyMemory(graph);
 		
-		TSPContext context = new TSPContext();
-		
-		context.setEvaluator(evaluator);
-		context.setTaboolator(taboolator);
-		context.bestSolutionEverFitness = Double.MAX_VALUE;
+		TSPContext context = new TSPContext(evaluator, taboolator, frequencyMemory);
 		
 		TSPInitializator initializator = new TSPInitializator(graph, context);
-		TSPGenerator generator = new TSPGenerator(context);
+		TSPGenerator generator = new TSPGenerator(graph, context);
+		
+		TSPAdmissibleChecker checker = new TSPAdmissibleChecker(context);
 		
 		TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext> stoppingCriteria
-			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 2000);
+			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 100);
 		
-		Selector<TSPSolution, TSPGeneration, TSPContext> selector
-			= new Selector<TSPSolution, TSPGeneration, TSPContext>(context);
+		Selector<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext> selector
+			= new Selector<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext>(checker, context);
 		
 		UnconditionalTransitionCriteria<TSPSolution, TSPGeneration, TSPContext> transitionCriteria
 			= new UnconditionalTransitionCriteria<TSPSolution, TSPGeneration, TSPContext>();
 		
-		TabooSearchAlgorithm<TSPSolution, TSPGeneration, TSPContext> algorithm
-			= new TabooSearchAlgorithm<TSPSolution, TSPGeneration, TSPContext>(
+		TabooSearchAlgorithm<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext> algorithm
+			= new TabooSearchAlgorithm<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext>(
 				initializator,
 				generator,
 				stoppingCriteria,
@@ -52,6 +61,14 @@ public class Main {
 				transitionCriteria,
 				context);
 		algorithm.solve();
+		
+		/*System.out.println(list.size());
+		TSPSalesmanRoute route = new TSPSalesmanRoute(list);
+		TSPSolution exact = new TSPSolution(route, evaluator.evaluate(route));
+		System.out.println(exact.toString());
+		System.out.println(evaluator.evaluate(route));
+		*/
+		(new GUI(context.getSeries())).run();
 	}
 
 }

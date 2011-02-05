@@ -1,8 +1,13 @@
 package taboosearch;
 
-public abstract class Generator<S extends Solution, G extends Generation<S>> implements core.Generator<G> {
+import java.util.List;
+
+import common.Pair;
+
+public abstract class Generator<S extends Solution,
+								M extends Move<S>,
+								G extends Generation<S>> {
 	
-	@Override
-	public abstract G getNext(G g);
+	public abstract Pair<S, List<M>> getNext(G g);
 
 }

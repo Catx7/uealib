@@ -2,24 +2,24 @@ package taboosearch.tsp;
 import readers.Graph;
 import taboosearch.Evaluator;
 
-public class TSPEvaluator extends Evaluator<TSPSolution> {
+public class TSPEvaluator extends Evaluator<TSPSolution, TSPSwapMove> {
 
 	private double[][] weights;
 	private int n;
 	
 	public TSPEvaluator(Graph graph) {
 		this.weights = graph.getWeights();
-		this.n = graph.getN();
+		this.n = graph.getVertexesNumber();
 	}
 	
-	public double evaluate(TSPSalesmanRoute route) {
-		assert n == route.length();
+	public double evaluate(TSPSolution solution) {
+		assert n == solution.length();
 		
 		double value = 0;
-		int v = route.get(0);
+		int v = solution.get(0);
 		
 		for (int i = 1; i < n + 1; ++i) {
-			int w = route.get(i % n);
+			int w = solution.get(i % n);
 			value += weights[v][w];
 			v = w;
 		}
@@ -27,17 +27,17 @@ public class TSPEvaluator extends Evaluator<TSPSolution> {
 		return value;
 	}
 	
-	public double evaluate(TSPSalesmanRoute route, double routeCost, TSPSwapMove move) {
+	public double evaluate(TSPSolution solution, TSPSwapMove move) {
 		int i = move.getI(),
 			j = move.getJ();
 		
-		double cost = routeCost;
-		int v1 = route.get(i); 
-		int v2 = route.get(j);
-		int t1 = route.get((i - 1) % n);
-		int w1 = route.get((i + 1) % n);
-		int t2 = route.get((j + 1) % n);
-		int w2 = route.get((j - 1) % n);
+		double cost = solution.getCost();
+		int v1 = solution.get(i); 
+		int v2 = solution.get(j);
+		int t1 = solution.get((i - 1) % n);
+		int w1 = solution.get((i + 1) % n);
+		int t2 = solution.get((j + 1) % n);
+		int w2 = solution.get((j - 1) % n);
 		
 		if (Math.abs(i - j) == 1) {
 			cost += - weights[t1][w2] - weights[t2][w1]
@@ -52,14 +52,8 @@ public class TSPEvaluator extends Evaluator<TSPSolution> {
 		return cost;
 	}
 	
-	public double evaluate(TSPSolution solution) {
-		if (solution.isLazy()) {
-			return evaluate(solution.getRoute(),
-							solution.getRouteCost(),
-							solution.getMove());
-		} else {
-			return evaluate(solution.getRoute());
-		}
+	public double evaluateMove(TSPSolution solution, TSPSwapMove move) {
+		return evaluate(solution, move) - solution.getCost();
 	}
 	
 }

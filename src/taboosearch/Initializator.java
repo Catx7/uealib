@@ -1,7 +1,9 @@
 package taboosearch;
 
 public abstract class Initializator<S extends Solution,
-									G extends Generation<S>> implements core.Initializator<G> {
+									M extends Move<S>,
+									G extends Generation<S>,
+									C extends Context<S, M, G>> implements core.Initializator<G> {
 	
 	
 }

@@ -2,7 +2,7 @@ package taboosearch.tsp;
 
 import java.util.List;
 
-public class TSPSalesmanRoute { // immutable
+public class TSPSalesmanRoute {
 	final protected int[] route;
 	
 	public TSPSalesmanRoute(int[] route) {

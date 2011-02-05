@@ -6,51 +6,53 @@ import java.util.Vector;
 import taboosearch.tenures.TenureStrategy;
 import taboosearch.Taboolator;
 
-public class TSPTaboolator extends Taboolator<TSPSolution> {
+public class TSPTaboolator extends Taboolator<TSPSolution, TSPSwapMove> {
 	private TenureStrategy strategy;
-	private HashMap<Integer, Integer> taboo;
+	private HashMap<TSPAttribute, Integer> taboo;
 	
 	public TSPTaboolator(TenureStrategy strategy) {
 		this.strategy = strategy;
-		this.taboo = new HashMap<Integer, Integer>();
+		this.taboo = new HashMap<TSPAttribute, Integer>();
 	}
-	
-	public void setTabu(final TSPSolution s) {
-		int v1 = s.getRoute().get(s.getMove().getI()),
-			v2 = s.getRoute().get(s.getMove().getJ());
-		taboo.remove(v1);
-		taboo.remove(v2);
-		taboo.put(v1, this.strategy.getTenure());
-		taboo.put(v2, this.strategy.getTenure());
+		
+	@Override
+	public boolean isTabu(final TSPSolution solution, final TSPSwapMove move) {
+		boolean isTabu = true;
+		for (TSPAttribute attribute : move.getAttributes(solution))
+			isTabu &= taboo.containsKey(attribute);
+		return isTabu;
 	}
-	
-	public boolean isTabu(final TSPSolution s) {
-		int v1 = s.getRoute().get(s.getMove().getI()),
-			v2 = s.getRoute().get(s.getMove().getJ());
-		boolean result = taboo.containsKey(v1) &&
-						 taboo.containsKey(v2);
-		return result;
+
+	@Override
+	public void setTabu(final TSPSolution solution, final TSPSwapMove move) {
+		for (TSPAttribute attribute : move.getAttributes(solution))
+			taboo.put(attribute, strategy.getTenure());
 	}
 	
 	public void tick() {
 		strategy.tick();
-		this.decreaseTenures();
+		decreaseTenures();
+	}
+	
+	public void tick(final TSPSolution solution, final TSPSwapMove move) {
+		setTabu(solution, move);
+		strategy.tick();
+		decreaseTenures();
 	}
 	
 	private void decreaseTenures() {
-		Vector<Integer> toErase = new Vector<Integer>();
+		Vector<TSPAttribute> toErase = new Vector<TSPAttribute>();
 
-		for (Integer key : taboo.keySet()) {
-			int tenure = taboo.get(key);
+		for (TSPAttribute attribute : taboo.keySet()) {
+			int tenure = taboo.get(attribute);
 			if (tenure == 1) {
-				toErase.add(key);
+				toErase.add(attribute);
 			} else {
-				taboo.put(key, tenure - 1);
+				taboo.put(attribute, tenure - 1);
 			}
 		}
 		
-		for (Integer key : toErase)
-			taboo.remove(key);
+		for (TSPAttribute attribute : toErase)
+			taboo.remove(attribute);
 	}
-	
 }

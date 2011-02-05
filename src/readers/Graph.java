@@ -13,7 +13,7 @@ public class Graph {
 		return weights;
 	}
 	
-	public int getN() {
+	public int getVertexesNumber() {
 		return weights.length;
 	}	
 }

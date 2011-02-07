@@ -5,11 +5,10 @@ import java.util.Vector;
 
 import taboosearch.Move;
 
-// immutable
-public class TSPSwapMove implements Move<TSPSolution> {	
+public class TSPInverseMove implements Move<TSPSolution>  {
 	private int i, j;
 	
-	public TSPSwapMove(int i, int j) {
+	public TSPInverseMove(int i, int j) {
 		this.i = i;
 		this.j = j;
 	}
@@ -27,22 +26,30 @@ public class TSPSwapMove implements Move<TSPSolution> {
 	}
 	
 	public String toString() {
-		return "swap( " + i + ", " + j + " )";
+		return "inverse(from " + i + " to " + j + ")";
 	}
-
+	
 	@Override
 	public TSPSolution operateOn(TSPSolution solution) {
- 		int[] route = solution.toArray();
+		int[] route = solution.toArray();
 		
-		int tmp = route[i];
-		route[i] = route[j];
-		route[j] = tmp;
+		int startIdx = Math.min(i, j);
+		int endIdx = Math.max(i, j);
+		int n = endIdx - startIdx;
+
+		for (int k = 0; k < n; ++k) {
+			// swap [i_ + k] and [j_ - k]
+			int tmp = route[startIdx + k];
+			route[startIdx + k] = route[endIdx - k];
+			route[endIdx - k] = tmp;
+		}
 		
 		return new TSPSolution(route);
 	}
 
 	@Override
 	public List<TSPAttribute> getAttributes(TSPSolution solution) {
+		// TODO
 		int v1 = solution.get(i);
 		int v2 = solution.get(j);
 		
@@ -69,7 +76,7 @@ public class TSPSwapMove implements Move<TSPSolution> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TSPSwapMove other = (TSPSwapMove) obj;
+		TSPInverseMove other = (TSPInverseMove) obj;
 		if (i != other.i)
 			return false;
 		if (j != other.j)

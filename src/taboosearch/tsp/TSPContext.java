@@ -14,7 +14,8 @@ public class TSPContext extends Context<TSPSolution, TSPSwapMove, TSPGeneration>
 					  Taboolator<TSPSolution, TSPSwapMove> taboolator,
 					  FrequencyMemory<TSPSolution, TSPSwapMove> frequencyMemory) {
 		super(evaluator, taboolator, frequencyMemory);
-		this.eliteList = new TSPEliteCandidateList(10, new TSPAdmissibleChecker(this), this);
+		this.eliteList = new TSPEliteCandidateList(1,
+				new TSPAdmissibilityChecker(evaluator, taboolator, frequencyMemory), this);
 		this.staticMoves = new ArrayList<TSPSwapMove>();
 	}
 

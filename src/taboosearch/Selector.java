@@ -14,22 +14,24 @@ public class Selector<S extends Solution,
 	private Evaluator<S, M> evaluator;
 	private Taboolator<S, M> taboolator;
 	private FrequencyMemory<S, M> frequencyMemory;
-	private AdmissibleChecker<S, M, G, C> admissibleChecker;
+	private AdmissibilityChecker<S, M> admissibilityChecker;
+	private EliteCandidateList<S, M> eliteList;
 	
-	public Selector(AdmissibleChecker<S, M, G, C> admissibleChecker, C context) {
+	public Selector(AdmissibilityChecker<S, M> admissibilityChecker, C context) {
 		this.context = context;
 		this.taboolator = context.getTaboolator();
 		this.frequencyMemory = context.getFrequencyMemory();
 		this.evaluator = context.getEvaluator();
-		this.admissibleChecker = admissibleChecker;
+		this.admissibilityChecker = admissibilityChecker;
+		this.eliteList = context.eliteList;
 	}
 		
 	public TreeMap<Double, M> getEvaluatedMoves(S solution) {		
 		TreeMap<Double, M> qualities = new TreeMap<Double, M>();
 		List<M>	moves = context.staticMoves;
-		
+		double bestCostEver = context.bestSolutionEverCost;
 		for (M move : moves) {
-			if (admissibleChecker.isAdmissible(solution, move)) {
+			if (admissibilityChecker.isAdmissible(solution, move, bestCostEver)) {
 				double quality = evaluator.evaluateMove(solution, move);
 				qualities.put(quality, move);
 			}
@@ -40,16 +42,16 @@ public class Selector<S extends Solution,
 	public G keepTheBestSolutions(Pair<S, List<M>> boundMoves)  {	
 		S currentSolution = boundMoves.getFirst();
 		
-		if (context.eliteList.needsToBeRebuilt()) {
-			context.eliteList.rebuild(getEvaluatedMoves(currentSolution));
+		if (eliteList.needsToBeRebuilt()) {
+			eliteList.rebuild(getEvaluatedMoves(currentSolution));
 		}
 		
-		Evaluated<M> evaluatedMove = context.eliteList.getMove();
+		Evaluated<M> evaluatedMove = eliteList.getMove();
 		M bestMove = evaluatedMove.getObject();
 		double bestMoveCost = evaluatedMove.getCost();
 		
 		taboolator.tick(currentSolution, bestMove);
-		context.eliteList.tick(currentSolution);
+		eliteList.tick(currentSolution, context.bestSolutionEverCost);
 		frequencyMemory.tick(currentSolution, (M)bestMove);
 
 		G result = context.getGenerationFabric().makeGeneration();

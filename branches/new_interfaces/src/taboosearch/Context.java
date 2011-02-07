@@ -7,7 +7,7 @@ import org.jfree.data.xy.XYSeries;
 public abstract class Context<S extends Solution,
 							  M extends Move<S>,
 							  G extends Generation<S>> implements common.TickableContext {
-	public EliteCandidateList<S, M, G, ? extends Context<S, M, G>> eliteList;
+	public EliteCandidateList<S, M> eliteList;
 	public List<M> staticMoves;
 	
 	protected int ticks = 0;
@@ -25,9 +25,9 @@ public abstract class Context<S extends Solution,
 	public Context(Evaluator<S, M> evaluator,
 				   Taboolator<S, M> taboolator,
 				   FrequencyMemory<S, M> frequencyMemory) {
-		this.evaluator 			= evaluator;
-		this.taboolator			= taboolator;
-		this.frequencyMemory	= frequencyMemory;
+		this.evaluator = evaluator;
+		this.taboolator	= taboolator;
+		this.frequencyMemory = frequencyMemory;
 		this.bestSolutionEverCost = Double.MAX_VALUE;
 		this.series = new XYSeries("Cost");
 	}

@@ -1,7 +1,6 @@
 package taboosearch.tsp;
 
 import java.util.List;
-//import java.util.Vector;
 
 public class TSPSolution extends taboosearch.Solution { // immutable
 	final protected int[] route;

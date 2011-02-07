@@ -8,42 +8,35 @@ import java.util.Map.Entry;
 import common.Evaluated;
 
 public class EliteCandidateList<S extends Solution,
-								M extends Move<S>,
-								G extends Generation<S>,
-								C extends Context<S, M, G>> {
+								M extends Move<S>> {
 	private TreeMap<Double, M> evaluatedMoves;
 	private double qualityThreshold;
-	private boolean rebuildNeeded;
 	private int size;
-	private C context;
-	private AdmissibleChecker<S, M, G, C> admissibleChecker;
 	
-	public EliteCandidateList(int size, AdmissibleChecker<S, M, G, C> admissibleChecker, C context) {
-		this.context = context;
-		this.evaluatedMoves = new TreeMap<Double, M>();
-		this.rebuildNeeded = true;
+	private Evaluator<S, M> evaluator;
+	private AdmissibilityChecker<S, M> admissibilityChecker;
+	
+	public EliteCandidateList(
+			int size,
+			AdmissibilityChecker<S, M> admissibilityChecker,
+			Evaluator<S, M> evaluator) {
 		this.size = size;
-		this.admissibleChecker = admissibleChecker;
+		this.evaluatedMoves = new TreeMap<Double, M>();
+		this.evaluator = evaluator;
+		this.admissibilityChecker = admissibilityChecker;
 	}
 	
 	public boolean needsToBeRebuilt() {
-		return rebuildNeeded || evaluatedMoves.size() == 0;
+		return evaluatedMoves.size() == 0;
 	}
 	
-	public void rebuild(TreeMap<Double, M> qualities) {
-		rebuildNeeded = false;
-		qualityThreshold = -Double.MAX_VALUE;
+	public void rebuild(TreeMap<Double, M> evaluatedAllMoves) {
 		evaluatedMoves.clear();
-		
 		for (int times = 0; times < size; ++times) {
-			Entry<Double, M> e = qualities.pollFirstEntry();
-			double quality = e.getKey();
-			
-			evaluatedMoves.put(quality, e.getValue());
-			if (quality > qualityThreshold) {
-				qualityThreshold = quality;
-			}
+			Entry<Double, M> e = evaluatedAllMoves.pollFirstEntry();			
+			evaluatedMoves.put(e.getKey(), e.getValue());
 		}
+		qualityThreshold = evaluatedMoves.lastKey();
 	}
 	
 	public Evaluated<M> getMove() {
@@ -55,24 +48,18 @@ public class EliteCandidateList<S extends Solution,
 		return evaluatedMoves.values();
 	}
 	
-	public void tick(S solution) {
-		Evaluator<S, M> evaluator = context.getEvaluator();		
+	public void tick(S solution, double bestCostEver) {
 		Collection<M> moves = new LinkedList<M>(evaluatedMoves.values());
-		
 		evaluatedMoves.clear();
-		rebuildNeeded = true;
 		
 		for (M move : moves) {
-			boolean isAdded = false;
-			if (admissibleChecker.isAdmissible(solution, move)) {
+			if (admissibilityChecker.isAdmissible(solution, move, bestCostEver)) {
 				double quality = evaluator.evaluateMove(solution, move);
-				
 				if (quality < qualityThreshold) {
 					evaluatedMoves.put(quality, move);
-					isAdded = true;
 				}
 			}
-			rebuildNeeded &= !isAdded;
+			
 		}
 	}
 }

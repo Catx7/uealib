@@ -1,17 +1,14 @@
 package taboosearch.tsp;
 
-import taboosearch.AdmissibleChecker;
+import taboosearch.AdmissibilityChecker;
+import taboosearch.Context;
 import taboosearch.EliteCandidateList;
 
-public class TSPEliteCandidateList extends EliteCandidateList<TSPSolution,
-														   TSPSwapMove,
-														   TSPGeneration,
-														   TSPContext> {
+public class TSPEliteCandidateList extends EliteCandidateList<TSPSolution, TSPSwapMove> {
 	public TSPEliteCandidateList(
 			int size,
-			AdmissibleChecker<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext> admissibleChecker,
-			TSPContext context) {
-		super(size, admissibleChecker, context);
+			AdmissibilityChecker<TSPSolution, TSPSwapMove> admissibilityChecker,
+			Context<TSPSolution, TSPSwapMove, TSPGeneration> context) {
+		super(size, admissibilityChecker, context.getEvaluator());
 	}
-
 }

@@ -41,10 +41,10 @@ public class Main {
 		TSPInitializator initializator = new TSPInitializator(graph, context);
 		TSPGenerator generator = new TSPGenerator(graph, context);
 		
-		TSPAdmissibleChecker checker = new TSPAdmissibleChecker(context);
+		TSPAdmissibilityChecker checker = new TSPAdmissibilityChecker(evaluator, taboolator, frequencyMemory);
 		
 		TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext> stoppingCriteria
-			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 100);
+			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 1000);
 		
 		Selector<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext> selector
 			= new Selector<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext>(checker, context);

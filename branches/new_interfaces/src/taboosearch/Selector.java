@@ -26,10 +26,11 @@ public class Selector<S extends Solution,
 		this.eliteList = context.eliteList;
 	}
 		
-	public TreeMap<Double, M> getEvaluatedMoves(S solution) {		
-		TreeMap<Double, M> qualities = new TreeMap<Double, M>();
-		List<M>	moves = context.staticMoves;
+	public TreeMap<Double, M> getEvaluatedMoves(Pair<S, List<M>> boundMoves) {		
+		S solution = boundMoves.getFirst();
+		List<M>	moves = boundMoves.getSecond();
 		double bestCostEver = context.bestSolutionEverCost;
+		TreeMap<Double, M> qualities = new TreeMap<Double, M>();
 		for (M move : moves) {
 			if (admissibilityChecker.isAdmissible(solution, move, bestCostEver)) {
 				double quality = evaluator.evaluateMove(solution, move);
@@ -43,7 +44,7 @@ public class Selector<S extends Solution,
 		S currentSolution = boundMoves.getFirst();
 		
 		if (eliteList.needsToBeRebuilt()) {
-			eliteList.rebuild(getEvaluatedMoves(currentSolution));
+			eliteList.rebuild(getEvaluatedMoves(boundMoves));
 		}
 		
 		Evaluated<M> evaluatedMove = eliteList.getMove();

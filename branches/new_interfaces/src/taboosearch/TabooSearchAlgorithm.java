@@ -36,6 +36,7 @@ public class TabooSearchAlgorithm<S extends Solution,
 
 	public G solve() {
 		long begin = System.currentTimeMillis();
+		
 		G currentGeneration = this.initializator.getInitialGeneration();
 		while (!this.stoppingCriteria.isSatisfied(currentGeneration)) {
 			Pair<S, List<M>> moves = generator.getNext(currentGeneration);
@@ -52,8 +53,9 @@ public class TabooSearchAlgorithm<S extends Solution,
 		System.out.println();
 		System.out.println(context.bestSolutionEver.getStringRepresentation());
 		System.out.println(context.bestSolutionEverCost);
+		
 		long finish = System.currentTimeMillis();
-		System.out.println((finish - begin) / 100.0 + "sec");
+		System.out.println((finish - begin) / 1000.0 + "sec");
 		return currentGeneration;
     }
 

@@ -23,6 +23,7 @@ import taboosearch.cbir.CBIRSolution;
 import taboosearch.cbir.CBIRSwapMove;
 import taboosearch.cbir.CBIRTaboolator;
 import taboosearch.gui.GUI;
+import taboosearch.permutations.Generator;
 import taboosearch.readers.FeaturesSpace;
 import taboosearch.readers.FeaturesSpaceReader;
 import taboosearch.tenures.ConstantTenureStrategy;
@@ -116,12 +117,14 @@ public class Main {
 			= new AdmissibilityChecker<TSPSolution, TSPSwapMove>(evaluator, taboolator, frequencyMemory);
 	
 		EliteCandidateList<TSPSolution, TSPSwapMove> eliteList
-			= new EliteCandidateList<TSPSolution, TSPSwapMove>(1, checker, evaluator);
+			= new EliteCandidateList<TSPSolution, TSPSwapMove>(2, checker, evaluator);
 		TSPContext context
 			= new TSPContext(evaluator, taboolator, frequencyMemory, generationFabric, eliteList);
 		
 		TSPInitializator initializator = new TSPInitializator(graph, evaluator);
-		TSPGenerator generator = new TSPGenerator(graph, context);
+		
+		taboosearch.permutations.Generator<TSPSolution, TSPSwapMove, TSPGeneration> generator
+			= new TSPGenerator(graph);
 		
 
 		TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext> stoppingCriteria

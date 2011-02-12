@@ -1,15 +1,10 @@
 package taboosearch;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import common.AbstractGenerationFabric;
 import common.TicksStoppingCriteria;
 import common.UnconditionalTransitionCriteria;
 
@@ -34,10 +29,6 @@ import taboosearch.tenures.ConstantTenureStrategy;
 import taboosearch.tsp.*;
 
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class Main {
@@ -112,18 +103,29 @@ public class Main {
 		//Graph graph = graphReader.readFromFie("/home/rrhu/workspace/uealib/graphs/berlin52.txt");
 
 		TSPEvaluator evaluator = new TSPEvaluator(graph);
-		TSPTaboolator taboolator = new TSPTaboolator(new ConstantTenureStrategy(6));
-		TSPFrequencyMemory frequencyMemory = new TSPFrequencyMemory(graph);
 		
-		TSPContext context = new TSPContext(evaluator, taboolator, frequencyMemory);
+		Taboolator<TSPSolution, TSPSwapMove> taboolator
+			= new Taboolator<TSPSolution, TSPSwapMove>(new ConstantTenureStrategy(6));
+		FrequencyMemory<TSPSolution, TSPSwapMove> frequencyMemory
+			= new taboosearch.permutations.FrequencyMemory<TSPSolution, TSPSwapMove>(graph);
 		
-		TSPInitializator initializator = new TSPInitializator(graph, context);
+		AbstractGenerationFabric<TSPSolution, TSPGeneration> generationFabric
+			= new TSPGenerationFabric();
+		
+		AdmissibilityChecker<TSPSolution, TSPSwapMove> checker
+			= new AdmissibilityChecker<TSPSolution, TSPSwapMove>(evaluator, taboolator, frequencyMemory);
+	
+		EliteCandidateList<TSPSolution, TSPSwapMove> eliteList
+			= new EliteCandidateList<TSPSolution, TSPSwapMove>(1, checker, evaluator);
+		TSPContext context
+			= new TSPContext(evaluator, taboolator, frequencyMemory, generationFabric, eliteList);
+		
+		TSPInitializator initializator = new TSPInitializator(graph, evaluator);
 		TSPGenerator generator = new TSPGenerator(graph, context);
 		
-		TSPAdmissibilityChecker checker = new TSPAdmissibilityChecker(evaluator, taboolator, frequencyMemory);
-		
+
 		TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext> stoppingCriteria
-			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 1000);
+			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 100);
 		
 		Selector<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext> selector
 			= new Selector<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext>(checker, context);

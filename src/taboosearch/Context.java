@@ -1,8 +1,9 @@
 package taboosearch;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import org.jfree.data.xy.XYSeries;
+import common.AbstractGenerationFabric;
 
 public abstract class Context<S extends Solution,
 							  M extends Move<S>,
@@ -14,6 +15,7 @@ public abstract class Context<S extends Solution,
 	protected Evaluator<S, M> evaluator;
 	protected Taboolator<S, M> taboolator;
 	protected FrequencyMemory<S, M> frequencyMemory;
+	protected AbstractGenerationFabric<S, G> generationFabric;
 
 	protected XYSeries series;
 	
@@ -21,13 +23,19 @@ public abstract class Context<S extends Solution,
 	
 	public double bestSolutionEverCost;
 	
-	
 	public Context(Evaluator<S, M> evaluator,
 				   Taboolator<S, M> taboolator,
-				   FrequencyMemory<S, M> frequencyMemory) {
+				   FrequencyMemory<S, M> frequencyMemory,
+				   AbstractGenerationFabric<S, G> generationFabric,
+				   EliteCandidateList<S, M> eliteList) {
 		this.evaluator = evaluator;
 		this.taboolator	= taboolator;
 		this.frequencyMemory = frequencyMemory;
+		this.eliteList = eliteList;
+		this.generationFabric = generationFabric;
+		
+		this.staticMoves = new ArrayList<M>();
+		
 		this.bestSolutionEverCost = Double.MAX_VALUE;
 		this.series = new XYSeries("Cost");
 	}
@@ -44,24 +52,46 @@ public abstract class Context<S extends Solution,
 		return series;
 	}
 	
-	public abstract void setTaboolator(Taboolator<S, M> taboolator);
-
-	public abstract Taboolator<S, M> getTaboolator();
-	
-	public abstract void setEvaluator(Evaluator<S, M> evaluator);
-
-	public abstract Evaluator<S, M> getEvaluator();
-	
-	public abstract GenerationFabric<S, G> getGenerationFabric();
-		
-	public abstract FrequencyMemory<S, M> getFrequencyMemory();
-
-	public abstract void setFrequencyMemory(FrequencyMemory<S, M> frequencyMemory);
-	
 	public void tick() {
 		this.ticks++;
 	}
 	
+	public EliteCandidateList<S, M> getEliteList() {
+		return eliteList;
+	}
+
+	public void setEliteList(EliteCandidateList<S, M> eliteList) {
+		this.eliteList = eliteList;
+	}
+
+	public Evaluator<S, M> getEvaluator() {
+		return evaluator;
+	}
+
+	public void setEvaluator(Evaluator<S, M> evaluator) {
+		this.evaluator = evaluator;
+	}
+
+	public Taboolator<S, M> getTaboolator() {
+		return taboolator;
+	}
+
+	public void setTaboolator(Taboolator<S, M> taboolator) {
+		this.taboolator = taboolator;
+	}
+
+	public FrequencyMemory<S, M> getFrequencyMemory() {
+		return frequencyMemory;
+	}
+
+	public void setFrequencyMemory(FrequencyMemory<S, M> frequencyMemory) {
+		this.frequencyMemory = frequencyMemory;
+	}
+	
+	public AbstractGenerationFabric<S, G> getGenerationFabric() {
+		return generationFabric;
+	}
+
 	public int getTicks() {
 		return ticks;
 	}

@@ -1,8 +1,8 @@
 package taboosearch.cbir;
 
-import taboosearch.GenerationFabric;
+import common.AbstractGenerationFabric;
 
-public class CBIRGenerationFabric extends GenerationFabric<CBIRSolution, CBIRGeneration> {
+public class CBIRGenerationFabric extends AbstractGenerationFabric<CBIRSolution, CBIRGeneration> {
 
 	@Override
 	public CBIRGeneration makeGeneration() {

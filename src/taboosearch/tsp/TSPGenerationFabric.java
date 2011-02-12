@@ -1,8 +1,8 @@
 package taboosearch.tsp;
 
-import taboosearch.GenerationFabric;
+import common.AbstractGenerationFabric;
 
-public class TSPGenerationFabric extends GenerationFabric<TSPSolution, TSPGeneration> {
+public class TSPGenerationFabric extends AbstractGenerationFabric<TSPSolution, TSPGeneration> {
 
 	@Override
 	public TSPGeneration makeGeneration() {

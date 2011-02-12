@@ -6,15 +6,15 @@ import java.util.List;
 import readers.Graph;
 import taboosearch.Initializator;
 
-public class TSPInitializator extends Initializator<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext> {
+public class TSPInitializator extends Initializator<TSPSolution, TSPSwapMove, TSPGeneration> {
 	private double[][] weights;
 	private int n = 0;
-	TSPContext context;
+	TSPEvaluator evaluator;
 
-	public TSPInitializator(Graph graph, TSPContext context) {	
+	public TSPInitializator(Graph graph, TSPEvaluator evaluator) {	
 		this.weights = graph.getWeights();
 		this.n = graph.getVertexesNumber();
-		this.context = context;
+		this.evaluator = evaluator;
 	}
 	
 	private List<Integer> getSolution(int startFrom) {
@@ -41,7 +41,7 @@ public class TSPInitializator extends Initializator<TSPSolution, TSPSwapMove, TS
 	public TSPGeneration getInitialGeneration() {
 		TSPSolution solution = new TSPSolution(this.getSolution(0));
 		TSPGeneration result = new TSPGeneration();
-		solution.setCost(context.getEvaluator().evaluate(solution));
+		solution.setCost(evaluator.evaluate(solution));
 		result.add(solution);
 		return result;
 	}

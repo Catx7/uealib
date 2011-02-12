@@ -11,7 +11,7 @@ public class TabooSearchAlgorithm<S extends Solution,
 								  G extends Generation<S>,
 								  C extends Context<S, M, G>> {
 	
-	protected Initializator<S, M, G, C> initializator;
+	protected Initializator<S, M, G> initializator;
 	protected Generator<S, M, G> generator;
 	protected core.StoppingCriteria<G> stoppingCriteria;
 	protected Selector<S, M, G, C> selector;
@@ -19,7 +19,7 @@ public class TabooSearchAlgorithm<S extends Solution,
 	protected C context;
 
 	public TabooSearchAlgorithm(
-			Initializator<S, M, G, C> initializator,
+			Initializator<S, M, G> initializator,
 			Generator<S, M, G> generator,
 			TicksStoppingCriteria<S, G, C> stoppingCriteria,
 			Selector<S, M, G, C> selector,

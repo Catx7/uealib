@@ -12,8 +12,9 @@ public class TSPGenerator extends Generator<TSPSolution, TSPSwapMove, TSPGenerat
 	private TSPContext context;
 	private TSPSwapMove[] staticMoves;
 	
-	public TSPGenerator(Graph graph, TSPContext context) {	
+	public TSPGenerator(Graph graph, TSPContext context) {
 		this.context = context;
+		// FIXME !!!	
 		this.staticMoves = getMoves(graph.getVertexesNumber());
 		for (TSPSwapMove move : this.staticMoves) {
 			this.context.staticMoves.add(move);
@@ -33,21 +34,22 @@ public class TSPGenerator extends Generator<TSPSolution, TSPSwapMove, TSPGenerat
 	}
 
 	public Pair<TSPSolution, List<TSPSwapMove>> getNext(TSPGeneration generation) {
+		// FIXME !!!
 		assert generation.size() == 1;
 		
 		TSPSolution solution = generation.get(0);
 		//TSPSwapMove[] moves = this.staticMoves;
 		
 		List<TSPSwapMove> result = new ArrayList<TSPSwapMove>();
-		//if (!context.eliteList.needsToRebuild()) {
-		//	//TSPSwapMove move = context.eliteList.getMove();
-		//	//System.out.println(move);
-		//	result.addAll(context.eliteList.getMoves());//(move);
-		//} else {
-		//	for (TSPSwapMove move : moves) {
-		//		result.add(move);
-		//	}
-		//}
+		/*if (!context.eliteList.needsToRebuild()) {
+			//TSPSwapMove move = context.eliteList.getMove();
+			//System.out.println(move);
+			result.addAll(context.eliteList.getMoves());//(move);
+		} else {
+			for (TSPSwapMove move : moves) {
+				result.add(move);
+			}
+		}*/
 		
 		return new Pair<TSPSolution, List<TSPSwapMove>>(solution, result);
 	}

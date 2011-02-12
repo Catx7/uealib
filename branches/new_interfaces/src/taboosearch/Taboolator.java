@@ -6,8 +6,7 @@ import java.util.LinkedList;
 import taboosearch.Solution;
 import taboosearch.tenures.TenureStrategy;
 
-public abstract class Taboolator<S extends Solution,
-								 M extends Move<S>> {
+public class Taboolator<S extends Solution, M extends Move<S>> {
 	
 	protected TenureStrategy strategy;
 	protected HashMap<Attribute<S>, Integer> taboo;

@@ -16,10 +16,7 @@ public class EliteCandidateList<S extends Solution,
 	private Evaluator<S, M> evaluator;
 	private AdmissibilityChecker<S, M> admissibilityChecker;
 	
-	public EliteCandidateList(
-			int size,
-			AdmissibilityChecker<S, M> admissibilityChecker,
-			Evaluator<S, M> evaluator) {
+	public EliteCandidateList(int size,	AdmissibilityChecker<S, M> admissibilityChecker, Evaluator<S, M> evaluator) {
 		this.size = size;
 		this.evaluatedMoves = new TreeMap<Double, M>();
 		this.evaluator = evaluator;
@@ -55,11 +52,9 @@ public class EliteCandidateList<S extends Solution,
 		for (M move : moves) {
 			if (admissibilityChecker.isAdmissible(solution, move, bestCostEver)) {
 				double quality = evaluator.evaluateMove(solution, move);
-				if (quality < qualityThreshold) {
+				if (quality < qualityThreshold)
 					evaluatedMoves.put(quality, move);
-				}
 			}
-			
 		}
 	}
 }

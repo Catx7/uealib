@@ -1,4 +1,4 @@
-package taboosearch.tsp;
+package taboosearch.cbir;
 
 import java.util.List;
 import java.util.Vector;
@@ -6,10 +6,10 @@ import java.util.Vector;
 import taboosearch.Move;
 
 // immutable
-public class TSPSwapMove implements Move<TSPSolution> {	
+public class CBIRSwapMove implements Move<CBIRSolution> {	
 	private int i, j;
 	
-	public TSPSwapMove(int i, int j) {
+	public CBIRSwapMove(int i, int j) {
 		this.i = i;
 		this.j = j;
 	}
@@ -22,8 +22,8 @@ public class TSPSwapMove implements Move<TSPSolution> {
 		return this.j;
 	}
 	
-	public TSPSwapMove clone() {
-		return new TSPSwapMove(i, j);
+	public CBIRSwapMove clone() {
+		return new CBIRSwapMove(i, j);
 	}
 	
 	public String toString() {
@@ -31,24 +31,24 @@ public class TSPSwapMove implements Move<TSPSolution> {
 	}
 
 	@Override
-	public TSPSolution operateOn(TSPSolution solution) {
+	public CBIRSolution operateOn(CBIRSolution solution) {
  		int[] route = solution.toArray();
 		
 		int tmp = route[i];
 		route[i] = route[j];
 		route[j] = tmp;
 		
-		return new TSPSolution(route);
+		return new CBIRSolution(route);
 	}
 
 	@Override
-	public List<TSPAttribute> getAttributes(TSPSolution solution) {
+	public List<CBIRAttribute> getAttributes(CBIRSolution solution) {
 		int v1 = solution.get(i);
 		int v2 = solution.get(j);
 		
-		List<TSPAttribute> result = new Vector<TSPAttribute>();
-		result.add(new TSPAttribute(v1));
-		result.add(new TSPAttribute(v2));
+		List<CBIRAttribute> result = new Vector<CBIRAttribute>();
+		result.add(new CBIRAttribute(v1));
+		result.add(new CBIRAttribute(v2));
 		return result;
 	}
 	
@@ -69,7 +69,7 @@ public class TSPSwapMove implements Move<TSPSolution> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TSPSwapMove other = (TSPSwapMove) obj;
+		CBIRSwapMove other = (CBIRSwapMove) obj;
 		if (i != other.i)
 			return false;
 		if (j != other.j)

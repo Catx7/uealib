@@ -1,15 +1,16 @@
-package taboosearch.tsp;
+package taboosearch.permutations;
 
 import java.util.List;
 import java.util.Vector;
 
+import taboosearch.permutations.Attribute;
 import taboosearch.Move;
+import taboosearch.permutations.Solution;
 
-// immutable
-public class TSPSwapMove implements Move<TSPSolution> {	
+abstract public class SwapMove<S extends Solution> implements Move<S>, SolutionFabric<S> {
 	private int i, j;
 	
-	public TSPSwapMove(int i, int j) {
+	public SwapMove(int i, int j) {
 		this.i = i;
 		this.j = j;
 	}
@@ -22,33 +23,34 @@ public class TSPSwapMove implements Move<TSPSolution> {
 		return this.j;
 	}
 	
-	public TSPSwapMove clone() {
-		return new TSPSwapMove(i, j);
-	}
+	abstract public SwapMove<S> clone();/* {
+		return new SwapMove<S>(i, j);
+	}*/
 	
 	public String toString() {
 		return "swap( " + i + ", " + j + " )";
 	}
 
-	@Override
-	public TSPSolution operateOn(TSPSolution solution) {
- 		int[] route = solution.toArray();
+	
+	public S operateOn(S solution) {
+ 		int[] permutation = solution.toArray();
 		
-		int tmp = route[i];
-		route[i] = route[j];
-		route[j] = tmp;
+ 		// swap i and j
+		int tmp = permutation[i];
+		permutation[i] = permutation[j];
+		permutation[j] = tmp;
 		
-		return new TSPSolution(route);
+		return makeSolution(permutation);
 	}
 
 	@Override
-	public List<TSPAttribute> getAttributes(TSPSolution solution) {
+	public List<Attribute<S>> getAttributes(S solution) {
 		int v1 = solution.get(i);
 		int v2 = solution.get(j);
 		
-		List<TSPAttribute> result = new Vector<TSPAttribute>();
-		result.add(new TSPAttribute(v1));
-		result.add(new TSPAttribute(v2));
+		List<Attribute<S>> result = new Vector<Attribute<S>>();
+		result.add(new Attribute<S>(v1));
+		result.add(new Attribute<S>(v2));
 		return result;
 	}
 	
@@ -61,6 +63,7 @@ public class TSPSwapMove implements Move<TSPSolution> {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -69,12 +72,11 @@ public class TSPSwapMove implements Move<TSPSolution> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TSPSwapMove other = (TSPSwapMove) obj;
+		SwapMove<S> other = (SwapMove<S>) obj;
 		if (i != other.i)
 			return false;
 		if (j != other.j)
 			return false;
 		return true;
 	}
-
 }

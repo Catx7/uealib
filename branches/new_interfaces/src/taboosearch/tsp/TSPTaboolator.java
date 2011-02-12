@@ -1,20 +1,22 @@
 package taboosearch.tsp;
 
-import java.util.HashMap;
-import java.util.Vector;
-
 import taboosearch.tenures.TenureStrategy;
 import taboosearch.Taboolator;
 
 public class TSPTaboolator extends Taboolator<TSPSolution, TSPSwapMove> {
-	private TenureStrategy strategy;
+	/*private TenureStrategy strategy;
 	private HashMap<TSPAttribute, Integer> taboo;
 	
 	public TSPTaboolator(TenureStrategy strategy) {
 		this.strategy = strategy;
 		this.taboo = new HashMap<TSPAttribute, Integer>();
-	}
+	}*/
 		
+	public TSPTaboolator(TenureStrategy strategy) {
+		super(strategy);
+	}
+
+	/*
 	@Override
 	public boolean isTabu(final TSPSolution solution, final TSPSwapMove move) {
 		boolean isTabu = true;
@@ -28,12 +30,8 @@ public class TSPTaboolator extends Taboolator<TSPSolution, TSPSwapMove> {
 		for (TSPAttribute attribute : move.getAttributes(solution))
 			taboo.put(attribute, strategy.getTenure());
 	}
-	
-	public void tick() {
-		strategy.tick();
-		decreaseTenures();
-	}
-	
+	*/
+	/*
 	public void tick(final TSPSolution solution, final TSPSwapMove move) {
 		setTabu(solution, move);
 		strategy.tick();
@@ -54,5 +52,5 @@ public class TSPTaboolator extends Taboolator<TSPSolution, TSPSwapMove> {
 		
 		for (TSPAttribute attribute : toErase)
 			taboo.remove(attribute);
-	}
+	}*/
 }

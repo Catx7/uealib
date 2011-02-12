@@ -28,8 +28,7 @@ public class TSPEvaluator extends Evaluator<TSPSolution, TSPSwapMove> {
 	}
 	
 	public double evaluate(TSPSolution solution, TSPSwapMove move) {
-		return evaluate(move.operateOn(solution));
-		/*int i = move.getI(),
+		int i = move.getI(),
 			j = move.getJ();
 		
 		double cost = solution.getCost();
@@ -50,7 +49,7 @@ public class TSPEvaluator extends Evaluator<TSPSolution, TSPSwapMove> {
 			        + weights[v1][t2] + weights[v2][t1];
 		}
 		
-		return cost;*/
+		return cost;
 	}
 	
 	public double evaluateMove(TSPSolution solution, TSPSwapMove move) {

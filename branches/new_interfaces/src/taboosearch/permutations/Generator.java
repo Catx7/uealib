@@ -1,23 +1,16 @@
 package taboosearch.permutations;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
 import common.Pair;
-
-import readers.Graph;
 import taboosearch.Generation;
-import taboosearch.tsp.TSPGeneration;
-import taboosearch.tsp.TSPSolution;
-import taboosearch.tsp.TSPSwapMove;
 
 abstract public class Generator<S extends Solution, M extends Move<S>, G extends Generation<S>>
 		extends taboosearch.Generator<S, M, G> {
 	private List<M> moves;
 	
-	public Generator(Graph graph) {	
-		this.moves = getMoves(graph.getVertexesNumber());
+	public Generator(int n) {	
+		this.moves = getMoves(n);
 	}
 	
 	abstract protected M makeMove(int i, int j);

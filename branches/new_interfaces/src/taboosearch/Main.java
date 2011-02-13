@@ -14,16 +14,17 @@ import readers.graphs.GeoCoordsGraphReader;
 import readers.graphs.GraphReader;
 import readers.graphs.UpperRowMatrixGraphReader;
 
-import taboosearch.cbir.CBIRAdmissibilityChecker;
+
 import taboosearch.cbir.CBIRContext;
 import taboosearch.cbir.CBIREvaluator;
-import taboosearch.cbir.CBIRFrequencyMemory;
+
 import taboosearch.cbir.CBIRGeneration;
+import taboosearch.cbir.CBIRGenerationFabric;
 import taboosearch.cbir.CBIRGenerator;
 import taboosearch.cbir.CBIRInitializator;
 import taboosearch.cbir.CBIRSolution;
 import taboosearch.cbir.CBIRSwapMove;
-import taboosearch.cbir.CBIRTaboolator;
+
 import taboosearch.gui.GUI;
 import taboosearch.permutations.Generator;
 import taboosearch.readers.FeaturesSpace;
@@ -37,67 +38,62 @@ import org.xml.sax.SAXException;
 public class Main {
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
-		//List<Integer> list = new LinkedList<Integer>();
-		//FileInputStream fi = new FileInputStream("/home/rrhu/workspace/uealib/graphs/berlin52.opt.txt");
-		//Scanner s = new Scanner(fi, "utf-8");
-		//for (int times = 0; times < 52; ++times) list.add(s.nextInt() - 1);
-		//s.close();
-		
-
-		/*FeaturesSpaceReader fr = new FeaturesSpaceReader();
+		FeaturesSpaceReader fr = new FeaturesSpaceReader();
 		FeaturesSpace space = fr.readFromFile("/home/rrhu/cbir/cpp/result.xml");
 		space.computeD();
 		space.computeLambdas();
-		for (int i = 0; i < space.n; ++i) {
-			for (int j = 0; j < space.n; ++j) {
-				//System.out.print(space.d[i][j] + " ");
-			}
-			//System.out.println();
-		}
-		
-		//CBIREvaluator ev = new CBIREvaluator(space);
-		
-
 		
 		CBIREvaluator evaluator = new CBIREvaluator(space);
-		CBIRTaboolator taboolator = new CBIRTaboolator(new ConstantTenureStrategy(7));
-		CBIRFrequencyMemory frequencyMemory = new CBIRFrequencyMemory(space);
 		
-		CBIRContext context = new CBIRContext(evaluator, taboolator, frequencyMemory);
+		Taboolator<CBIRSolution, CBIRSwapMove> taboolator
+			= new Taboolator<CBIRSolution, CBIRSwapMove>(new ConstantTenureStrategy(6));
+
+		AbstractGenerationFabric<CBIRSolution, CBIRGeneration> generationFabric
+			= new CBIRGenerationFabric();
 		
+		AdmissibilityChecker<CBIRSolution, CBIRSwapMove> checker
+			= new AdmissibilityChecker<CBIRSolution, CBIRSwapMove>(evaluator, taboolator);
+	
+		EliteCandidateList<CBIRSolution, CBIRSwapMove> eliteList
+			= new EliteCandidateList<CBIRSolution, CBIRSwapMove>(1, checker, evaluator);
 		
-		CBIRInitializator initializator = new CBIRInitializator(space, context);
-		CBIRGenerator generator = new CBIRGenerator(space, context);
+		taboosearch.permutations.FrequencyMemory<CBIRSolution, CBIRSwapMove> frequencyMemory
+			= new taboosearch.permutations.FrequencyMemory<CBIRSolution, CBIRSwapMove>(space.n, 0);
 		
-		CBIRAdmissibilityChecker checker = new CBIRAdmissibilityChecker(evaluator, taboolator, frequencyMemory);
+		CBIRContext context
+			= new CBIRContext(evaluator, taboolator, frequencyMemory, generationFabric, eliteList);
 		
+		CBIRInitializator initializator = new CBIRInitializator(space, evaluator);
+		CBIRGenerator generator = new CBIRGenerator(space.n);	
 		
 		TicksStoppingCriteria<CBIRSolution, CBIRGeneration, CBIRContext> stoppingCriteria
-		= new TicksStoppingCriteria<CBIRSolution, CBIRGeneration, CBIRContext>(context, 1000);
+			= new TicksStoppingCriteria<CBIRSolution, CBIRGeneration, CBIRContext>(context, 1000);
 	
-	Selector<CBIRSolution, CBIRSwapMove, CBIRGeneration, CBIRContext> selector
-		= new Selector<CBIRSolution, CBIRSwapMove, CBIRGeneration, CBIRContext>(checker, context);
-	
-	UnconditionalTransitionCriteria<CBIRSolution, CBIRGeneration, CBIRContext> transitionCriteria
-		= new UnconditionalTransitionCriteria<CBIRSolution, CBIRGeneration, CBIRContext>();
-	
-	TabooSearchAlgorithm<CBIRSolution, CBIRSwapMove, CBIRGeneration, CBIRContext> algorithm
-		= new TabooSearchAlgorithm<CBIRSolution, CBIRSwapMove, CBIRGeneration, CBIRContext>(
-			initializator,
-			generator,
-			stoppingCriteria,
-			selector,
-			transitionCriteria,
-			context);
-	algorithm.solve();
-	(new GUI(context.getSeries())).run();
-	
-	int[] or = new int[16];
-	for (int i = 0; i < 16; ++i) or[i] = i;
+		Selector<CBIRSolution, CBIRSwapMove, CBIRGeneration, CBIRContext> selector
+			= new Selector<CBIRSolution, CBIRSwapMove, CBIRGeneration, CBIRContext>(checker, context);
 		
-	System.out.println("EV" + evaluator.evaluate(new CBIRSolution(or)));
-	System.out.println("EV" + evaluator.evaluate(context.bestSolutionEver));*/
+		UnconditionalTransitionCriteria<CBIRSolution, CBIRGeneration, CBIRContext> transitionCriteria
+			= new UnconditionalTransitionCriteria<CBIRSolution, CBIRGeneration, CBIRContext>();
 		
+		TabooSearchAlgorithm<CBIRSolution, CBIRSwapMove, CBIRGeneration, CBIRContext> algorithm
+			= new TabooSearchAlgorithm<CBIRSolution, CBIRSwapMove, CBIRGeneration, CBIRContext>(
+				initializator,
+				generator,
+				stoppingCriteria,
+				selector,
+				transitionCriteria,
+				context);
+		algorithm.solve();
+		
+		//(new GUI(context.getSeries())).run();
+		
+		int[] or = new int[16];
+		for (int i = 0; i < 16; ++i) or[i] = i;
+			
+		System.out.println("EV" + evaluator.evaluate(new CBIRSolution(or)));
+		System.out.println("EV" + evaluator.evaluate(context.bestSolutionEver));
+		
+		/*
 		
 		//GeoCoordsGraphReader graphReader = new GeoCoordsGraphReader();
 		//Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/burma14.txt");
@@ -109,7 +105,7 @@ public class Main {
 		Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/bayg29.txt");
 		
 		taboosearch.permutations.FrequencyMemory<TSPSolution, TSPSwapMove> frequencyMemory
-			= new taboosearch.permutations.FrequencyMemory<TSPSolution, TSPSwapMove>(graph, 1500 /* diversificationCoef */);
+			= new taboosearch.permutations.FrequencyMemory<TSPSolution, TSPSwapMove>(graph, 1500);
 		
 		TSPEvaluator evaluator = new TSPEvaluator(graph, frequencyMemory);
 		
@@ -152,13 +148,9 @@ public class Main {
 				context);
 		algorithm.solve();
 		
-		//System.out.println(list.size());
-		//TSPSalesmanRoute route = new TSPSalesmanRoute(list);
-		//TSPSolution exact = new TSPSolution(route, evaluator.evaluate(route));
-		//System.out.println(exact.toString());
-		//System.out.println(evaluator.evaluate(route));
-		
 		//(new GUI(context.getSeries())).run();
+		
+		*/
 	}
 
 }

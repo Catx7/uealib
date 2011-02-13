@@ -1,7 +1,5 @@
 package taboosearch.permutations;
 
-import readers.Graph;
-
 public class FrequencyMemory<S extends Solution, M extends Move<S>>
 				extends taboosearch.FrequencyMemory<S, M> {
 	
@@ -10,8 +8,7 @@ public class FrequencyMemory<S extends Solution, M extends Move<S>>
 	private int transitionsNumber; //общее число итераций
 	private double diversificationCoef;
 	
-	public FrequencyMemory(Graph graph, double diversificationCoef) {
-		int n = graph.getVertexesNumber();
+	public FrequencyMemory(int n, double diversificationCoef) {
 		this.residence = new int[n][n];
 		this.transition = new int[n][n];
 		

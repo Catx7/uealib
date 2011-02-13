@@ -1,15 +1,19 @@
 package taboosearch.tsp;
 import readers.Graph;
 import taboosearch.Evaluator;
-
+import taboosearch.exceptions.NotEvaluatedSolution;
+import taboosearch.permutations.FrequencyMemory;
+import taboosearch.permutations.Move;
 public class TSPEvaluator extends Evaluator<TSPSolution, TSPSwapMove> {
 
 	private double[][] weights;
 	private int n;
+	FrequencyMemory<TSPSolution, TSPSwapMove> frequencyMemory;
 	
-	public TSPEvaluator(Graph graph) {
+	public TSPEvaluator(Graph graph, FrequencyMemory<TSPSolution, TSPSwapMove> frequencyMemory) {
 		this.weights = graph.getWeights();
 		this.n = graph.getVertexesNumber();
+		this.frequencyMemory = frequencyMemory;
 	}
 	
 	public double evaluate(TSPSolution solution) {
@@ -31,7 +35,12 @@ public class TSPEvaluator extends Evaluator<TSPSolution, TSPSwapMove> {
 		int i = move.getI(),
 			j = move.getJ();
 		
-		double cost = solution.getCost();
+		double cost;
+		try {
+			cost = solution.getCost();
+		} catch (Exception e) {
+			cost = evaluate(solution);
+		}
 		int v1 = solution.get(i); 
 		int v2 = solution.get(j);
 		int t1 = solution.get((i - 1) % n);
@@ -53,7 +62,16 @@ public class TSPEvaluator extends Evaluator<TSPSolution, TSPSwapMove> {
 	}
 	
 	public double evaluateMove(TSPSolution solution, TSPSwapMove move) {
-		return evaluate(solution, move) - solution.getCost();
+		double d = frequencyMemory.getPenalty(solution, move);
+		//System.out.println(d);
+		double cost;
+		try {
+			cost = solution.getCost();
+		} catch (NotEvaluatedSolution e) {
+			System.err.println(e.getMessage());
+			cost = evaluate(solution);
+		}
+		return evaluate(solution, move) - cost + d;
 	}
 	
 }

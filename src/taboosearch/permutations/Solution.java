@@ -2,9 +2,11 @@ package taboosearch.permutations;
 
 import java.util.List;
 
+import taboosearch.exceptions.NotEvaluatedSolution;
+
 public class Solution extends taboosearch.Solution {
 	final protected int[] permutation;
-	protected double cost;
+	protected Double cost;
 	
 	public Solution(int[] route) {
 		this.permutation = route.clone();
@@ -52,7 +54,10 @@ public class Solution extends taboosearch.Solution {
 		this.cost = cost;
 	}
 
-	public double getCost() {
+	public double getCost() throws NotEvaluatedSolution {
+		if (cost == null) {
+			throw new NotEvaluatedSolution();
+		}
 		return cost;
 	}
 }

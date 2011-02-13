@@ -3,13 +3,12 @@ package taboosearch;
 import java.util.List;
 import java.util.TreeMap;
 
+import taboosearch.exceptions.NotEvaluatedSolution;
+
 import common.Evaluated;
 import common.Pair;
 
-public class Selector<S extends Solution,
-					  M extends Move<S>,
-					  G extends Generation<S>,
-					  C extends Context<S, M, G>> {
+public class Selector<S extends Solution, M extends Move<S>, G extends Generation<S>, C extends Context<S, M, G>> {
 	private C context;
 	private Evaluator<S, M> evaluator;
 	private Taboolator<S, M> taboolator;
@@ -53,12 +52,18 @@ public class Selector<S extends Solution,
 		
 		taboolator.tick(currentSolution, bestMove);
 		eliteList.tick(currentSolution, context.bestSolutionEverCost);
-		frequencyMemory.tick(currentSolution, (M)bestMove);
+		frequencyMemory.tick(currentSolution, bestMove);
 
 		G result = context.getGenerationFabric().makeGeneration();
 		S resultSolution = bestMove.operateOn(currentSolution);
 		
-		double resultSolutionCost = currentSolution.getCost() + bestMoveCost;
+		double resultSolutionCost;
+		try {
+			resultSolutionCost = currentSolution.getCost() + bestMoveCost;
+		} catch (NotEvaluatedSolution e) {
+			System.err.println(e.getMessage());
+			resultSolutionCost = evaluator.evaluate(currentSolution) + bestMoveCost;
+		}
 		
 		resultSolution.setCost(resultSolutionCost);
 		result.add(resultSolution);

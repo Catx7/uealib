@@ -22,7 +22,7 @@ public class TSPContextTest {
 		GraphReader graphReader = new GeoCoordsGraphReader();
 		Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/burma14.txt");
 
-		TSPEvaluator evaluator = new TSPEvaluator(graph);
+		//TSPEvaluator evaluator = new TSPEvaluator(graph);
 		//TSPTaboolator taboolator = new TSPTaboolator(new ConstantTenureStrategy(5));
 		//TSPFrequencyMemory frequencyMemory = new TSPFrequencyMemory(graph);
 		//this.context = new TSPContext(evaluator, taboolator, frequencyMemory);

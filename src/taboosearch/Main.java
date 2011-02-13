@@ -11,6 +11,8 @@ import common.UnconditionalTransitionCriteria;
 import readers.Graph;
 import readers.graphs.CoordsGraphReader;
 import readers.graphs.GeoCoordsGraphReader;
+import readers.graphs.GraphReader;
+import readers.graphs.UpperRowMatrixGraphReader;
 
 import taboosearch.cbir.CBIRAdmissibilityChecker;
 import taboosearch.cbir.CBIRContext;
@@ -97,27 +99,32 @@ public class Main {
 	System.out.println("EV" + evaluator.evaluate(context.bestSolutionEver));*/
 		
 		
-		GeoCoordsGraphReader graphReader = new GeoCoordsGraphReader();
-		Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/burma14.txt");
+		//GeoCoordsGraphReader graphReader = new GeoCoordsGraphReader();
+		//Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/burma14.txt");
 
 		//CoordsGraphReader graphReader = new CoordsGraphReader();
-		//Graph graph = graphReader.readFromFie("/home/rrhu/workspace/uealib/graphs/berlin52.txt");
+		//Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/berlin52.txt");
 
-		TSPEvaluator evaluator = new TSPEvaluator(graph);
+		GraphReader graphReader = new UpperRowMatrixGraphReader();
+		Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/bayg29.txt");
+		
+		taboosearch.permutations.FrequencyMemory<TSPSolution, TSPSwapMove> frequencyMemory
+			= new taboosearch.permutations.FrequencyMemory<TSPSolution, TSPSwapMove>(graph, 1500 /* diversificationCoef */);
+		
+		TSPEvaluator evaluator = new TSPEvaluator(graph, frequencyMemory);
 		
 		Taboolator<TSPSolution, TSPSwapMove> taboolator
-			= new Taboolator<TSPSolution, TSPSwapMove>(new ConstantTenureStrategy(6));
-		FrequencyMemory<TSPSolution, TSPSwapMove> frequencyMemory
-			= new taboosearch.permutations.FrequencyMemory<TSPSolution, TSPSwapMove>(graph);
-		
+			= new Taboolator<TSPSolution, TSPSwapMove>(new ConstantTenureStrategy(13));
+
 		AbstractGenerationFabric<TSPSolution, TSPGeneration> generationFabric
 			= new TSPGenerationFabric();
 		
 		AdmissibilityChecker<TSPSolution, TSPSwapMove> checker
-			= new AdmissibilityChecker<TSPSolution, TSPSwapMove>(evaluator, taboolator, frequencyMemory);
+			= new AdmissibilityChecker<TSPSolution, TSPSwapMove>(evaluator, taboolator);
 	
 		EliteCandidateList<TSPSolution, TSPSwapMove> eliteList
-			= new EliteCandidateList<TSPSolution, TSPSwapMove>(2, checker, evaluator);
+			= new EliteCandidateList<TSPSolution, TSPSwapMove>(1, checker, evaluator);
+		
 		TSPContext context
 			= new TSPContext(evaluator, taboolator, frequencyMemory, generationFabric, eliteList);
 		
@@ -125,10 +132,9 @@ public class Main {
 		
 		taboosearch.permutations.Generator<TSPSolution, TSPSwapMove, TSPGeneration> generator
 			= new TSPGenerator(graph);
-		
 
 		TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext> stoppingCriteria
-			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 100);
+			= new TicksStoppingCriteria<TSPSolution, TSPGeneration, TSPContext>(context, 2000);
 		
 		Selector<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext> selector
 			= new Selector<TSPSolution, TSPSwapMove, TSPGeneration, TSPContext>(checker, context);
@@ -152,7 +158,7 @@ public class Main {
 		//System.out.println(exact.toString());
 		//System.out.println(evaluator.evaluate(route));
 		
-		(new GUI(context.getSeries())).run();
+		//(new GUI(context.getSeries())).run();
 	}
 
 }

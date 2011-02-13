@@ -9,6 +9,6 @@ public class CBIRAdmissibilityChecker extends AdmissibilityChecker<CBIRSolution,
 	public CBIRAdmissibilityChecker(Evaluator<CBIRSolution, CBIRSwapMove> evaluator,
 								   Taboolator<CBIRSolution, CBIRSwapMove> taboolator,
 								   FrequencyMemory<CBIRSolution, CBIRSwapMove> frequencyMemory) {
-		super(evaluator, taboolator, frequencyMemory);
+		super(evaluator, taboolator);
 	}
 }

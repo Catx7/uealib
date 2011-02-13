@@ -7,8 +7,7 @@ import java.util.Map.Entry;
 
 import common.Evaluated;
 
-public class EliteCandidateList<S extends Solution,
-								M extends Move<S>> {
+public class EliteCandidateList<S extends Solution, M extends Move<S>> {
 	private TreeMap<Double, M> evaluatedMoves;
 	private double qualityThreshold;
 	private int size;
@@ -16,7 +15,7 @@ public class EliteCandidateList<S extends Solution,
 	private Evaluator<S, M> evaluator;
 	private AdmissibilityChecker<S, M> admissibilityChecker;
 	
-	public EliteCandidateList(int size,	AdmissibilityChecker<S, M> admissibilityChecker, Evaluator<S, M> evaluator) {
+	public EliteCandidateList(int size, AdmissibilityChecker<S, M> admissibilityChecker, Evaluator<S, M> evaluator) {
 		this.size = size;
 		this.evaluatedMoves = new TreeMap<Double, M>();
 		this.evaluator = evaluator;

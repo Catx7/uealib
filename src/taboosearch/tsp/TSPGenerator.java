@@ -6,7 +6,7 @@ public class TSPGenerator
 	extends taboosearch.permutations.Generator<TSPSolution, TSPSwapMove, TSPGeneration> {
 
 	public TSPGenerator(Graph graph) {
-		super(graph);
+		super(graph.getVertexesNumber());
 	}
 
 	@Override

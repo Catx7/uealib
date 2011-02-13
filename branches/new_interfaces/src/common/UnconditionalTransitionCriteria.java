@@ -1,8 +1,8 @@
 package common;
 
 import core.Context;
-import taboosearch.Generation;
-import taboosearch.Solution;
+import core.Generation;
+import core.Solution;
 
 public class UnconditionalTransitionCriteria<S extends Solution,
 								G extends Generation<S>,

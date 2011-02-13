@@ -5,9 +5,8 @@ import java.util.List;
 import org.jfree.data.xy.XYSeries;
 import common.AbstractGenerationFabric;
 
-public abstract class Context<S extends Solution,
-							  M extends Move<S>,
-							  G extends Generation<S>> implements common.TickableContext {
+public abstract class Context<S extends Solution, M extends Move<S>, G extends Generation<S>>
+				implements common.TickableContext {
 	public EliteCandidateList<S, M> eliteList;
 	public List<M> staticMoves;
 	

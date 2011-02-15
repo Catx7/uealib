@@ -9,23 +9,23 @@ import taboosearch.tenures.TenureStrategy;
 public class Taboolator<S extends Solution, M extends Move<S>> {
 	
 	protected TenureStrategy strategy;
-	protected HashMap<Attribute<S>, Integer> taboo;
+	protected HashMap<Attribute<S>, Integer> tenures;
 	
 	public Taboolator(TenureStrategy strategy) {
 		this.strategy = strategy;
-		this.taboo = new HashMap<Attribute<S>, Integer>();
+		this.tenures = new HashMap<Attribute<S>, Integer>();
 	}
 	
 	public boolean isTabu(final S solution, final M move) {
 		boolean isTabu = true;
 		for (Attribute<S> attribute : move.getAttributes(solution))
-			isTabu &= taboo.containsKey(attribute);
+			isTabu &= tenures.containsKey(attribute);
 		return isTabu;
 	}
 
 	public void setTabu(final S solution, final M move) {
 		for (Attribute<S> attribute : move.getAttributes(solution))
-			taboo.put(attribute, strategy.getTenure());
+			tenures.put(attribute, strategy.getTenure());
 	}
 	
 	public void tick(final S solution, final M move) {
@@ -37,17 +37,17 @@ public class Taboolator<S extends Solution, M extends Move<S>> {
 	private void decreaseTenures() {
 		LinkedList<Attribute<S>> toErase = new LinkedList<Attribute<S>>();
 
-		for (Attribute<S> attribute : taboo.keySet()) {
-			int tenure = taboo.get(attribute);
+		for (Attribute<S> attribute : tenures.keySet()) {
+			int tenure = tenures.get(attribute);
 			if (tenure == 1) {
 				toErase.add(attribute);
 			} else {
-				taboo.put(attribute, tenure - 1);
+				tenures.put(attribute, tenure - 1);
 			}
 		}
 		
 		for (Attribute<S> attribute : toErase)
-			taboo.remove(attribute);
+			tenures.remove(attribute);
 	}
 		
 }

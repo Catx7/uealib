@@ -1,6 +1,9 @@
 package diffevolution.tsp;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import diffevolution.tsp.TSPSolution;
 
 public class TSPSolution extends diffevolution.Solution<TSPSolution> { 
 	
@@ -62,26 +65,23 @@ public class TSPSolution extends diffevolution.Solution<TSPSolution> {
 
 	public TSPSolution leh2route() {
 		int n = this.route.length;
-	    boolean[] fl = new boolean[n];    
-	    int[] nat = new int[n];
-	    int[] sol = new int[n];	
+		LinkedList<Integer> solution = new LinkedList<Integer>();	
+	    
+	    int[] natural = new int[n];
 	    for(int i = 0; i < n; ++i) {
-	       fl[i] = false;
-	       nat[i] = i;        
+	       natural[i] = i;        
 	    }
 	    
-	    for(int ind_gen = 0; ind_gen < n; ++ind_gen ){
-	       int ind_nat = 0, num_ls = 0;
-	       while ( num_ls < this.route[ind_gen] + 1){
-	          if ( !fl[ind_nat] )
-	             ++num_ls;
-	          ++ind_nat;
+	    for(int inx = 0; inx < n; ++inx ){
+	       int inxNat = 0, numLess = 0;
+	       while ( numLess < this.route[inx] + 1){
+	          if ( !solution.contains(natural[inxNat]) )
+	             ++numLess;
+	          ++inxNat;
 	       }
-	       --ind_nat;
-	       sol[ind_gen] = nat[ind_nat];
-	       fl[ind_nat] = true;
+	       solution.add(natural[--inxNat]);
 	    }
-	    return new TSPSolution(sol);
+	    return new TSPSolution(solution);
 	}
 	
 	public TSPSolution route2leh()	{

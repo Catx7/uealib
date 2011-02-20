@@ -3,6 +3,8 @@ package taboosearch;
 import java.util.List;
 import java.util.TreeMap;
 
+import taboosearch.exceptions.UnsupportedMoveType;
+
 import common.AbstractGenerationFabric;
 import common.Evaluated;
 import common.Pair;
@@ -33,7 +35,7 @@ public class Selector<S extends Solution, M extends Move<S>, G extends Generatio
 		this.generationFabric = generationFabric;
 	}
 		
-	public TreeMap<Double, M> getEvaluatedMoves(Pair<S, List<M>> boundMoves) {		
+	public TreeMap<Double, M> getEvaluatedMoves(Pair<S, List<M>> boundMoves) throws UnsupportedMoveType {		
 		S solution = boundMoves.getFirst();
 		List<M>	moves = boundMoves.getSecond();
 		double bestCostEver = context.bestSolutionEverCost;
@@ -47,7 +49,7 @@ public class Selector<S extends Solution, M extends Move<S>, G extends Generatio
 		return qualities;
 	}
 	
-	public G keepTheBestSolutions(Pair<S, List<M>> boundMoves)  {	
+	public G keepTheBestSolutions(Pair<S, List<M>> boundMoves) throws UnsupportedMoveType  {	
 		S currentSolution = boundMoves.getFirst();
 		
 		if (eliteList.needsToBeRebuilt()) {

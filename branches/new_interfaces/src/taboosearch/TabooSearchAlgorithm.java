@@ -1,6 +1,8 @@
 package taboosearch;
 
 import java.util.List;
+
+import taboosearch.exceptions.UnsupportedMoveType;
 import common.Pair;
 import common.TicksStoppingCriteria;
 
@@ -29,7 +31,7 @@ public class TabooSearchAlgorithm<S extends Solution,
 		this.context = context;
 	}
 
-	public G solve() {
+	public G solve() throws UnsupportedMoveType {
 		long begin = System.currentTimeMillis();
 		
 		G currentGeneration = initializator.getInitialGeneration();

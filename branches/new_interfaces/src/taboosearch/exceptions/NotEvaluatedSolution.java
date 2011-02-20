@@ -1,7 +1,6 @@
 package taboosearch.exceptions;
 
 public class NotEvaluatedSolution extends Exception {
-
 	@Override
 	public String getMessage() {
 		return "getCost() called on the previously not evaluated Solution";	

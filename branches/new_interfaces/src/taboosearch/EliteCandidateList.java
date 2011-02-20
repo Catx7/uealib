@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import taboosearch.exceptions.UnsupportedMoveType;
+
 import common.Evaluated;
 
 public class EliteCandidateList<S extends Solution, M extends Move<S>> {
@@ -44,7 +46,7 @@ public class EliteCandidateList<S extends Solution, M extends Move<S>> {
 		return evaluatedMoves.values();
 	}
 	
-	public void tick(S solution, double bestCostEver) {
+	public void tick(S solution, double bestCostEver) throws UnsupportedMoveType {
 		Collection<M> moves = new LinkedList<M>(evaluatedMoves.values());
 		evaluatedMoves.clear();
 		

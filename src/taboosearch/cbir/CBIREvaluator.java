@@ -5,7 +5,7 @@ import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.readers.Feature;
 import taboosearch.readers.FeaturesSpace;
 
-public class CBIREvaluator extends Evaluator<CBIRSolution, CBIRSwapMove> {
+public class CBIREvaluator implements Evaluator<CBIRSolution, CBIRSwapMove> {
 
 	public double[][] d;
 	public Feature[][] lambdas;
@@ -55,8 +55,8 @@ public class CBIREvaluator extends Evaluator<CBIRSolution, CBIRSwapMove> {
 			Feature second = lambdas[j_][k_].sub(lambdas[k_][l_]);
 			r += Math.pow(first.sub(second).norm(), 2);
 		}
-		r /= n;*/
-		
+		r /= n;
+		*/
 		return p + k + r;
 	}
 	

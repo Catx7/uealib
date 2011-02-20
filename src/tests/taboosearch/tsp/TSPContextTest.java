@@ -8,14 +8,13 @@ import readers.Graph;
 import readers.graphs.GeoCoordsGraphReader;
 import readers.graphs.GraphReader;
 import taboosearch.tenures.ConstantTenureStrategy;
-import taboosearch.tsp.TSPContext;
-import taboosearch.tsp.TSPEvaluator;
+
 
 /*
  * Broken due to refactoring :)
  */
 public class TSPContextTest {
-	TSPContext context;
+	//TSPContext context;
 	
 	@Before
 	public void setUp() throws Exception {

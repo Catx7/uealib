@@ -5,7 +5,7 @@ import java.util.List;
 import org.jfree.data.xy.XYSeries;
 import common.AbstractGenerationFabric;
 
-public abstract class Context<S extends Solution, M extends Move<S>, G extends Generation<S>>
+public class Context<S extends Solution, M extends Move<S>, G extends Generation<S>>
 				implements common.TickableContext {
 	public EliteCandidateList<S, M> eliteList;
 	public List<M> staticMoves;
@@ -21,6 +21,7 @@ public abstract class Context<S extends Solution, M extends Move<S>, G extends G
 	public S bestSolutionEver;
 	
 	public double bestSolutionEverCost;
+	public int bububu = 200; 
 	
 	public Context(Evaluator<S, M> evaluator,
 				   Taboolator<S, M> taboolator,
@@ -39,12 +40,13 @@ public abstract class Context<S extends Solution, M extends Move<S>, G extends G
 		this.series = new XYSeries("Cost");
 	}
 	
-	public void setCurrentSolution(S solution, double cost) {
+	public synchronized void setCurrentSolution(S solution, double cost) {
 		if (cost < bestSolutionEverCost) {
 			bestSolutionEver = solution;
 			bestSolutionEverCost = cost;
+			System.err.println("NEW: " + solution.getStringRepresentation() + " " + cost);
 		}
-		series.add(ticks, cost);
+		//series.add(ticks, cost);
 	}
 	
 	public XYSeries getSeries() {
@@ -52,45 +54,9 @@ public abstract class Context<S extends Solution, M extends Move<S>, G extends G
 	}
 	
 	public void tick() {
-		this.ticks++;
+		++this.ticks;
 	}
 	
-	public EliteCandidateList<S, M> getEliteList() {
-		return eliteList;
-	}
-
-	public void setEliteList(EliteCandidateList<S, M> eliteList) {
-		this.eliteList = eliteList;
-	}
-
-	public Evaluator<S, M> getEvaluator() {
-		return evaluator;
-	}
-
-	public void setEvaluator(Evaluator<S, M> evaluator) {
-		this.evaluator = evaluator;
-	}
-
-	public Taboolator<S, M> getTaboolator() {
-		return taboolator;
-	}
-
-	public void setTaboolator(Taboolator<S, M> taboolator) {
-		this.taboolator = taboolator;
-	}
-
-	public FrequencyMemory<S, M> getFrequencyMemory() {
-		return frequencyMemory;
-	}
-
-	public void setFrequencyMemory(FrequencyMemory<S, M> frequencyMemory) {
-		this.frequencyMemory = frequencyMemory;
-	}
-	
-	public AbstractGenerationFabric<S, G> getGenerationFabric() {
-		return generationFabric;
-	}
-
 	public int getTicks() {
 		return ticks;
 	}

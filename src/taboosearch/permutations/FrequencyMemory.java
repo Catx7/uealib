@@ -35,7 +35,7 @@ public class FrequencyMemory<S extends Solution, M extends Move<S>>
 	public double getPenalty(S solution, M move) {
 		int v = solution.get(move.getI());
 		int w = solution.get(move.getJ());
-		return diversificationCoef * ((double) transition[v][w]) / (transitionsNumber + 1);
+		return diversificationCoef * ((double) transition[v][w]) / (transitionsNumber + 10);
 	}
 
 }

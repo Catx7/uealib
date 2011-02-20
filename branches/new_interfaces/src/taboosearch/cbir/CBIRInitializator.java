@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import taboosearch.Initializator;
 import taboosearch.readers.FeaturesSpace;
 
-public class CBIRInitializator extends Initializator<CBIRSolution, CBIRSwapMove, CBIRGeneration> {
+public class CBIRInitializator extends Initializator<CBIRSolution, CBIRGeneration> {
 	private int n = 0;
 	CBIREvaluator evaluator;
 	
@@ -31,5 +31,11 @@ public class CBIRInitializator extends Initializator<CBIRSolution, CBIRSwapMove,
 		solution.setCost(evaluator.evaluate(solution));
 		result.add(solution);
 		return result;
+	}
+
+	@Override
+	public CBIRGeneration getInitialGeneration(int size) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

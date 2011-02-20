@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 
-public abstract class Move<S extends Solution> implements taboosearch.Move<S>, SolutionFabric<S> {
+public abstract class Move<S extends Solution> implements taboosearch.Move<S> {
 	protected int i, j;
 	
 	public Move(int i, int j) {
@@ -20,14 +20,13 @@ public abstract class Move<S extends Solution> implements taboosearch.Move<S>, S
 		return this.j;
 	}
 	
-	abstract public Move<S> clone();
-	
 	public String toString() {
 		return "swap( " + i + ", " + j + " )";
 	}
 
-	
 	public abstract S operateOn(S solution);
+	
+	protected abstract S makeSolution(int[] permutation);
 
 	@Override
 	public List<Attribute<S>> getAttributes(S solution) {

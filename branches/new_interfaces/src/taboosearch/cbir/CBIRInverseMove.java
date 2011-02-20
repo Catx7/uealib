@@ -1,7 +1,6 @@
 package taboosearch.cbir;
 
 import taboosearch.permutations.InverseMove;
-import taboosearch.tsp.TSPSolution;
 
 public class CBIRInverseMove extends InverseMove<CBIRSolution> {
 
@@ -15,13 +14,7 @@ public class CBIRInverseMove extends InverseMove<CBIRSolution> {
 	}
 
 	@Override
-	public CBIRSolution makeSolution() {
-		return null;
-	}
-
-	@Override
 	public CBIRSolution makeSolution(int[] permutation) {
-		new TSPSolution(permutation);
 		return null;
 	}
 

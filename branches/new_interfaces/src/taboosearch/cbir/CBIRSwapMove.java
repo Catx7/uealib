@@ -13,12 +13,6 @@ public class CBIRSwapMove extends SwapMove<CBIRSolution> {
 	public SwapMove<CBIRSolution> clone() {
 		return new CBIRSwapMove(i, j);
 	}
-
-	@Override
-	public CBIRSolution makeSolution() {
-		return null;
-	}
-
 	@Override
 	public CBIRSolution makeSolution(int[] permutation) {
 		return new CBIRSolution(permutation);

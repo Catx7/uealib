@@ -17,4 +17,8 @@ abstract public class SwapMove<S extends Solution> extends Move<S> {
 		
 		return makeSolution(permutation);
 	}
+	
+	public String toString() {
+		return "swap( " + i + ", " + j + " )";
+	}
 }

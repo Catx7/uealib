@@ -22,7 +22,9 @@ import readers.graphs.UpperRowMatrixGraphReader;
 
 
 import taboosearch.cbir.*;
+import taboosearch.exceptions.UnsupportedMoveType;
 import taboosearch.permutations.DummyFrequencyMemory;
+import taboosearch.permutations.InverseMove;
 import taboosearch.permutations.MoveFabric;
 import taboosearch.permutations.SwapMove;
 import taboosearch.permutations.Solution;
@@ -34,7 +36,7 @@ import taboosearch.readers.FeaturesSpace;
 import taboosearch.readers.FeaturesSpaceReader;
 import taboosearch.tenures.ConstantTenureStrategy;
 import taboosearch.tenures.TenureStrategy;
-import taboosearch.tsp.*;
+import taboosearch.permutations.tsp.*;
 
 
 import org.xml.sax.SAXException;
@@ -180,7 +182,12 @@ public class Main {
 				stoppingCriteria,
 				selector,
 				context);
-		algorithm.solve();
+		try {
+			algorithm.solve();
+		} catch (UnsupportedMoveType e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
 		
 		//(new GUI(context.getSeries())).run();
 	}

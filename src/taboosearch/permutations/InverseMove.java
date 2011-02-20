@@ -2,7 +2,6 @@ package taboosearch.permutations;
 
 // immutable
 abstract public class InverseMove<S extends Solution> extends Move<S> {
-	
 	public InverseMove(int i, int j) {
 		super(i, j);
 	}
@@ -25,4 +24,7 @@ abstract public class InverseMove<S extends Solution> extends Move<S> {
 		return makeSolution(permutation);
 	}
 	
+	public String toString() {
+		return "inverse( " + i + ", " + j + " )";
+	}
 }

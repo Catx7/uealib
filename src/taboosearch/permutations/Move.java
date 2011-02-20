@@ -19,10 +19,6 @@ public abstract class Move<S extends Solution> implements taboosearch.Move<S> {
 	public int getJ() {
 		return this.j;
 	}
-	
-	public String toString() {
-		return "swap( " + i + ", " + j + " )";
-	}
 
 	public abstract S operateOn(S solution);
 	

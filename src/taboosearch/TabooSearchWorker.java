@@ -11,8 +11,8 @@ import taboosearch.permutations.Move;
 
 import readers.Graph;
 import taboosearch.tenures.ConstantTenureStrategy;
-import taboosearch.tsp.TSPEvaluator;
-import taboosearch.tsp.TSPInitializator;
+import taboosearch.permutations.tsp.TSPEvaluator;
+import taboosearch.permutations.tsp.TSPInitializator;
 
 import taboosearch.permutations.Generator;
 

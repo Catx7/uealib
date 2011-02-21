@@ -20,8 +20,6 @@ import readers.graphs.LowerRowMatrixGraphReader;
 import readers.graphs.MatrixGraphReader;
 import readers.graphs.UpperRowMatrixGraphReader;
 
-
-import taboosearch.cbir.*;
 import taboosearch.exceptions.UnsupportedMoveType;
 import taboosearch.permutations.DummyFrequencyMemory;
 import taboosearch.permutations.InverseMove;
@@ -30,6 +28,7 @@ import taboosearch.permutations.SwapMove;
 import taboosearch.permutations.Solution;
 import taboosearch.permutations.FrequencyMemory;
 import taboosearch.permutations.Move;
+import taboosearch.permutations.Util;
 import taboosearch.gui.GUI;
 import taboosearch.permutations.Generator;
 import taboosearch.readers.FeaturesSpace;
@@ -105,27 +104,52 @@ public class Main {
 		//GeoCoordsGraphReader graphReader = new GeoCoordsGraphReader();
 		//Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/burma14.txt");
 
-		GraphReader graphReader = new MatrixGraphReader();
-		Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/bays29.txt");		
+		//GraphReader graphReader = new MatrixGraphReader();
+		//Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/bays29.txt");		
 
-		//GraphReader graphReader = new UpperRowMatrixGraphReader();
-		//Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/bayg29.txt");
-		
-		FrequencyMemory<Solution, Move<Solution>> frequencyMemory
-			= new FrequencyMemory<Solution, Move<Solution>>(graph.getVertexesNumber(), 2000);
+		GraphReader graphReader = new UpperRowMatrixGraphReader();
+		Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/gr48.txt");
+
 		
 		TSPEvaluator<Solution, Move<Solution>> evaluator
-			= new TSPEvaluator<Solution, Move<Solution>>(graph, frequencyMemory);
+			= new TSPEvaluator<Solution, Move<Solution>>(
+					graph,
+					new FrequencyMemory<Solution, Move<Solution>>(graph.getVertexesNumber(), 2000));
+		  
+		TSPInitializator<Solution, Generation<Solution>> initializator
+			= new TSPInitializator<Solution, Generation<Solution>>(
+					graph, evaluator,
+					new AbstractGenerationFabric<Solution, Generation<Solution>>() {
+						public Generation<Solution> makeGeneration() {
+							return new Generation<Solution>();
+						}
+					}
+				);
+		
+		MoveFabric<Solution, Move<Solution>> moveFabric = new MoveFabric<Solution, Move<Solution>>() {
+			public Move<Solution> makeMove(int i, int j) {
+				return new SwapMove<Solution>(i, j) {
+					protected Solution makeSolution(int[] permutation) {
+						return new Solution(permutation);
+					}
+				};
+			}
+		};
 
+		TabooSearchAlgorithm<Solution, Move<Solution>, Generation<Solution>,
+			Context<Solution, Move<Solution>, Generation<Solution>>> algorithm = 
+				(new Util<Solution, Move<Solution>, Generation<Solution>>()).getAlgorithm
+				(evaluator, initializator, moveFabric, graph.getVertexesNumber());
+		try {
+			algorithm.solve();
+		} catch (UnsupportedMoveType e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+		/*
+		
 		Taboolator<Solution, Move<Solution>> taboolator
 			= new Taboolator<Solution, Move<Solution>>(new ConstantTenureStrategy(6));
-
-		AbstractGenerationFabric<Solution, Generation<Solution>> generationFabric
-			= new AbstractGenerationFabric<Solution, Generation<Solution>>() {
-				public Generation<Solution> makeGeneration() {
-					return new Generation<Solution>();
-				}
-			  };
 		
 		AdmissibilityChecker<Solution, Move<Solution>> checker
 			= new AdmissibilityChecker<Solution, Move<Solution>>(evaluator, taboolator);
@@ -133,23 +157,10 @@ public class Main {
 		EliteCandidateList<Solution, Move<Solution>> eliteList
 			= new EliteCandidateList<Solution, Move<Solution>>(1, checker, evaluator);
 		
-		Context<Solution, Move<Solution>, Generation<Solution>> context
-			= new Context<Solution, Move<Solution>, Generation<Solution>>(evaluator, taboolator, frequencyMemory, generationFabric, eliteList);
-		
-		TSPInitializator<Solution, Generation<Solution>> initializator
-			= new TSPInitializator<Solution, Generation<Solution>>(graph, evaluator, generationFabric);
-		
+
+
 		Generator<Solution, Move<Solution>, Generation<Solution>> generator
-			= new Generator<Solution, Move<Solution>, Generation<Solution>>(graph.getVertexesNumber(),
-				new MoveFabric<Solution, Move<Solution>>() {
-					public Move<Solution> makeMove(int i, int j) {
-						return new SwapMove<Solution>(i, j) {
-							protected Solution makeSolution(int[] permutation) {
-								return new Solution(permutation);
-							}
-						};
-					}
-				});
+			= new Generator<Solution, Move<Solution>, Generation<Solution>>(graph.getVertexesNumber(), moveFabric);
 
 		TicksStoppingCriteria<Solution, Generation<Solution>,
 			Context<Solution, Move<Solution>, Generation<Solution>>> stoppingCriteria
@@ -161,7 +172,7 @@ public class Main {
 			= new Selector<Solution, Move<Solution>, Generation<Solution>,
 				Context<Solution, Move<Solution>, Generation<Solution>>>
 				(evaluator, taboolator, frequencyMemory, checker, eliteList, generationFabric, context);
-		
+		*/
 
 		// NEW: [ 20, 23, 30, 7, 2, 42, 21, 17, 3, 18, 31, 22, 1, 49, 32, 45, 19, 41, 8, 9, 10, 43, 33, 51, 11, 52, 14, 13, 47, 26, 27, 28, 12, 25, 4, 6, 15, 5, 24, 48, 37, 38, 40, 39, 36, 35, 34, 44, 46, 16, 29, 50 ]  7570.497072025889
 		//370.676sec
@@ -175,6 +186,7 @@ public class Main {
 			= new ParallelTabooSearchAlgorithm<TSPSwapMove, TSPContext>(graph, context, stoppingCriteria, 5000, 11, 3);
 		ok.solve();
 		*/
+		/*
 		TabooSearchAlgorithm<Solution, Move<Solution>, Generation<Solution>, Context<Solution, Move<Solution>, Generation<Solution>>> algorithm
 			= new TabooSearchAlgorithm<Solution, Move<Solution>, Generation<Solution>, Context<Solution, Move<Solution>, Generation<Solution>>>(
 				initializator,
@@ -182,13 +194,14 @@ public class Main {
 				stoppingCriteria,
 				selector,
 				context);
+				
 		try {
 			algorithm.solve();
 		} catch (UnsupportedMoveType e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
-		
+		*/
 		//(new GUI(context.getSeries())).run();
 	}
 

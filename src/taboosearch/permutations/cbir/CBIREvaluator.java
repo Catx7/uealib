@@ -1,6 +1,7 @@
 package taboosearch.permutations.cbir;
 
 import taboosearch.Evaluator;
+import taboosearch.FrequencyMemory;
 import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.readers.Feature;
 import taboosearch.readers.FeaturesSpace;
@@ -73,6 +74,13 @@ public class CBIREvaluator implements Evaluator<CBIRSolution, CBIRSwapMove> {
 			cost = evaluate(solution);
 		}
 		return evaluate(solution, move) - cost;
+	}
+
+
+	@Override
+	public FrequencyMemory<CBIRSolution, CBIRSwapMove> getFrequencyMemory() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

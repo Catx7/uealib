@@ -83,5 +83,10 @@ public class TSPEvaluator<S extends Solution, M extends Move<S>> implements Eval
 		}
 		return evaluate(solution, move) - cost + d;
 	}
+
+	@Override
+	public taboosearch.FrequencyMemory<S, M> getFrequencyMemory() {
+		return frequencyMemory;
+	}
 	
 }

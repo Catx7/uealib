@@ -11,10 +11,7 @@ public class Context<S extends Solution, M extends Move<S>, G extends Generation
 	public List<M> staticMoves;
 	
 	protected int ticks = 0;
-	protected Evaluator<S, M> evaluator;
-	protected Taboolator<S, M> taboolator;
-	protected FrequencyMemory<S, M> frequencyMemory;
-	protected AbstractGenerationFabric<S, G> generationFabric;
+
 
 	protected XYSeries series;
 	
@@ -23,19 +20,8 @@ public class Context<S extends Solution, M extends Move<S>, G extends Generation
 	public double bestSolutionEverCost;
 	public int bububu = 200; 
 	
-	public Context(Evaluator<S, M> evaluator,
-				   Taboolator<S, M> taboolator,
-				   FrequencyMemory<S, M> frequencyMemory,
-				   AbstractGenerationFabric<S, G> generationFabric,
-				   EliteCandidateList<S, M> eliteList) {
-		this.evaluator = evaluator;
-		this.taboolator	= taboolator;
-		this.frequencyMemory = frequencyMemory;
-		this.eliteList = eliteList;
-		this.generationFabric = generationFabric;
-		
+	public Context() {		
 		this.staticMoves = new ArrayList<M>();
-		
 		this.bestSolutionEverCost = Double.MAX_VALUE;
 		this.series = new XYSeries("Cost");
 	}

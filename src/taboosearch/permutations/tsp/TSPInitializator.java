@@ -1,6 +1,5 @@
 package taboosearch.permutations.tsp;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import taboosearch.Evaluator;
 import taboosearch.Initializator;
 
 public class TSPInitializator<S extends Solution, G extends Generation<S>>
-				extends Initializator<S, Generation<S>> {
+				extends Initializator<S, G> {
 	private double[][] weights;
 	private int n = 0;
 	private Evaluator<S, ? extends Move<S>> evaluator;
@@ -70,6 +69,11 @@ public class TSPInitializator<S extends Solution, G extends Generation<S>>
 		solution.setCost(evaluator.evaluate(solution));
 		result.add(solution);
 		return result;
+	}
+
+	@Override
+	public AbstractGenerationFabric<S, G> getGenerationFabric() {
+		return generationFabric;
 	}
 
 }

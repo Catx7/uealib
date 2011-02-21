@@ -3,6 +3,8 @@ package taboosearch.permutations.cbir;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import common.AbstractGenerationFabric;
+
 import taboosearch.Initializator;
 import taboosearch.readers.FeaturesSpace;
 
@@ -35,6 +37,12 @@ public class CBIRInitializator extends Initializator<CBIRSolution, CBIRGeneratio
 
 	@Override
 	public CBIRGeneration getInitialGeneration(int size) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AbstractGenerationFabric<CBIRSolution, CBIRGeneration> getGenerationFabric() {
 		// TODO Auto-generated method stub
 		return null;
 	}

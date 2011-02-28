@@ -4,38 +4,35 @@ import java.util.List;
 import java.util.TreeMap;
 
 import taboosearch.exceptions.UnsupportedMoveType;
+import taboosearch.permutations.AbstractGenerationAndSolutionFabric;
 
-import common.AbstractGenerationFabric;
 import common.Evaluated;
 import common.Pair;
 
 public class Selector<S extends Solution, M extends Move<S>, G extends Generation<S>, C extends Context<S, M, G>> {
 	private C context;
 	private Evaluator<S, M> evaluator;
-	private Taboolator<S, M> taboolator;
-	private FrequencyMemory<S, M> frequencyMemory;
 	private AdmissibilityChecker<S, M> admissibilityChecker;
 	private EliteCandidateList<S, M> eliteList;
-	private AbstractGenerationFabric<S, G> generationFabric;
+	private AbstractGenerationAndSolutionFabric<S, G> fabric;
+	private List<? extends Tickable<S, M>> tickables;
 	
 	public Selector(
 			Evaluator<S, M> evaluator,
-			Taboolator<S, M> taboolator,
-			FrequencyMemory<S, M> frequencyMemory,
 			AdmissibilityChecker<S, M> admissibilityChecker,
 			EliteCandidateList<S, M> eliteList,
-			AbstractGenerationFabric<S, G> generationFabric,
+			AbstractGenerationAndSolutionFabric<S, G> fabric,
+			List<? extends Tickable<S, M>> tickables,
 			C context) {
 		this.context = context;
-		this.taboolator = taboolator;
-		this.frequencyMemory = frequencyMemory;
 		this.evaluator = evaluator;
 		this.admissibilityChecker = admissibilityChecker;
 		this.eliteList = eliteList;
-		this.generationFabric = generationFabric;
+		this.fabric = fabric;
+		this.tickables = tickables;
 	}
 		
-	public TreeMap<Double, M> getEvaluatedMoves(Pair<S, List<M>> boundMoves) throws UnsupportedMoveType {		
+	public TreeMap<Double, M> getEvaluatedMoves(Pair<S, List<M>> boundMoves) throws UnsupportedMoveType {
 		S solution = boundMoves.getFirst();
 		List<M>	moves = boundMoves.getSecond();
 		double bestCostEver = context.bestSolutionEverCost;
@@ -59,18 +56,16 @@ public class Selector<S extends Solution, M extends Move<S>, G extends Generatio
 		Evaluated<M> evaluatedMove = eliteList.getMove();
 		M bestMove = evaluatedMove.getObject();
 
-		S resultSolution = bestMove.operateOn(currentSolution);
-		double resultSolutionCost = evaluator.evaluate(resultSolution);
-		resultSolution.setCost(resultSolutionCost);
+		S nextSolution = bestMove.operateOn(currentSolution);
+		double nextSolutionCost = evaluator.evaluate(nextSolution);
+		nextSolution.setCost(nextSolutionCost);
 		
-		context.setCurrentSolution(resultSolution, resultSolutionCost);
-		taboolator.tick(currentSolution, bestMove);
-		frequencyMemory.tick(currentSolution, bestMove);
-		eliteList.tick(resultSolution, context.bestSolutionEverCost);	
+		context.setCurrentSolution(nextSolution, nextSolutionCost);
+		for (Tickable<S, M> tickable : tickables)
+			tickable.tick(currentSolution, bestMove, nextSolution, nextSolutionCost);
 		
-		G result = generationFabric.makeGeneration();
-		result.add(resultSolution);
+		G result = fabric.makeGeneration();
+		result.add(nextSolution);
 		return result;
 	}
-
 }

@@ -1,55 +1,52 @@
 package taboosearch;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import readers.Graph;
+import common.Evaluated;
+import common.Fabric;
+import common.TicksStoppingCriteria;
+
 import taboosearch.permutations.Move;
 import taboosearch.permutations.Solution;
 
-
-import common.Evaluated;
-import common.Pair;
-import common.TicksStoppingCriteria;
-
-public class ParallelTabooSearchAlgorithm<M extends Move<Solution>, C extends Context<Solution, M, Generation<Solution>>> {
-	
-/*	private Graph graph;
-	private C context;
-	private TicksStoppingCriteria<TSPSolution, TSPGeneration, C> stoppingCriteria;
-	private double diversityCoef;
-	private int tenure;
-	private int eliteListSize;
+public abstract class ParallelTabooSearchAlgorithm<S extends Solution,
+										  		   M extends Move<S>,
+										  		   G extends Generation<S>,
+										  		   C extends Context<S, M, G>> {
+	protected Initializator<S, G> initializator;
+	protected Fabric<Generator<S, M, G>> generatorFabric;
+	protected TicksStoppingCriteria<S, G, C> stoppingCriteria;
+	protected Fabric<Selector<S, M, G, C>> selectorFabric;
+	protected core.TransitionCriteria<G> transitionCriteria;
+	protected C context;
 	
 	public ParallelTabooSearchAlgorithm(
-			Graph graph,
-			C context,
-			TicksStoppingCriteria<TSPSolution, TSPGeneration, C> stoppingCriteria,
-			double diversityCoef,
-			int tenure,
-			int eliteListSize) {
-		this.graph = graph;
-		this.context = context;
+			Initializator<S, G> initializator,
+			Fabric<Generator<S, M, G>> generatorFabric,
+			TicksStoppingCriteria<S, G, C> stoppingCriteria,
+			Fabric<Selector<S, M, G, C>> selectorFabric,
+			C context) {
+		this.initializator = initializator;
+		this.generatorFabric = generatorFabric;
 		this.stoppingCriteria = stoppingCriteria;
-		this.diversityCoef = diversityCoef;
-		this.tenure = tenure;
-		this.eliteListSize = eliteListSize;
+		this.selectorFabric = selectorFabric;
+		this.context = context;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public Evaluated<TSPSolution> solve() {
+	
+	protected abstract Collection<TabooSearchWorker<S, M, G, C>> getWorkers();
+
+	
+	public Evaluated<S> solve() {
 		long begin = System.currentTimeMillis();
+		Collection<TabooSearchWorker<S, M, G, C>> workers = getWorkers();
+		ExecutorService threadExecutor = Executors.newFixedThreadPool(workers.size());
 		
-		int n =Runtime.getRuntime().availableProcessors();
-		ExecutorService threadExecutor = Executors.newFixedThreadPool(n);
-		int delta = graph.getVertexesNumber() / n - 1;
-		for (int i = 0; i < n; ++i) {
-			threadExecutor.execute(
-					new TabooSearchWorker(1 + i * delta, graph, context, stoppingCriteria, diversityCoef, tenure, eliteListSize));
-		}
-		
+		for (TabooSearchWorker<S, M, G, C> worker : workers)
+			threadExecutor.execute(worker);
 		
 		threadExecutor.shutdown();
 		try {
@@ -61,7 +58,7 @@ public class ParallelTabooSearchAlgorithm<M extends Move<Solution>, C extends Co
 		long finish = System.currentTimeMillis();
 		System.out.println((finish - begin) / 1000.0 + "sec");
 		
-		return new Evaluated<TSPSolution>(context.bestSolutionEver, context.bestSolutionEverCost);
-    }*/
+		return new Evaluated<S>(context.bestSolutionEver, context.bestSolutionEverCost);
+    }
 	
 }

@@ -7,10 +7,10 @@ import taboosearch.Generation;
 
 public class Generator<S extends Solution, M extends Move<S>, G extends Generation<S>>
 		implements taboosearch.Generator<S, M, G> {
-	private MoveFabric<? extends S, ? extends M> moveFabric;
+	private AbstractMoveFabric<? extends S, ? extends M> moveFabric;
 	private List<M> moves;
 	
-	public Generator(int n, MoveFabric<? extends S, ? extends M> moveFabric) {	
+	public Generator(int n, AbstractMoveFabric<? extends S, ? extends M> moveFabric) {	
 		this.moveFabric = moveFabric;
 		this.moves = getMoves(n);
 	}

@@ -9,7 +9,8 @@ import taboosearch.exceptions.UnsupportedMoveType;
 
 import common.Evaluated;
 
-public class EliteCandidateList<S extends Solution, M extends Move<S>> {
+public class EliteCandidateList<S extends Solution, M extends Move<S>> 
+		implements Tickable<S, M> {
 	private TreeMap<Double, M> evaluatedMoves;
 	private double qualityThreshold;
 	private int size;
@@ -46,13 +47,14 @@ public class EliteCandidateList<S extends Solution, M extends Move<S>> {
 		return evaluatedMoves.values();
 	}
 	
-	public void tick(S solution, double bestCostEver) throws UnsupportedMoveType {
+	public void tick(final S currentSolution /* unused */, final M selectedMove /* unused */,
+			final S nextSolution, double bestCostEver) throws UnsupportedMoveType {
 		Collection<M> moves = new LinkedList<M>(evaluatedMoves.values());
 		evaluatedMoves.clear();
 		
 		for (M move : moves) {
-			if (admissibilityChecker.isAdmissible(solution, move, bestCostEver)) {
-				double quality = evaluator.evaluateMove(solution, move);
+			if (admissibilityChecker.isAdmissible(nextSolution, move, bestCostEver)) {
+				double quality = evaluator.evaluateMove(nextSolution, move);
 				if (quality < qualityThreshold)
 					evaluatedMoves.put(quality, move);
 			}

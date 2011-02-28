@@ -2,7 +2,6 @@ package taboosearch.permutations;
 
 public class FrequencyMemory<S extends Solution, M extends Move<S>>
 				extends taboosearch.FrequencyMemory<S, M> {
-	
 	private int[][] residence; //первый индекс — вершина, второй — место в решении
 	private int[][] transition;
 	private int transitionsNumber; //общее число итераций
@@ -20,13 +19,14 @@ public class FrequencyMemory<S extends Solution, M extends Move<S>>
 		this.diversificationCoef = diversificationCoef;
 	}
 	
-	public void tick(S solution, M move) {
-		int n = solution.length();
+	public void tick(final S currentSolution, final M selectedMove,
+			final S nextSolution /* unused */, double bestCostEver /* unused */) {
+		int n = currentSolution.length();
 		for (int i = 0; i < n; ++i)
-			residence[solution.get(i)][i]++;
+			residence[currentSolution.get(i)][i]++;
 		
-		int v = solution.get(move.getI());
-		int w = solution.get(move.getJ());
+		int v = currentSolution.get(selectedMove.getI());
+		int w = currentSolution.get(selectedMove.getJ());
 		transition[v][w] += 1;
 		transition[w][v] += 1;
 		transitionsNumber++;
@@ -37,5 +37,4 @@ public class FrequencyMemory<S extends Solution, M extends Move<S>>
 		int w = solution.get(move.getJ());
 		return diversificationCoef * ((double) transition[v][w]) / (transitionsNumber + 10);
 	}
-
 }

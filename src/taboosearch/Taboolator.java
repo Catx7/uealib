@@ -6,8 +6,7 @@ import java.util.LinkedList;
 import taboosearch.Solution;
 import taboosearch.tenures.TenureStrategy;
 
-public class Taboolator<S extends Solution, M extends Move<S>> {
-	
+public class Taboolator<S extends Solution, M extends Move<S>> implements Tickable<S, M> {
 	protected TenureStrategy strategy;
 	protected HashMap<Attribute<S>, Integer> tenures;
 	
@@ -28,11 +27,12 @@ public class Taboolator<S extends Solution, M extends Move<S>> {
 			tenures.put(attribute, strategy.getTenure());
 	}
 	
-	public void tick(final S solution, final M move) {
-		setTabu(solution, move);
-		strategy.tick();
-		decreaseTenures();
-	}
+    public void tick(final S currentSolution, final M selectedMove,
+    		final S nextSolution /* unused */, double bestCostEver /* unused */) {
+        setTabu(currentSolution, selectedMove);
+        strategy.tick();
+        decreaseTenures();
+    }
 	
 	private void decreaseTenures() {
 		LinkedList<Attribute<S>> toErase = new LinkedList<Attribute<S>>();
@@ -49,5 +49,4 @@ public class Taboolator<S extends Solution, M extends Move<S>> {
 		for (Attribute<S> attribute : toErase)
 			tenures.remove(attribute);
 	}
-		
 }

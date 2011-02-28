@@ -41,9 +41,4 @@ public class CBIRInitializator extends Initializator<CBIRSolution, CBIRGeneratio
 		return null;
 	}
 
-	@Override
-	public AbstractGenerationFabric<CBIRSolution, CBIRGeneration> getGenerationFabric() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

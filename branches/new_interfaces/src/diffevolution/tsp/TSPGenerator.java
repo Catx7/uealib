@@ -6,12 +6,15 @@ import diffevolution.Context;
 import diffevolution.tsp.TSPGeneration;
 import core.Generator;
 
-public class TSPGenerator<C extends Context<TSPGeneration, TSPSolution>> implements Generator<TSPGeneration> {
+public class TSPGenerator<C extends Context<TSPGeneration, TSPSolution>> 
+	implements Generator<TSPGeneration> {
 
-	
+	private static final int DEFAULT_F = 1;
+	private int F = DEFAULT_F;
+
 	public TSPGeneration getNext(TSPGeneration currentGeneration) {
 		TSPGeneration g = new TSPGeneration();
-		int Gn = 10; 
+		int Gn = currentGeneration.size(); 
 			
 		for(int k = 0; k < Gn; ++k) {			
 		    int x = 1, y = 1, z = 1;
@@ -23,12 +26,20 @@ public class TSPGenerator<C extends Context<TSPGeneration, TSPSolution>> impleme
 		    	z = rand.nextInt(Gn);
 		    }
 		    		  
-		    TSPSolution newRouteEncrypted = currentGeneration.mutate(currentGeneration.get(x).route2leh(), currentGeneration.get(y).route2leh(), currentGeneration.get(z).route2leh());  
+		    TSPSolution newRouteEncrypted = currentGeneration.mutate(currentGeneration.get(x).route2leh(), currentGeneration.get(y).route2leh(), currentGeneration.get(z).route2leh(), this.getF());  
 		    TSPSolution currentRouteEncrypted = currentGeneration.get(k).route2leh();
 		    newRouteEncrypted.doCrossover(currentRouteEncrypted);
 		    TSPSolution nextRoute = newRouteEncrypted.leh2route();
 		    g.add(nextRoute);
 		}
 	    return g;	
+	}
+
+	public void setF(int F) {
+		this.F = F;
+	}
+	
+	private int getF() {
+		return this.F;
 	}
 }

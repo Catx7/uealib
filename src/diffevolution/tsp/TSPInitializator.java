@@ -1,8 +1,6 @@
 package diffevolution.tsp;
 
 import java.util.LinkedList;
-import java.util.List;
-
 import readers.Graph;
 import diffevolution.Initializator;
 
@@ -10,15 +8,19 @@ import diffevolution.Initializator;
 public class TSPInitializator extends Initializator<TSPSolution, TSPGeneration> {
 	private double[][] weights;
 	private int n = 0;
-	
+		
 	private static java.util.Random rand = new java.util.Random();
+	
+	public static final int DEFAULT_GENERATION_SIZE = 100;
+	private int generationSize;
 
 	public TSPInitializator(Graph graph) {	
 		this.weights = graph.getWeights();
 		this.n = graph.getVertexesNumber();
+		this.generationSize = DEFAULT_GENERATION_SIZE;
 	}
 	
-	private List<Integer> getSolution(int startFrom) {
+	private TSPSolution getSolution(int startFrom) {
 		LinkedList<Integer> route = new LinkedList<Integer>();
 		int v = startFrom,
 			nearestV = startFrom;
@@ -35,8 +37,7 @@ public class TSPInitializator extends Initializator<TSPSolution, TSPGeneration> 
 			route.add(nearestV);
 			v = nearestV;
 		}
-
-		return route;
+		return new TSPSolution(route);
 	}
 
 	private TSPSolution getRandomSolution() {
@@ -51,13 +52,22 @@ public class TSPInitializator extends Initializator<TSPSolution, TSPGeneration> 
 	
 	
 	public TSPGeneration getInitialGeneration() {
-		int generationSize = 10;
-		TSPGeneration result = new TSPGeneration();
+		
+		TSPGeneration result = new TSPGeneration();		
 		int inx = 0;
-		while ( inx < generationSize ) {
-			result.add(getRandomSolution());
+	    while ( inx < this.generationSize && inx < this.n ) {
+	    	result.add( getSolution(inx) );
+			++inx;
+		}		
+	    while ( inx < this.generationSize ) {
+	    	result.add( getRandomSolution() );
 			++inx;
 		}
 		return result;
 	}
+	
+	public void setGenerationSize(int size) {
+		this.generationSize = size;		
+	}
+
 }

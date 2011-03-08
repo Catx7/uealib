@@ -32,6 +32,7 @@ public class Taboolator<S extends Solution, M extends Move<S>> implements Tickab
         setTabu(currentSolution, selectedMove);
         strategy.tick();
         decreaseTenures();
+        
     }
 	
 	private void decreaseTenures() {

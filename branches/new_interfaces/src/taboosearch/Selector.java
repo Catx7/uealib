@@ -3,8 +3,9 @@ package taboosearch;
 import java.util.List;
 import java.util.TreeMap;
 
+import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.exceptions.UnsupportedMoveType;
-import taboosearch.permutations.AbstractGenerationAndSolutionFabric;
+import common.AbstractGenerationAndSolutionFabric;
 
 import common.Evaluated;
 import common.Pair;
@@ -32,7 +33,8 @@ public class Selector<S extends Solution, M extends Move<S>, G extends Generatio
 		this.tickables = tickables;
 	}
 		
-	public TreeMap<Double, M> getEvaluatedMoves(Pair<S, List<M>> boundMoves) throws UnsupportedMoveType {
+	private TreeMap<Double, M> getEvaluatedMoves(Pair<S, List<M>> boundMoves)
+							throws UnsupportedMoveType, NotEvaluatedSolution {
 		S solution = boundMoves.getFirst();
 		List<M>	moves = boundMoves.getSecond();
 		double bestCostEver = context.bestSolutionEverCost;
@@ -46,23 +48,26 @@ public class Selector<S extends Solution, M extends Move<S>, G extends Generatio
 		return qualities;
 	}
 	
-	public G keepTheBestSolutions(Pair<S, List<M>> boundMoves) throws UnsupportedMoveType  {	
+	public G keepTheBestSolutions(Pair<S, List<M>> boundMoves) throws UnsupportedMoveType, NotEvaluatedSolution  {	
 		S currentSolution = boundMoves.getFirst();
-		
+				
 		if (eliteList.needsToBeRebuilt()) {
 			eliteList.rebuild(getEvaluatedMoves(boundMoves));
 		}
 		
 		Evaluated<M> evaluatedMove = eliteList.getMove();
 		M bestMove = evaluatedMove.getObject();
-
+		
 		S nextSolution = bestMove.operateOn(currentSolution);
 		double nextSolutionCost = evaluator.evaluate(nextSolution);
 		nextSolution.setCost(nextSolutionCost);
 		
 		context.setCurrentSolution(nextSolution, nextSolutionCost);
 		for (Tickable<S, M> tickable : tickables)
-			tickable.tick(currentSolution, bestMove, nextSolution, nextSolutionCost);
+			tickable.tick(currentSolution,
+						  bestMove,
+						  nextSolution,
+						  nextSolutionCost);
 		
 		G result = fabric.makeGeneration();
 		result.add(nextSolution);

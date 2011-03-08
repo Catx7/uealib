@@ -1,5 +1,6 @@
 package taboosearch;
 
+import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.exceptions.UnsupportedMoveType;
 
 public class AdmissibilityChecker<S extends Solution, M extends Move<S>> {
@@ -11,7 +12,7 @@ public class AdmissibilityChecker<S extends Solution, M extends Move<S>> {
 		this.taboolator = taboolator;
 	}
 	
-	public boolean isAdmissible(S solution, M move, double bestCostEver) throws UnsupportedMoveType {	
+	public boolean isAdmissible(S solution, M move, double bestCostEver) throws UnsupportedMoveType, NotEvaluatedSolution {	
 		if (!taboolator.isTabu(solution, move)) {
 			return true;
 		} else {

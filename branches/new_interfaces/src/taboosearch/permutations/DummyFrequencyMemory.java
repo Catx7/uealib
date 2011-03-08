@@ -1,5 +1,6 @@
 package taboosearch.permutations;
 
+
 public class DummyFrequencyMemory<S extends Solution, M extends Move<S>>
 			extends FrequencyMemory<S, M> {
 	public DummyFrequencyMemory(int n, double diversificationCoef) {

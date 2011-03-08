@@ -75,12 +75,4 @@ public class CBIREvaluator implements Evaluator<CBIRSolution, CBIRSwapMove> {
 		}
 		return evaluate(solution, move) - cost;
 	}
-
-
-	@Override
-	public FrequencyMemory<CBIRSolution, CBIRSwapMove> getFrequencyMemory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

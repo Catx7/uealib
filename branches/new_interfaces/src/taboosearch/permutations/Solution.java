@@ -1,23 +1,13 @@
 package taboosearch.permutations;
 
-import java.util.List;
-
-import taboosearch.exceptions.NotEvaluatedSolution;
-
 public class Solution extends taboosearch.Solution {
 	final protected int[] permutation;
 	protected Double cost;
 	
-	public Solution(int[] route) {
-		this.permutation = route.clone();
+	public Solution(int[] permutation) {
+		this.permutation = permutation.clone();
 	}
-	
-	public Solution(List<Integer> route) {
-		this.permutation = new int[route.size()];
-		for (int i = 0; i < this.permutation.length; ++i)
-			this.permutation[i] = route.get(i);
-	}
-	
+		
 	public int length() {
         return this.permutation.length;
 	}
@@ -50,14 +40,4 @@ public class Solution extends taboosearch.Solution {
 		return new Solution(permutation);
 	}
 
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
-
-	public double getCost() throws NotEvaluatedSolution {
-		if (cost == null) {
-			throw new NotEvaluatedSolution();
-		}
-		return cost;
-	}
 }

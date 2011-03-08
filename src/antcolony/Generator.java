@@ -46,8 +46,8 @@ public class Generator implements core.Generator{
 	}
 	
 	public Generation getNext(Generation g){	
-		Solution past_s = g.getSolution();
-		feromon = past_s.GetFeromon();
+		/*Solution past_s = g.getSolution();
+		feromon = past_s.GetFeromon();*/
 		Generation new_g;
 		Solution n_s;
 		

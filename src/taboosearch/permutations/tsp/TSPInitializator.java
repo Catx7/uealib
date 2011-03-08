@@ -13,25 +13,21 @@ import taboosearch.Evaluator;
 import taboosearch.Initializator;
 
 public class TSPInitializator<S extends Solution, G extends Generation<S>> extends Initializator<S, G> {
+	private int n;
 	private double[][] weights;
-	private int n = 0;
 	private Evaluator<S, ? extends Move<S>> evaluator;
 	private AbstractGenerationAndSolutionFabric<S, G> fabric;
 
-	public TSPInitializator(
-			Graph graph,
-			Evaluator<S, ? extends Move<S>> evaluator,
-			AbstractGenerationAndSolutionFabric<S, G> fabric) {	
-		this.weights = graph.getWeights();
+	public TSPInitializator(Graph graph, Evaluator<S, ? extends Move<S>> evaluator, AbstractGenerationAndSolutionFabric<S, G> fabric) {	
 		this.n = graph.getVertexesNumber();
+		this.weights = graph.getWeights();
 		this.evaluator = evaluator;
 		this.fabric = fabric;
 	}
 	
 	private List<Integer> getSolution(int startFrom) {
 		LinkedList<Integer> route = new LinkedList<Integer>();
-		int v = startFrom,
-			nearestV = startFrom;
+		int v = startFrom, nearestV = startFrom;
 		route.add(v);
 		
 		for (int times = 1; times < n; ++times) {
@@ -61,13 +57,11 @@ public class TSPInitializator<S extends Solution, G extends Generation<S>> exten
 		return getInitialGeneration(1);
 	}
 	
-	public G getInitialGeneration(int i) {
-		assert i < n;
-		G result = fabric.makeGeneration();
-		S solution = fabric.makeSolution(getSolution(i));
+	public G getInitialGeneration(int beginFrom) {
+		assert beginFrom < n;
+		S solution = fabric.makeSolution(getSolution(beginFrom));
 		solution.setCost(evaluator.evaluate(solution));
-		result.add(solution);
-		return result;
+		return fabric.makeGeneration(solution);
 	}
 
 }

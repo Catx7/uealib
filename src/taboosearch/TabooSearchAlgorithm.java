@@ -2,6 +2,7 @@ package taboosearch;
 
 import java.util.List;
 
+import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.exceptions.UnsupportedMoveType;
 import common.Pair;
 import common.TicksStoppingCriteria;
@@ -31,7 +32,7 @@ public class TabooSearchAlgorithm<S extends Solution,
 		this.context = context;
 	}
 
-	public G solve() throws UnsupportedMoveType {
+	public G solve() throws UnsupportedMoveType, NotEvaluatedSolution {
 		long begin = System.currentTimeMillis();
 		
 		G currentGeneration = initializator.getInitialGeneration();

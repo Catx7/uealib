@@ -72,21 +72,9 @@ public class TSPEvaluator<S extends Solution, M extends Move<S>> implements Eval
 		return cost;
 	}
 	
-	public double evaluateMove(S solution, M move) throws UnsupportedMoveType {
+	public double evaluateMove(S solution, M move) throws UnsupportedMoveType, NotEvaluatedSolution {
 		double d = frequencyMemory.getPenalty(solution, move);
-		double cost;
-		try {
-			cost = solution.getCost();
-		} catch (NotEvaluatedSolution e) {
-			System.err.println(e.getMessage());
-			cost = evaluate(solution);
-		}
+		double cost = solution.getCost();
 		return evaluate(solution, move) - cost + d;
 	}
-
-	@Override
-	public taboosearch.FrequencyMemory<S, M> getFrequencyMemory() {
-		return frequencyMemory;
-	}
-	
 }

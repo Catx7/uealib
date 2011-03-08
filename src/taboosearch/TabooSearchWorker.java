@@ -3,6 +3,7 @@ package taboosearch;
 import java.util.List;
 import common.Pair;
 import common.TicksStoppingCriteria;
+import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.exceptions.UnsupportedMoveType;
 import taboosearch.permutations.Solution;
 import taboosearch.permutations.Move;
@@ -39,6 +40,9 @@ public class TabooSearchWorker<S extends Solution,
 				context.tick();
 			}
 		} catch (UnsupportedMoveType e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		} catch (NotEvaluatedSolution e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}

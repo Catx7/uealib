@@ -4,7 +4,7 @@ import core.Generator;
 import core.Initializator;
 
 
-class SimulatedAnnealingContext extends core.Context{
+class SimulatedAnnealingContext implements core.Context{
 	private static SimulatedAnnealingContext instance;
 	private TemperatureShedule shedule;
 	private int stabilyzedCount;

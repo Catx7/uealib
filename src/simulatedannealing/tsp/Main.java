@@ -1,8 +1,8 @@
 package simulatedannealing.tsp;
 
-import readers.CoordsGraphReader;
+import readers.graphs.CoordsGraphReader;
 import readers.Graph;
-import readers.GraphReader;
+import readers.graphs.GraphReader;
 import simulatedannealing.Evaluator;
 import simulatedannealing.GenerationList;
 import simulatedannealing.SimulatedAnnealingAlgorithm;
@@ -10,7 +10,7 @@ import core.Generator;
 import core.Initializator;
 
 public class Main {
-	public static void main(String[] argv) {
+	public static void main(String[] args) {
 		GraphReader grr = new CoordsGraphReader();
 		
 		Graph gr = grr.readFromFile("graphs/burma14.txt");

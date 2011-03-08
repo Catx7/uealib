@@ -10,15 +10,14 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 	private int iterationsPerStage;
 	public SimulatedAnnealingAlgorithm(Evaluator e, Initializator<GenerationList> i, 
 													Generator<GenerationList> g) {
-		super(i, g, new StabilyzedStoppingCriteria(20), null, new MetropolisRule());
-		
+		super(i, g, new StabilyzedStoppingCriteria(20), null, new MetropolisRule(), null);
 		SimulatedAnnealingContext ctx = SimulatedAnnealingContext.getInstance();
 		ctx.setGenerator(g);
 		ctx.setInitializator(i);
 		ctx.setEvaluator(e);
 		
 		ctx.initTemperatureShedule();
-		iterationsPerStage = 20000; // TODO: по хорошему должно зависеть от степеней свободы задачи
+		iterationsPerStage = 1200; // TODO: по хорошему должно зависеть от степеней свободы задачи
 		
 	}
 	

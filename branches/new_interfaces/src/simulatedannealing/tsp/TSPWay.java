@@ -23,4 +23,10 @@ public class TSPWay extends Solution{
 		return 0;
 	}
 
+	@Override
+	public Solution copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

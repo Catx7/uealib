@@ -21,7 +21,7 @@ public class KnapsackInitializator extends Initializator<KnapsackSolution, Knaps
 		this.generationSize = DEFAULT_GENERATION_SIZE;
 		int[] limits = new int[this.n]; 
 		for (int i = 0; i < this.n; ++i) {
-			limits[i] = (int) (this.V / (4*this.items[i].weight)) + 1;
+			limits[i] = (int) (this.V / this.items[i].weight) + 1;
 		}
 		KnapsackSolution.maxItemNum = limits;
 	}
@@ -47,7 +47,7 @@ public class KnapsackInitializator extends Initializator<KnapsackSolution, Knaps
 			for (int j = 0; j < this.n; ++j)  
 				if (!index.contains(j) && this.items[j].utility > this.items[max].utility)
 					max = j;
-			while (sumWeights + this.items[max].weight < this.V ) {
+			while (sumWeights + this.items[max].weight < this.V && itemSet[max] < KnapsackSolution.maxItemNum[max] ) {
 				++itemSet[max];
 				sumWeights += this.items[max].weight;
 			}

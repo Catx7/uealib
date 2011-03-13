@@ -17,7 +17,7 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 		ctx.setEvaluator(e);
 		
 		ctx.initTemperatureShedule();
-		iterationsPerStage = 1200; // TODO: по хорошему должно зависеть от степеней свободы задачи
+		iterationsPerStage = 800; // TODO: по хорошему должно зависеть от степеней свободы задачи
 		
 	}
 	

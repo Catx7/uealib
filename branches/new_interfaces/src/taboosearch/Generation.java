@@ -12,10 +12,4 @@ public class Generation<S extends Solution> extends ArrayList<S> implements core
 		super();
 		add(solution);		
 	}
-	
-	@Override
-	public core.Generation<S> getBest() {
-		return null;
-	}
-
 }

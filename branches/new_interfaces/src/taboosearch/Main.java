@@ -106,10 +106,6 @@ public class Main {
 			e.printStackTrace();
 		}
 		(new GUI(context.getSeries())).run();
-		/*Integer okok = new Integer(100);
-		String lala = "HUI";
-		lala.in
-		System.out.println(okok);*/
 		/*
 		//GeoCoordsGraphReader graphReader = new GeoCoordsGraphReader();
 		//Graph graph = graphReader.readFromFile("/home/rrhu/workspace/uealib/graphs/burma14.txt");

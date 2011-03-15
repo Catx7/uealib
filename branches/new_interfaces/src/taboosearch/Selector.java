@@ -48,7 +48,8 @@ public class Selector<S extends Solution, M extends Move<S>, G extends Generatio
 		return qualities;
 	}
 	
-	public G keepTheBestSolutions(Pair<S, List<M>> boundMoves) throws UnsupportedMoveType, NotEvaluatedSolution  {	
+	public G keepTheBestSolutions(Pair<S, List<M>> boundMoves)
+						throws UnsupportedMoveType, NotEvaluatedSolution  {	
 		S currentSolution = boundMoves.getFirst();
 				
 		if (eliteList.needsToBeRebuilt()) {

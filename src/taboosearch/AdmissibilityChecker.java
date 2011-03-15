@@ -12,7 +12,16 @@ public class AdmissibilityChecker<S extends Solution, M extends Move<S>> {
 		this.taboolator = taboolator;
 	}
 	
-	public boolean isAdmissible(S solution, M move, double bestCostEver) throws UnsupportedMoveType, NotEvaluatedSolution {	
+	/**
+	 * Проверяет, допустим ли ход для текущего решения.
+	 * @param solution Решение, относительно которого будет проверяться допустимость хода.
+	 * @param move Ход.
+	 * @param bestCostEver Стоимость наилучшего решения, которое было посещено в процессе поиска.
+	 * Используется для проверки aspiration criteria.  
+	 * @return true, если ход допустим, и false, если недопустим
+	 */
+	public boolean isAdmissible(S solution, M move, double bestCostEver)
+					throws UnsupportedMoveType, NotEvaluatedSolution {	
 		if (!taboolator.isTabu(solution, move)) {
 			return true;
 		} else {

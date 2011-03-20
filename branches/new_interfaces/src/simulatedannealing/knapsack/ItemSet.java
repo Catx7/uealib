@@ -1,7 +1,6 @@
 package simulatedannealing.knapsack;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 import core.Solution;
 
@@ -9,26 +8,28 @@ public class ItemSet extends Solution {
 	private HashSet<Integer> used;
 	private HashSet<Integer> unused;
 	private int N;
+
 	public ItemSet(HashSet<Integer> used, int N) {
 		unused = new HashSet<Integer>();
-		
-		for(int i=0;i<N;++i)
+
+		for (int i = 0; i < N; ++i)
 			unused.add(i);
 		this.used = used;
-		for (Integer itemID:used) {
+		for (Integer itemID : used) {
 			unused.remove(itemID);
 		}
 		this.N = N;
-		
+
 	}
 
 	public int getN() {
 		return N;
 	}
-	
+
 	public HashSet<Integer> getUsed() {
 		return used;
 	}
+
 	public HashSet<Integer> getUnused() {
 		return unused;
 	}

@@ -15,11 +15,12 @@ public class Main {
 		Initializator<GenerationList> i = new FuncInitializator();
 		Evaluator e = new FuncEvaluator();
 		Generator<GenerationList> g = new FuncGenerator();
-		
-		SimulatedAnnealingAlgorithm alg = new SimulatedAnnealingAlgorithm(e, i, g);
-		
-		Point a = (Point)alg.solve().get(0);
-		
+
+		SimulatedAnnealingAlgorithm alg = new SimulatedAnnealingAlgorithm(e, i,
+				g);
+
+		Point a = (Point) alg.solve().get(0);
+
 		System.out.print(a.x + " " + a.y);
 
 	}

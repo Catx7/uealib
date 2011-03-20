@@ -6,5 +6,5 @@ import core.Solution;
 
 public interface Evaluator extends Comparator<Solution> {
 	double evaluate(Solution s);
-	
+
 }

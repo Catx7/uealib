@@ -1,11 +1,9 @@
 package simulatedannealing.tsp;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import simulatedannealing.GenerationList;
 import core.Generator;
-import core.Solution;
 
 public class TSPGenerator implements Generator<GenerationList> {
 

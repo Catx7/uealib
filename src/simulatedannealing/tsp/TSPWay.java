@@ -1,7 +1,5 @@
 package simulatedannealing.tsp;
 
-import java.util.ArrayList;
-
 import core.Solution;
 
 public class TSPWay extends Solution{

@@ -20,7 +20,7 @@ public class Context<S extends Solution, M extends Move<S>, G extends Generation
 			bestSolutionEverCost = cost;
 			System.err.println("NEW: " + solution.getStringRepresentation() + " " + cost);
 		}
-		//series.add(ticks, cost);
+		series.add(ticks, -cost);
 	}
 	
 	public XYSeries getSeries() {

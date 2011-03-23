@@ -1,12 +1,12 @@
-package antcolony;
+package antcolony.fabric;
 
-import antcolony.Generation;
+import antcolony.fabric.GenerationFabric;
 
 public class TransitionCriteria  implements core.TransitionCriteria{
 	
-	public boolean isSatisfied(Generation g, Generation h) {
-		AntSolution s1 = g.getSolution();
-		AntSolution s2 = h.getSolution();
+	public boolean isSatisfied(GenerationFabric g, GenerationFabric h) {
+		AntSolutionFabric s1 = g.getSolution();
+		AntSolutionFabric s2 = h.getSolution();
 	//	System.out.println(s1.getFitness());
 	//	System.out.println(s2.getFitness());
 		if(s1.getFitness()<s2.getFitness()){return false;}	

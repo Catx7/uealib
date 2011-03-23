@@ -1,5 +1,7 @@
 package antcolony;
 
+import core.Solution;
+
 
 public class AntSolution  extends core.Solution{
 	
@@ -35,6 +37,12 @@ public class AntSolution  extends core.Solution{
 		length+= graph[result[0]][result[nr-1]];
 		// ....................
 		return length;
+	}
+
+	@Override
+	public Solution copy() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

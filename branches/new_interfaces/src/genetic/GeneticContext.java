@@ -1,7 +1,6 @@
 package genetic;
 
-public class GeneticContext<G extends Generation<S>, S extends Solution<S>>
-		extends core.Context {
+public class GeneticContext<G extends Generation<S>, S extends Solution<S>> implements core.Context {
 
 	private int currentGenerationNumber;
 
@@ -11,17 +10,17 @@ public class GeneticContext<G extends Generation<S>, S extends Solution<S>>
 
 	private AbstractGenerationFabric<G, GeneticContext<G, S>> fabric;
 
-	private S bestKnownRoute;
+	private S bestKnownSolution;
 
 	private double bestFitness;
 
-	public S getBestKnownRoute() {
-		return bestKnownRoute;
+	public S getBestKnownSolution() {
+		return bestKnownSolution;
 	}
 
-	public void setBestKnownRoute(S newBestKnownRoute) {
-		bestKnownRoute = newBestKnownRoute.copy();
-		bestFitness = evaluator.evaluate(bestKnownRoute);
+	public void setBestKnownSolution(S newBestKnownSolution) {
+		bestKnownSolution = newBestKnownSolution.copy();
+		bestFitness = evaluator.evaluate(bestKnownSolution);
 	}
 
 	public double getBestFitness() {

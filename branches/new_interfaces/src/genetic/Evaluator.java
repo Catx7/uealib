@@ -1,5 +1,8 @@
 package genetic;
 
-public interface Evaluator<S> extends java.util.Comparator<S> {
-	public double evaluate(S solution);
+public abstract class Evaluator<S> implements java.util.Comparator<S> {
+	public abstract double evaluate(S solution);
+
+	public void makeFeasibleSolution(S solution) {
+	}
 }

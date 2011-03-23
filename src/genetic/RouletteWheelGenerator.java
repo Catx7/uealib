@@ -38,7 +38,7 @@ public class RouletteWheelGenerator<G extends genetic.Generation<S>, S extends g
 	public G getNext(G g) { // not classical
 		if (context.getEvaluator().evaluate(g.getBest().get(0)) > context
 				.getBestFitness()) {
-			context.setBestKnownRoute(g.getBest().get(0));
+			context.setBestKnownSolution(g.getBest().get(0));
 		}
 		totalFitness = 0;
 		for (S solution : g)
@@ -59,7 +59,7 @@ public class RouletteWheelGenerator<G extends genetic.Generation<S>, S extends g
 			if (random.nextDouble() < mutationProbability)
 				solution.mutate();
 		if (useElitism) {
-			newG.set(random.nextInt(g.size()), context.getBestKnownRoute()
+			newG.set(random.nextInt(g.size()), context.getBestKnownSolution()
 					.copy());
 		}
 		selected = null;

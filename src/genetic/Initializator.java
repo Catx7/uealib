@@ -10,6 +10,7 @@ public abstract class Initializator<G extends genetic.Generation<S>, S extends g
 			int generationSize) {
 		for (int i = 0; i < generationSize; ++i)
 			generationInstance.add(generator.generateRandomSolution());
+		context.setBestKnownSolution(generationInstance.getBest().get(0));
 		return generationInstance;
 	}
 

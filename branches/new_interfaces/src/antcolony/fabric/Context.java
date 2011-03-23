@@ -1,11 +1,11 @@
-package antcolony;
+package antcolony.fabric;
 
 
 
 public class Context  {
 	
 	private static Context inst;	
-	private int count = 1000;
+	private int count = 100000;
 	
 	public static Context getInstance() {
 		if (inst == null) {

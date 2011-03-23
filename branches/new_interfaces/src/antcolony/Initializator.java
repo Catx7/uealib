@@ -1,17 +1,18 @@
 package antcolony;
 
-import java.util.LinkedList;
 
-public class Initializator implements core.Initializator {
-	
-	private int[][] weights = null;
+
+public class Initializator implements core.Initializator{
+
+private double[][] weights = null;
 	private double[][]	feromon = null;
-	private double homeferomon = 0.25;
+	private double homeferomon = 0.01;
 	private int n = 0;
+	protected Generation g_i;
 	
-	public Initializator(int[][] w) {
+	public Initializator(double[][] w) {
 		n = w[0].length;
-		weights = new int[n][n];
+		weights = new double[n][n];
 		weights = w;
 		feromon = new double[n][n];
 		for(int i=0; i<n; i++){
@@ -31,10 +32,15 @@ public class Initializator implements core.Initializator {
 	//}
 	
 	public Generation getInitialGeneration() {
-		int[] rez  = null;
-		Solution s = new Solution(rez, feromon);
-		Generation g = new Generation(s);
-		return g;
+		int[] rez  = new int[n];
+		AntAlgoritmParam ant_al = new AntAlgoritmParam(0.5,0.5,1,0,100);
+		antcolony.Generator gen = new antcolony.Generator(weights, 0, ant_al);
+		AntSolution s = new AntSolution(rez, feromon, weights);
+		g_i = new Generation(s);
+	
+		g_i = new Generation(gen.getNext(g_i).getSolution());
+
+		return g_i;
 	}
 	
 	

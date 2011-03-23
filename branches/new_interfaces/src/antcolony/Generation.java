@@ -1,18 +1,19 @@
 package antcolony;
 import java.util.ArrayList;
 
-public class Generation extends ArrayList<Solution> implements core.Generation<Solution> {
+
+public class Generation extends ArrayList<AntSolution> implements core.Generation<AntSolution>{
 
 	private static final long serialVersionUID = 1L;
 
-	private Solution solut;
+	private AntSolution solut;
 
-	public Generation(Solution s){
-		solut = s;
+	public Generation(AntSolution s){
+		this.solut = s;
 	}
-	
-	public Solution getSolution(){
-		return solut;
+		
+	public AntSolution getSolution(){
+		return this.solut;
 	}
 	
 	public Generation getBest() {
@@ -20,4 +21,5 @@ public class Generation extends ArrayList<Solution> implements core.Generation<S
 		return this;
 	}
 
+	
 }

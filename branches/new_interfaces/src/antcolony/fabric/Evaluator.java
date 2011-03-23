@@ -1,4 +1,4 @@
-package antcolony;
+package antcolony.fabric;
 
 public class Evaluator {
 

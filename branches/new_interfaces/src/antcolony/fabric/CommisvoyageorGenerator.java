@@ -2,11 +2,14 @@ package antcolony.fabric;
 
 public class CommisvoyageorGenerator extends GeneratorFabric{
 	
+	public double sub_f = 0;
+	
 	public CommisvoyageorGenerator(double we[][], int ver, AntAlgoritmParam a0) {
 		n = we[0].length;
 		weight = new double[n][n];
 		weight = we;
 		feromon = new double[n][n];
+		
 		result = new int[n];
 		v0 = ver;
 		a = a0;
@@ -19,16 +22,23 @@ public class CommisvoyageorGenerator extends GeneratorFabric{
 			path[i]=999999999;
 		}
 		zahodili = new int[n]; 
+		sub_f = a0.getSubFer();
 	}
 
 	public antcolony.fabric.GenerationFabric getNext(core.Generation g){	
 		antcolony.fabric.GenerationFabric gg = (antcolony.fabric.CommisvoyageorGeneration)g;
 		AntSolutionFabric past_s = gg.getSolution();
 		feromon = past_s.GetFeromon();
+		String s="";
+		/*for(int i=0;i<n;i++){
+			s+=feromon[0][i];
+			s+=" ";
+		}
+		System.out.println(s);*/
 		AntSolutionFabric n_s;
 		tmp = 0;
 		
-		//int v0 = rn.nextInt(n);
+		v0 = rn.nextInt(n);
 		//System.out.println(vproba);
 		
 		
@@ -55,7 +65,7 @@ public class CommisvoyageorGenerator extends GeneratorFabric{
 			v = getNextVer();			
 		}
 		
-		double q = 100;
+		double q = 10;
 		double len_path = 0;
 		for(int i=1;i<n;i++){
 			len_path += weight[path[i]][path[i-1]];			
@@ -68,6 +78,14 @@ public class CommisvoyageorGenerator extends GeneratorFabric{
 		}
 		feromon[path[0]][path[n-1]] += koef;
 		feromon[path[n-1]][path[0]] += koef;
+		
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				if(feromon[i][j]>sub_f){
+					feromon[i][j] -= sub_f;
+				}
+			}
+		}
 		
 			n_s = new CommisvoyageorSolution(path, feromon, weight);
 			

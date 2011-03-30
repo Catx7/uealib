@@ -18,7 +18,7 @@ public class CommisvoyageorInitializator extends InitializatorFabric{
 
 	public GenerationFabric getInitialGeneration() {
 		int[] rez  = new int[n];
-		AntAlgoritmParam ant_al = new AntAlgoritmParam(0.5,0.5,1,0,100);
+		AntAlgoritmParam ant_al = new AntAlgoritmParam(0.9,0.1,2,5,10000000);
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		antcolony.fabric.GeneratorFabric gen = new antcolony.fabric.CommisvoyageorGenerator(weights, 0, ant_al);
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

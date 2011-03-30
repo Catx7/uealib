@@ -2,11 +2,13 @@ package antcolony.fabric;
 
 import java.util.Vector;
 
+
 import javax.swing.JFrame;
 
 import antcolony.illustration.Draw;
 import readers.Graph;
 import antcolony.fabric.*;
+import functions.*;
 
 public class AntColonyAlgorithm {
 	
@@ -18,19 +20,22 @@ public class AntColonyAlgorithm {
 	private GenerationFabric Gen0;
 	private GeneratorFabric Gen_or;
 	private AntAlgoritmParam Aap;
+	private Functions funct;
 		
 	public AntColonyAlgorithm(Graph gr){
 	
-		/*
-		m = gr.getWeights();
-		Ini = new CommisvoyageorInitializator(m);
-		Gen = Ini.getInitialGeneration();
-		Aap = new AntAlgoritmParam(0.5,0.5,1,0,100);
-		Gen_or = new CommisvoyageorGenerator(m,0,Aap);
-		*/
+	////////////////////////////////////////////////
+	///	***commisvoyageor task***
+	///	m = gr.getWeights();
+	///	Ini = new CommisvoyageorInitializator(m);
+	///	Gen = Ini.getInitialGeneration();
+	///	Aap = new AntAlgoritmParam(0.9,0.1,1,5,100);
+	///	Gen_or = new CommisvoyageorGenerator(m,0,Aap);
+		
 		//m = gr.getWeights();
 		
-		
+	////////////////////////////////////////////////
+	///	***backpack task***
 		/*double[] mas = new double[10];
 		mas[0] = 1;
 		mas[1] = 3;
@@ -60,14 +65,19 @@ public class AntColonyAlgorithm {
 		Aap = new AntAlgoritmParam(0.5,0.5,1,0,100);
 		Gen_or = new BackpackGenerator(m,0,Aap);*/
 		
-		Ini = new FunctionInitializator(100);
+		
+		
+		
+	//////////////////////////////////////////////////////////////////	
+	///	***function task***
+		Ini = new FunctionInitializator(3, funct);
 		Gen = Ini.getInitialGeneration();
-		FunctionSolution s = (FunctionSolution)Gen.getSolution();
-		//System.out.println(s.getVect());
-		//System.out.println(s.getBest()[0]);
-		//System.out.println(s.getBest()[1]);
+		FunctionSolutionMin s = (FunctionSolutionMin)Gen.getSolution();
+	///	//System.out.println(s.getVect());
+	///	//System.out.println(s.getBest()[0]);
+	///	//System.out.println(s.getBest()[1]);
 		//System.out.println(s.getFitness());
-//		Aap = new AntAlgoritmParam(0.5,0.5,1,0,10);
+//	///	Aap = new AntAlgoritmParam(0.5,0.5,1,0,10);
 		Gen_or = new FunctionGenerator(s.getVect());
 		/*FunctionSolution fss = (FunctionSolution)Gen.getSolution();
 		Vector<Double> st = fss.getVect();
@@ -75,27 +85,38 @@ public class AntColonyAlgorithm {
 		dd.drawField(((FunctionSolution)Gen.getSolution()).getVect());*/
 		
 	}
+	
+	public AntColonyAlgorithm(Functions f){
+		funct = f;
+		Ini = new FunctionInitializator(1000, funct);
+		Gen = Ini.getInitialGeneration();
+		FunctionSolutionMin s = (FunctionSolutionMin)Gen.getSolution();
+		Gen_or = new FunctionGeneratorMin(s.getVect());
+	}
 
 	
 	public void solve(){
 		StoppingCriteria stop = new StoppingCriteria();
 		TransitionCriteria trans = new TransitionCriteria();
 		Context con = new Context();
-		con.setCount(1000);
+		con.setCount(10000);
 		
-		double fit = Gen.getSolution().getFitness();
-	//	int[] path = Gen.getSolution().GetResult();
-		//double fg=0;
-	//	int[] rezz = new int[path.length]; 
+		//double fit = Gen.getSolution().getFitness();
+		int[] path = Gen.getSolution().GetResult();
+		double fg=0;
+		//int[] rezz = new int[path.length]; 
 		
 		
-		
+/////////////////////////////////////////////////////////////////
+	/// ***function task***
 		while(!stop.isSatisfied(Gen)){
 		//	double f = Gen.getSolution().getFitness();
 			Gen1 =Gen_or.getNext(Gen);		
 		//	double f1 = Gen1.getSolution().getFitness();
 			//if(f>f1){Gen = Gen1;fg = f1;rezz = Gen.getSolution().GetResult();}
-		//	if(f<f1){Gen = Gen1;fg = f1;rezz = Gen.getSolution().GetResult();}
+			//if(f<f1){Gen = Gen1;
+			//fg = f1;rezz = Gen.getSolution().GetResult();
+			//}
 		/*	double f1 = Gen1.getSolution().getFitness();
 			double x = Gen1.getSolution().getBest()[0];
 			double y = Gen1.getSolution().getBest()[1];
@@ -105,14 +126,19 @@ public class AntColonyAlgorithm {
 		
 		}
 		
-		FunctionSolution fs = (FunctionSolution)Gen1.getSolution();
-		Vector<Double> tt = fs.getVect();
-		Draw t = new Draw(tt);
-	      t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      t.setVisible(true);
+		
+	/////////////////////////////////////////////////////////////////
+	/// ***function task***
+		FunctionSolutionMin fs = (FunctionSolutionMin)Gen1.getSolution();
+		double[][] tt = fs.getVect();
+		//Draw t = new Draw(tt);
+	    // t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    //
+		//t.setVisible(true);
 		/*Draw d = new Draw(t);
 		d.drawField(((FunctionSolution)Gen1.getSolution()).getVect());*/
-		double f1 = Gen1.getSolution().getFitness();
+		//double f1 = ((FunctionSolution)Gen1.getSolution()).getFitness();
+	      double f1 = fs.getFitness();
 		double x = Gen1.getSolution().getBest()[0];
 		double y = Gen1.getSolution().getBest()[1];
 		System.out.println(f1);
@@ -120,30 +146,37 @@ public class AntColonyAlgorithm {
 		System.out.println(y);
 			
 			
-			
-		/*while(!stop.isSatisfied(Gen)){
+	///	////////////////////////////////////////
+	/// ***commisvoyageor task***
+		//while(!stop.isSatisfied(Gen)){
+	/*	for(int i=0;i<5000;i++){
 			double f = Gen.getSolution().getFitness();
 			Gen1 =Gen_or.getNext(Gen);		
 			double f1 = Gen1.getSolution().getFitness();
 			//if(f>f1){Gen = Gen1;fg = f1;rezz = Gen.getSolution().GetResult();}
-			if(f<f1){Gen = Gen1;fg = f1;rezz = Gen.getSolution().GetResult();}
+			if(f>f1){
+				//Gen = Gen1;
+				fg = f1;rezz = Gen.getSolution().GetResult();}
 			
-		}*/
+		}
 		
-	//	A_s = Gen.getSolution();
-	//	fit = A_s.getFitness();
-	//	path = A_s.GetResult();
+		A_s = Gen.getSolution();
+		fit = A_s.getFitness();
+		path = A_s.GetResult();
 		//System.out.println(A_s.getFitness());
-	/*	System.out.println(fg);
+		//System.out.println(fg);
 		String pathln = "";
 		for(int i=0;i<path.length;i++){
 			pathln += rezz[i];
 			pathln += " ";
 		}
-		System.out.println(pathln);*/
+		//System.out.println(pathln);
+		 */
 		
 		
 				
 	}
 	
 }
+
+

@@ -10,9 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 class GraphPanel extends JPanel {
-    private Vector<Double> data;
+    private double[][] data;
 
-    public GraphPanel(Vector<Double> data) {
+    public GraphPanel(double[][] data) {
         this.data = data;
     }
 
@@ -35,9 +35,9 @@ class GraphPanel extends JPanel {
         	g.drawLine((int)Kx, 0, (int)Kx, getHeight());
         	g.drawLine(0, (int)Ky, getWidth(), (int)Ky);
       
-        for (Iterator<Double> it = data.iterator(); it.hasNext();) {
-        	double x = it.next().doubleValue();
-            double y = it.next().doubleValue();
+        for (int i = 0; i<data.length/data[0].length;i++) {
+        	double x = data[i][0];
+            double y = data[i][1];
             
             double xx = x*k;
              double yy = y*k;

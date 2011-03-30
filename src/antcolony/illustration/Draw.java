@@ -11,8 +11,9 @@ public class Draw  extends JFrame{
 	
 	 private GraphPanel g;
 	 private Vector<Double> d;
+	 private double[][] v;
 
-	   public Draw( Vector<Double> dd)
+	   public Draw( double[][] dd)
 	   {
 	     /* d = new Vector<Double>();
 
@@ -32,9 +33,9 @@ public class Draw  extends JFrame{
 	       d.add((double) 0);
 	       d.add((double) 0);*/
 		 
-		 d = dd;
+		 v = dd;
 
-	      g = new GraphPanel(d);
+	      g = new GraphPanel(v);
 	      getContentPane().add(g);
 	      setBounds(500, 500, 500, 500);
 	     
@@ -51,7 +52,7 @@ public class Draw  extends JFrame{
 	      t.setVisible(true);
 	    }*/
 	    
-	    public void drawField( Vector<Double> ddd){
+	    public void drawField( double[][] ddd){
 	    	 Draw t = new Draw(ddd);
 		      t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		      t.setVisible(true);	    	

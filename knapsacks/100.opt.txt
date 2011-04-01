@@ -1,0 +1,2 @@
+for a total value of 1244 and a total weight of 399
+3 6 24 26 30 34 39 58 60 75 76 77 80 85 95 96

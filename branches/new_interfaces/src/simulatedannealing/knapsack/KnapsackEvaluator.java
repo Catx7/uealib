@@ -2,16 +2,16 @@ package simulatedannealing.knapsack;
 
 import java.util.HashSet;
 
-import readers.Collection;
+import readers.KnapsackTask;
 import readers.items.Item;
 import simulatedannealing.Evaluator;
 import core.Solution;
 
 public class KnapsackEvaluator implements Evaluator {
 
-	private Collection problem;
+	private KnapsackTask problem;
 
-	public KnapsackEvaluator(Collection problem) {
+	public KnapsackEvaluator(KnapsackTask problem) {
 		this.problem = problem;
 	}
 
@@ -34,7 +34,7 @@ public class KnapsackEvaluator implements Evaluator {
 		HashSet<Integer> used = itemset.getUsed();
 		Item[] items = problem.getItems();
 		for (Integer itemID : used) {
-			sum += items[itemID].utility;
+			sum += items[itemID].getUtility();
 		}
 		return sum;
 	}

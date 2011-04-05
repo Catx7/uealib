@@ -2,7 +2,7 @@ package simulatedannealing.knapsack;
 
 import java.util.HashSet;
 
-import readers.Collection;
+import readers.KnapsackTask;
 import readers.items.Item;
 import simulatedannealing.GenerationList;
 import core.Initializator;
@@ -10,9 +10,9 @@ import core.Solution;
 
 public class KnapsackInitializator implements Initializator<GenerationList> {
 
-	private Collection problem;
+	private KnapsackTask problem;
 
-	public KnapsackInitializator(Collection problem) {
+	public KnapsackInitializator(KnapsackTask problem) {
 		this.problem = problem;
 	}
 
@@ -23,10 +23,10 @@ public class KnapsackInitializator implements Initializator<GenerationList> {
 		Item[] items = problem.getItems();
 		int weight = 0;
 		int i = 0;
-		while (i < items.length && weight <= problem.getConstrait()) {
-			if (items[i].weight <= (problem.getConstrait() - weight)) {
+		while (i < items.length && weight <= problem.getCapacity()) {
+			if (items[i].getWeight() <= (problem.getCapacity() - weight)) {
 				used.add(i);
-				weight += items[i].weight;
+				weight += items[i].getWeight();
 			}
 			++i;
 		}

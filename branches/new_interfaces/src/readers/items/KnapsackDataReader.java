@@ -2,25 +2,27 @@ package readers.items;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Locale;
 import java.util.Scanner;
 
-import readers.Collection;
+import readers.KnapsackTask;
 
 public abstract class KnapsackDataReader {
 
-	public Collection readFromFile(String filename) {
+	public KnapsackTask readFromFile(String filename) {
 			FileInputStream fi;
 			try {
 				fi = new FileInputStream(filename);
-				Scanner s = new Scanner(fi, "utf-8"); 
-				return getCollection(s);
+				Scanner s = new Scanner(fi, "utf-8");
+				s.useLocale(Locale.US);
+				return getKnapsackTask(s);
 			} catch (FileNotFoundException e) {
-				System.err.println("Файл " + filename + " не найден!");
+				System.err.println("пїЅпїЅпїЅпїЅ " + filename + " пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
 				e.printStackTrace();
 			}
 			return null;
 		}
 		
-		abstract protected Collection getCollection(Scanner s);
+		abstract protected KnapsackTask getKnapsackTask(Scanner s);
 		
 }

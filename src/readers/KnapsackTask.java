@@ -2,7 +2,7 @@ package readers;
 
 import readers.items.Item;
 
-public class Collection {
+public class KnapsackTask {
 	private Item[] items;	// items[utility][weight]
 	private double V;			// limit
 	
@@ -18,12 +18,12 @@ public class Collection {
 		return this.items.length;
 	}
 	
-	public double getConstrait() {
+	public double getCapacity() {
 		return this.V;
 	}
 
-	public void setConstrait(double constrait) {
-		this.V = constrait;		
+	public void setCapacity(double capacity) {
+		this.V = capacity;		
 	}
 	
 }

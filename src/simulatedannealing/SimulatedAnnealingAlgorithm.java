@@ -1,5 +1,6 @@
 package simulatedannealing;
 
+import simulatedannealing.ChartTracer.Type;
 import core.Algorithm;
 import core.Generator;
 import core.Initializator;
@@ -8,6 +9,7 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 
 	private int iterationsPerStage;
 	private SimulatedAnnealingContext ctx;
+	private ChartTracer tracer;
 
 	public SimulatedAnnealingAlgorithm(Evaluator e,
 			Initializator<GenerationList> i, Generator<GenerationList> g) {
@@ -30,10 +32,17 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 	public void setIterationsPerStage(int iterationsPerStage) {
 		this.iterationsPerStage = iterationsPerStage;
 	}
+	
+	public void setChartTracer(ChartTracer tracer) {
+		this.tracer = tracer;
+	}
 
 	public GenerationList solve() {
+		tracer.timeStart();
 		GenerationList currentGeneration = this.init.getInitialGeneration();
-
+		int currentIteration = 0;
+		
+		
 		while (!stoppingCriteria.isSatisfied(currentGeneration)) {
 			boolean nochange = true;
 			for (int i = 0; i < iterationsPerStage; ++i) {
@@ -51,11 +60,15 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 			else {
 				ctx.countToZero();
 			}
-			System.out.println(ctx.getEvaluator().evaluate(
-					currentGeneration.get(0)));
-
+			
+			if(tracer.getType() == Type.IterationToFitness)
+				tracer.Trace(currentIteration, ctx.getEvaluator().evaluate(
+						currentGeneration.get(0)));
+			
 			ctx.getShedule().anneal();
+			currentIteration++;
 		}
+		tracer.timeEnd();
 
 		return currentGeneration;
 	}

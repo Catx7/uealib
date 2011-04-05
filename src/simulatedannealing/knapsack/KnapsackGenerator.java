@@ -3,14 +3,14 @@ package simulatedannealing.knapsack;
 import java.util.HashSet;
 import java.util.Random;
 
-import readers.Collection;
+import readers.KnapsackTask;
 import readers.items.Item;
 import simulatedannealing.GenerationList;
 import core.Generator;
 
 public class KnapsackGenerator implements Generator<GenerationList> {
 
-	private Collection problem;
+	private KnapsackTask problem;
 
 	private static <T> T choice(HashSet<T> hs) {
 		Random r = new Random();
@@ -31,12 +31,12 @@ public class KnapsackGenerator implements Generator<GenerationList> {
 		HashSet<Integer> used = is.getUsed();
 		double sum = 0;
 		for (Integer itemID : used) {
-			sum += items[itemID].weight;
+			sum += items[itemID].getWeight();
 		}
 		return sum;
 	}
 
-	public KnapsackGenerator(Collection problem) {
+	public KnapsackGenerator(KnapsackTask problem) {
 		this.problem = problem;
 	}
 
@@ -52,11 +52,11 @@ public class KnapsackGenerator implements Generator<GenerationList> {
 		Integer toPut = choice(unused);
 		double weight = getWeight(result);
 
-		double delta = (problem.getConstrait() - weight);
-		while (delta <= items[toPut].weight) {
+		double delta = (problem.getCapacity() - weight);
+		while (delta <= items[toPut].getWeight()) {
 			Integer toRemove = choice(used);
 			used.remove(toRemove);
-			delta += items[toRemove].weight;
+			delta += items[toRemove].getWeight();
 			unused.add(toRemove);
 		}
 		unused.remove(toPut);

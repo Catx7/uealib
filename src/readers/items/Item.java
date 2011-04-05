@@ -2,12 +2,22 @@ package readers.items;
 
 public class Item {
 	
-	public double utility;
-	public double weight;
+	private double utility;
+	private double weight;
 	
 	public Item(double u, double w) {
 		this.utility = u;
 		this.weight = w;
 	}
+	
+	public double getUtility() {
+		return utility;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+
 
 }

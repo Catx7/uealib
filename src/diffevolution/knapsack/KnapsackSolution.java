@@ -3,7 +3,7 @@ package diffevolution.knapsack;
 import java.util.List;
 
 
-public class KnapsackSolution extends diffevolution.Solution<KnapsackSolution> {
+public class KnapsackSolution extends diffevolution.ArraySolution<Integer> {
 	
 	final protected int[] collection;	
 	public static int[] maxItemNum;
@@ -23,8 +23,12 @@ public class KnapsackSolution extends diffevolution.Solution<KnapsackSolution> {
         return this.collection.length;
 	}
 	
-	public int get(int index) {
+	public Integer get(int index) {
 		return this.collection[index];
+	}
+	
+	public void set(int index, Integer value) {
+		this.collection[index] = value;
 	}
 	
 	public int[] toArray() {
@@ -50,16 +54,5 @@ public class KnapsackSolution extends diffevolution.Solution<KnapsackSolution> {
 		return new KnapsackSolution(collection);
 	}
 	
-	
-	@Override
-	public void doCrossover(KnapsackSolution donor) {
-		double Cr = 0.8;
-        for(int i = 0; i < donor.length(); ++i){
-		    double p = Math.random();
-		    if (p > Cr) 
-		 	   this.collection[i] = donor.get(i);
-		 }
-	}
-
 
 }

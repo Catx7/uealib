@@ -19,22 +19,24 @@ public class Main {
 
 	public static void main(String[] args) {
 		GraphReader gr = new CoordsGraphReader();
-		Graph graph = gr.readFromFile("graphs/burma14.txt");
+		Graph graph = gr.readFromFile("graphs/att48.txt");
 		
 		TSPInitializator init = new TSPInitializator(graph);
+		init.setGenerationSize(200);
 		TSPEvaluator evaluator = new TSPEvaluator(graph);
-		Context<TSPGeneration, TSPSolution> context = new Context<TSPGeneration, TSPSolution>(evaluator);
-		TSPGenerator<Context<TSPGeneration, TSPSolution>> generator = new TSPGenerator<Context<TSPGeneration, TSPSolution>>();
-		Selector<TSPSolution, TSPGeneration, Context<TSPGeneration, TSPSolution>> selector = new Selector<TSPSolution, TSPGeneration, Context<TSPGeneration, TSPSolution>>(context);
+		SimpleArrayCrossover strategy = new SimpleArrayCrossover();
+		Context<TSPGeneration, TSPSolution, SimpleArrayCrossover<TSPSolution>> context = new Context<TSPGeneration, TSPSolution, SimpleArrayCrossover<TSPSolution>>(evaluator, strategy);
+		TSPGenerator generator = new TSPGenerator(context);
+		Selector<TSPSolution, TSPGeneration, SimpleArrayCrossover<TSPSolution>, Context<TSPGeneration, TSPSolution, SimpleArrayCrossover<TSPSolution>>> selector = new Selector<TSPSolution, TSPGeneration, SimpleArrayCrossover<TSPSolution>, Context<TSPGeneration, TSPSolution, SimpleArrayCrossover<TSPSolution>>>(context);
 		
-		TicksStoppingCriteria<TSPSolution, TSPGeneration, Context<TSPGeneration, TSPSolution>> stoppingCriteria
-		= new TicksStoppingCriteria<TSPSolution, TSPGeneration,Context<TSPGeneration, TSPSolution>>(context, 300);
+		TicksStoppingCriteria<TSPSolution, TSPGeneration, Context<TSPGeneration, TSPSolution, SimpleArrayCrossover<TSPSolution>>> stoppingCriteria
+		= new TicksStoppingCriteria<TSPSolution, TSPGeneration,Context<TSPGeneration, TSPSolution, SimpleArrayCrossover<TSPSolution>>>(context, 300);
 		
-		UnconditionalTransitionCriteria<TSPSolution,TSPGeneration,Context<TSPGeneration,TSPSolution>> transitionCriteria
-		= new UnconditionalTransitionCriteria<TSPSolution, TSPGeneration, Context<TSPGeneration,TSPSolution>>();
+		UnconditionalTransitionCriteria<TSPSolution,TSPGeneration,Context<TSPGeneration,TSPSolution, SimpleArrayCrossover<TSPSolution>>> transitionCriteria
+		= new UnconditionalTransitionCriteria<TSPSolution, TSPGeneration, Context<TSPGeneration,TSPSolution, SimpleArrayCrossover<TSPSolution>>>();
 	//	Generation generation = i.getInitialGeneration();
-		DifferentialEvolutionAlgorithm<TSPSolution, TSPGeneration, Context<TSPGeneration,TSPSolution>> algorithm
-		= new DifferentialEvolutionAlgorithm<TSPSolution, TSPGeneration, Context<TSPGeneration,TSPSolution>>(
+		DifferentialEvolutionAlgorithm<TSPSolution, TSPGeneration, SimpleArrayCrossover<TSPSolution>, Context<TSPGeneration,TSPSolution, SimpleArrayCrossover<TSPSolution>>> algorithm
+		= new DifferentialEvolutionAlgorithm<TSPSolution, TSPGeneration, SimpleArrayCrossover<TSPSolution>, Context<TSPGeneration,TSPSolution, SimpleArrayCrossover<TSPSolution>>>(
 			init, generator, stoppingCriteria, selector, transitionCriteria, context);
 		TSPGeneration generation = algorithm.solve(); 
 		System.out.println(generation.getRepresentation());

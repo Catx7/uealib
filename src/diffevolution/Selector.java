@@ -4,9 +4,10 @@ import diffevolution.Context;
 import diffevolution.Generation;
 import diffevolution.Solution;
 
-public class Selector < S extends Solution<S>,
+public class Selector < S extends ArraySolution<?>,
 						G extends Generation<S>, 
-						C extends Context<G, S>>
+						Cr extends AbstractCrossoverFabric<S>,
+						C extends Context<G, S, Cr>>
 						implements core.Selector<G> {
 	
 	private C context;

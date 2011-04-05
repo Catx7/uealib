@@ -3,9 +3,7 @@ package diffevolution.tsp;
 import java.util.LinkedList;
 import java.util.List;
 
-import diffevolution.tsp.TSPSolution;
-
-public class TSPSolution extends diffevolution.Solution<TSPSolution> { 
+public class TSPSolution extends diffevolution.ArraySolution<Integer> { 
 	
 	final protected int[] route;
 	
@@ -24,7 +22,7 @@ public class TSPSolution extends diffevolution.Solution<TSPSolution> {
         return this.route.length;
 	}
 	
-	public int get(int index) {
+	public Integer get(int index) {
 		return this.route[index];
 	}
 	
@@ -53,16 +51,6 @@ public class TSPSolution extends diffevolution.Solution<TSPSolution> {
 	}
 	
 	
-	@Override
-	public void doCrossover(TSPSolution donor) {
-		double Cr = 0.8;
-        for(int i = 0; i < donor.length(); ++i){
-		    double p = Math.random();
-		    if (p > Cr) 
-		 	   this.route[i] = donor.get(i);
-		 }
-	}
-
 	public TSPSolution leh2route() {
 		int n = this.route.length;
 		LinkedList<Integer> solution = new LinkedList<Integer>();	
@@ -96,6 +84,11 @@ public class TSPSolution extends diffevolution.Solution<TSPSolution> {
 	         leh[k] = s;        
 	     }
 	     return new TSPSolution(leh);
+	}
+
+	@Override
+	public void set(int index, Integer value) {
+		this.route[index] = value;
 	}
 	
 }

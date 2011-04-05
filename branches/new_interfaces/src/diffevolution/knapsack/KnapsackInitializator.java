@@ -1,5 +1,5 @@
 package diffevolution.knapsack;
-import readers.Collection;
+import readers.KnapsackTask;
 import java.util.LinkedList;
 import readers.items.Item;
 import diffevolution.knapsack.KnapsackSolution;
@@ -14,14 +14,14 @@ public class KnapsackInitializator extends Initializator<KnapsackSolution, Knaps
 	public static final int DEFAULT_GENERATION_SIZE = 100;
 	private int generationSize;
 
-	public KnapsackInitializator(Collection c) {	
+	public KnapsackInitializator(KnapsackTask c) {	
 		this.items = c.getItems();
 		this.n = c.getItemsNumber();
-		this.V = c.getConstrait();
+		this.V = c.getCapacity();
 		this.generationSize = DEFAULT_GENERATION_SIZE;
 		int[] limits = new int[this.n]; 
 		for (int i = 0; i < this.n; ++i) {
-			limits[i] = (int) (this.V / this.items[i].weight) + 1;
+			limits[i] = (int) (this.V / this.items[i].getWeight()) + 1;
 		}
 		KnapsackSolution.maxItemNum = limits;
 	}
@@ -30,7 +30,7 @@ public class KnapsackInitializator extends Initializator<KnapsackSolution, Knaps
 	private KnapsackSolution getSolution() {
 		LinkedList<Integer> itemSet = new LinkedList<Integer>();
 		for (int i = 0; i < this.n; ++i) 
-			itemSet.add(rand.nextInt(KnapsackSolution.maxItemNum[i]));
+			itemSet.add(rand.nextInt(KnapsackSolution.maxItemNum[i] + 1));
 		return new KnapsackSolution(itemSet);
 	}
 	
@@ -42,14 +42,14 @@ public class KnapsackInitializator extends Initializator<KnapsackSolution, Knaps
 			itemSet[i] = 0;
 		
 		double sumWeights = 0;
-		for (int i = 0; i < this.n; ++i) { 
+		for (int i = 0; i < this.n; ++i) {
 			int max = 0;	
 			for (int j = 0; j < this.n; ++j)  
-				if (!index.contains(j) && this.items[j].utility > this.items[max].utility)
+				if (!index.contains(j) && this.items[j].getUtility() > this.items[max].getUtility())
 					max = j;
-			while (sumWeights + this.items[max].weight < this.V && itemSet[max] < KnapsackSolution.maxItemNum[max] ) {
+			while (sumWeights + this.items[max].getWeight() < this.V && itemSet[max] < KnapsackSolution.maxItemNum[max] ) {
 				++itemSet[max];
-				sumWeights += this.items[max].weight;
+				sumWeights += this.items[max].getWeight();
 			}
 			index.add(max);
 		}
@@ -74,12 +74,12 @@ public class KnapsackInitializator extends Initializator<KnapsackSolution, Knaps
 	
 	public void setVariaty01KnapsackProblem() {
 		for (int i = 0; i < this.n; ++i) 
-			KnapsackSolution.maxItemNum[i] = 2;
+			KnapsackSolution.maxItemNum[i] = 1;
 	}
 	
 	public void setVariatyKnapsackProblem(int[] maxNum) {
 		for (int i = 0; i < this.n; ++i) 
-			KnapsackSolution.maxItemNum[i] = maxNum[i] + 1;
+			KnapsackSolution.maxItemNum[i] = maxNum[i];
 	}
 }
 	

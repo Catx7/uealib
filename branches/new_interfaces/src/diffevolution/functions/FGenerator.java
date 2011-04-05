@@ -1,22 +1,22 @@
-package diffevolution.knapsack;
+package diffevolution.functions;
 
 import java.util.Random;
 
 import core.Generator;
 import diffevolution.Context;
 
-public class KnapsackGenerator	implements Generator<KnapsackGeneration> {
+public class FGenerator implements Generator<FGeneration> {
 
-	private static final int DEFAULT_F = 1;
+	private static final int DEFAULT_F = 2;
 	private int F = DEFAULT_F;
 	private Context context;
-	
-	public KnapsackGenerator(Context context) {
+
+	public FGenerator(Context context) {
 		this.context = context;
 	}
-	
-	public KnapsackGeneration getNext(KnapsackGeneration currentGeneration) {
-		KnapsackGeneration g = new KnapsackGeneration();
+		
+	public FGeneration getNext(FGeneration currentGeneration) {
+		FGeneration g = new FGeneration();
 		int Gn = currentGeneration.size(); 
 			
 		for(int k = 0; k < Gn; ++k) {			
@@ -28,12 +28,11 @@ public class KnapsackGenerator	implements Generator<KnapsackGeneration> {
 		    	y = rand.nextInt(Gn);
 		    	z = rand.nextInt(Gn);
 		    }
-		    		  
-		    KnapsackSolution newRoute = currentGeneration.mutate(currentGeneration.get(x), currentGeneration.get(y), currentGeneration.get(z), this.getF());  
-		//    newRoute.doCrossover(currentGeneration.get(k));
+		   
+		    FSolution newRoute = currentGeneration.mutate(currentGeneration.get(x), currentGeneration.get(y), currentGeneration.get(z), this.getF());  
 		    context.getCrossoverStrategy().doCrossover(newRoute, currentGeneration.get(k));
 		    g.add(newRoute);
-		}
+		} 
 	    return g;	
 	}
 
@@ -46,3 +45,4 @@ public class KnapsackGenerator	implements Generator<KnapsackGeneration> {
 	}
 
 }
+

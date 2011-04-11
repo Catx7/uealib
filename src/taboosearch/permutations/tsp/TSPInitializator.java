@@ -3,22 +3,21 @@ package taboosearch.permutations.tsp;
 import java.util.LinkedList;
 import java.util.List;
 
-import taboosearch.permutations.AbstractGenerationAndSolutionFabric;
+import taboosearch.permutations.AbstractSolutionFabric;
 import taboosearch.permutations.Move;
 import taboosearch.permutations.Solution;
-import taboosearch.Generation;
 
 import readers.Graph;
 import taboosearch.Evaluator;
 import taboosearch.Initializator;
 
-public class TSPInitializator<S extends Solution, G extends Generation<S>> extends Initializator<S, G> {
+public class TSPInitializator<S extends Solution> extends Initializator<S> {
 	private int n;
 	private double[][] weights;
 	private Evaluator<S, ? extends Move<S>> evaluator;
-	private AbstractGenerationAndSolutionFabric<S, G> fabric;
+	private AbstractSolutionFabric<S> fabric;
 
-	public TSPInitializator(Graph graph, Evaluator<S, ? extends Move<S>> evaluator, AbstractGenerationAndSolutionFabric<S, G> fabric) {	
+	public TSPInitializator(Graph graph, Evaluator<S, ? extends Move<S>> evaluator, AbstractSolutionFabric<S> fabric) {	
 		this.n = graph.getVertexesNumber();
 		this.weights = graph.getWeights();
 		this.evaluator = evaluator;
@@ -41,27 +40,15 @@ public class TSPInitializator<S extends Solution, G extends Generation<S>> exten
 			route.add(nearestV);
 			v = nearestV;
 		}
-		
-		/*
-		LinkedList<Integer> numbers = new LinkedList<Integer>();
-		for (int i = 0; i < n; ++i)
-			numbers.add(i);
-		Collections.shuffle(numbers);
-		return numbers;
-		*/
-		
+				
 		return route;
 	}
 
-	public G getInitialGeneration() {
-		return getInitialGeneration(1);
-	}
-	
-	public G getInitialGeneration(int beginFrom) {
-		assert beginFrom < n;
-		S solution = fabric.makeSolution(getSolution(beginFrom));
+	public S getInitialSolution(int seed) {
+		assert seed < n;
+		/* seed is the vertex number, from which greedy search starts */
+		S solution = fabric.makeSolution(getSolution(seed));
 		solution.setCost(evaluator.evaluate(solution));
-		return fabric.makeGeneration(solution);
+		return solution;
 	}
-
 }

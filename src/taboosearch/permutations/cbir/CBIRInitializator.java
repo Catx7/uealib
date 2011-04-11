@@ -8,7 +8,7 @@ import common.AbstractGenerationFabric;
 import taboosearch.Initializator;
 import taboosearch.readers.FeaturesSpace;
 
-public class CBIRInitializator extends Initializator<CBIRSolution, CBIRGeneration> {
+public class CBIRInitializator extends Initializator<CBIRSolution> {
 	private int n = 0;
 	CBIREvaluator evaluator;
 	
@@ -17,7 +17,7 @@ public class CBIRInitializator extends Initializator<CBIRSolution, CBIRGeneratio
 		this.evaluator = evaluator;
 	}
 
-	public CBIRGeneration getInitialGeneration() {
+	public CBIRSolution getInitialSolution(int seed) {
 		LinkedList<Integer> numbers = new LinkedList<Integer>();
 
 		for (int i = 0; i < n; ++i)
@@ -27,18 +27,10 @@ public class CBIRInitializator extends Initializator<CBIRSolution, CBIRGeneratio
 		int[] order = new int[numbers.size()];
 		for (int i = 0; i < numbers.size(); ++i)
 			order[i] = numbers.get(i);
-		
-		CBIRGeneration result = new CBIRGeneration();
+
 		CBIRSolution solution = new CBIRSolution(order);
 		solution.setCost(evaluator.evaluate(solution));
-		result.add(solution);
-		return result;
-	}
-
-	@Override
-	public CBIRGeneration getInitialGeneration(int size) {
-		// TODO Auto-generated method stub
-		return null;
+		return solution;
 	}
 
 }

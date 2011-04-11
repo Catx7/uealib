@@ -7,27 +7,25 @@ import java.util.concurrent.TimeUnit;
 
 import common.Evaluated;
 import common.Fabric;
-import common.TicksStoppingCriteria;
+import common.alternative.TicksStoppingCriteria;
 
 import taboosearch.permutations.Move;
 import taboosearch.permutations.Solution;
 
 public abstract class ParallelTabooSearchAlgorithm<S extends Solution,
 										  		   M extends Move<S>,
-										  		   G extends Generation<S>,
-										  		   C extends Context<S, M, G>> {
-	protected Initializator<S, G> initializator;
-	protected Fabric<Generator<S, M, G>> generatorFabric;
-	protected TicksStoppingCriteria<S, G, C> stoppingCriteria;
-	protected Fabric<Selector<S, M, G, C>> selectorFabric;
-	protected core.TransitionCriteria<G> transitionCriteria;
+										  		   C extends Context<S, M>> {
+	protected Initializator<S> initializator;
+	protected Fabric<Generator<S, M>> generatorFabric;
+	protected TicksStoppingCriteria<S, C> stoppingCriteria;
+	protected Fabric<Selector<S, M, C>> selectorFabric;
 	protected C context;
 	
 	public ParallelTabooSearchAlgorithm(
-			Initializator<S, G> initializator,
-			Fabric<Generator<S, M, G>> generatorFabric,
-			TicksStoppingCriteria<S, G, C> stoppingCriteria,
-			Fabric<Selector<S, M, G, C>> selectorFabric,
+			Initializator<S> initializator,
+			Fabric<Generator<S, M>> generatorFabric,
+			TicksStoppingCriteria<S, C> stoppingCriteria,
+			Fabric<Selector<S, M, C>> selectorFabric,
 			C context) {
 		this.initializator = initializator;
 		this.generatorFabric = generatorFabric;
@@ -36,16 +34,14 @@ public abstract class ParallelTabooSearchAlgorithm<S extends Solution,
 		this.context = context;
 	}
 	
-	
-	protected abstract Collection<TabooSearchWorker<S, M, G, C>> getWorkers();
-
+	protected abstract Collection<TabooSearchWorker<S, M, C>> getWorkers();
 	
 	public Evaluated<S> solve() {
 		long begin = System.currentTimeMillis();
-		Collection<TabooSearchWorker<S, M, G, C>> workers = getWorkers();
+		Collection<TabooSearchWorker<S, M, C>> workers = getWorkers();
 		ExecutorService threadExecutor = Executors.newFixedThreadPool(workers.size());
 		
-		for (TabooSearchWorker<S, M, G, C> worker : workers)
+		for (TabooSearchWorker<S, M, C> worker : workers)
 			threadExecutor.execute(worker);
 		
 		threadExecutor.shutdown();

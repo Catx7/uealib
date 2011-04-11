@@ -1,11 +1,9 @@
 package taboosearch;
 
-import java.util.List;
-
+import java.util.Collection;
 import taboosearch.exceptions.NotEvaluatedSolution;
-
 import common.Pair;
 
-public abstract interface Generator<S extends Solution, M extends Move<S>, G extends Generation<S>> {
-	public Pair<S, List<M>> getNext(G g) throws NotEvaluatedSolution;
+public abstract interface Generator<S extends Solution, M extends Move<S>> {
+	public Pair<S, Collection<M>> getMoves(S solution) throws NotEvaluatedSolution;
 }

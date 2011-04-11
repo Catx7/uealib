@@ -8,7 +8,7 @@ import taboosearch.permutations.Move;
 import taboosearch.permutations.Solution;
 import taboosearch.permutations.SwapMove;
 
-public class TSPEvaluator<S extends Solution, M extends Move<S>> implements Evaluator<S, M> {
+public class TSPEvaluator<S extends Solution, M extends Move<S>> extends Evaluator<S, M> {
 	private double[][] weights;
 	private int n;
 	private FrequencyMemory<S, M> frequencyMemory;
@@ -34,7 +34,7 @@ public class TSPEvaluator<S extends Solution, M extends Move<S>> implements Eval
 	}
 	
 	public double evaluate(S solution, M move) throws UnsupportedMoveType {
-		if (!(move instanceof SwapMove<?>)) {
+		if (!(move instanceof SwapMove<?>)) {	// TODO implement other types of moves
 			throw new UnsupportedMoveType(move.getClass().getName());
 		}
 		
@@ -72,9 +72,9 @@ public class TSPEvaluator<S extends Solution, M extends Move<S>> implements Eval
 		return cost;
 	}
 	
+	@Override
 	public double evaluateMove(S solution, M move) throws UnsupportedMoveType, NotEvaluatedSolution {
-		double d = frequencyMemory.getPenalty(solution, move);
 		double cost = solution.getCost();
-		return evaluate(solution, move) - cost + d;
+		return evaluate(solution, move) - cost + frequencyMemory.getPenalty(solution, move);
 	}
 }

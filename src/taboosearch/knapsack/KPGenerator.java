@@ -1,13 +1,12 @@
 package taboosearch.knapsack;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import common.Pair;
-import taboosearch.Generation;
 import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.readers.KnapsackProblem;
 
-public class KPGenerator implements taboosearch.Generator<KPSolution, KPMove, Generation<KPSolution>> {
+public class KPGenerator implements taboosearch.Generator<KPSolution, KPMove> {
 	private double[] weights;
 	private double capacity;
 	private int n;
@@ -18,7 +17,7 @@ public class KPGenerator implements taboosearch.Generator<KPSolution, KPMove, Ge
 		this.capacity = task.getCapacity();
 	}
 	
-	private ArrayList<KPMove> getMoves(KPSolution solution) throws NotEvaluatedSolution {
+	private ArrayList<KPMove> getAllMoves(KPSolution solution) throws NotEvaluatedSolution {
 		double currentWeight = 0;
 		for (Integer item : solution) {
 			currentWeight += weights[item];
@@ -47,9 +46,8 @@ public class KPGenerator implements taboosearch.Generator<KPSolution, KPMove, Ge
 		return result;	
 	}
 	@Override
-	public Pair<KPSolution, List<KPMove>> getNext(Generation<KPSolution> generation) throws NotEvaluatedSolution {
-		KPSolution solution = generation.get(0);		
-		return new Pair<KPSolution, List<KPMove>>(solution, getMoves(solution));
+	public Pair<KPSolution, Collection<KPMove>> getMoves(KPSolution solution) throws NotEvaluatedSolution {	
+		return new Pair<KPSolution, Collection<KPMove>>(solution, getAllMoves(solution));
 	}
 
 }

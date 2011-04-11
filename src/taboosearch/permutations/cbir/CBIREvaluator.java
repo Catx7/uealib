@@ -6,7 +6,7 @@ import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.readers.Feature;
 import taboosearch.readers.FeaturesSpace;
 
-public class CBIREvaluator implements Evaluator<CBIRSolution, CBIRSwapMove> {
+public class CBIREvaluator extends Evaluator<CBIRSolution, CBIRSwapMove> {
 
 	public double[][] d;
 	public Feature[][] lambdas;
@@ -65,14 +65,4 @@ public class CBIREvaluator implements Evaluator<CBIRSolution, CBIRSwapMove> {
 		return evaluate(move.operateOn(solution));
 	}
 	
-	public double evaluateMove(CBIRSolution solution, CBIRSwapMove move) {
-		double cost;
-		try {
-			cost = solution.getCost();
-		} catch (NotEvaluatedSolution e) {
-			System.out.println(e.getMessage());
-			cost = evaluate(solution);
-		}
-		return evaluate(solution, move) - cost;
-	}
 }

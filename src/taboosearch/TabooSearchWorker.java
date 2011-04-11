@@ -1,30 +1,28 @@
 package taboosearch;
 
-import java.util.List;
+import java.util.Collection;
 import common.Pair;
-import common.TicksStoppingCriteria;
+import common.alternative.TicksStoppingCriteria;
 import taboosearch.exceptions.NotEvaluatedSolution;
-import taboosearch.exceptions.UnsupportedMoveType;
 import taboosearch.permutations.Solution;
 import taboosearch.permutations.Move;
 
 public class TabooSearchWorker<S extends Solution,
 							   M extends Move<S>,
-							   G extends Generation<S>,
-							   C extends Context<S, M, G>> implements Runnable {
+							   C extends Context<S, M>> implements Runnable {
 	private C context;
-	private TicksStoppingCriteria<S, G, C> stoppingCriteria;
-	private Generator<S, M, G> generator;
-	private Selector<S, M, G, C> selector;
-	private G currentGeneration;
+	private TicksStoppingCriteria<S, C> stoppingCriteria;
+	private Generator<S, M> generator;
+	private Selector<S, M, C> selector;
+	private S currentSolution;
 	
 	public TabooSearchWorker(
-			G initialGeneration,
-			Generator<S, M, G> generator,
-			TicksStoppingCriteria<S, G, C> stoppingCriteria,
-			Selector<S, M, G, C> selector,
+			S initialSolution,
+			Generator<S, M> generator,
+			TicksStoppingCriteria<S, C> stoppingCriteria,
+			Selector<S, M, C> selector,
 			C context) {
-		this.currentGeneration = initialGeneration;
+		this.currentSolution = initialSolution;
 		this.generator = generator;
 		this.stoppingCriteria = stoppingCriteria;
 		this.selector = selector;
@@ -34,14 +32,11 @@ public class TabooSearchWorker<S extends Solution,
 	@Override
 	public void run() {
 		try {
-			while (!stoppingCriteria.isSatisfied(currentGeneration, context)) {
-				Pair<S, List<M>> moves = generator.getNext(currentGeneration);
-				currentGeneration = selector.keepTheBestSolutions(moves);
+			while (!stoppingCriteria.isSatisfied(currentSolution, context)) {
+				Pair<S, Collection<M>> moves = generator.getMoves(currentSolution);
+				currentSolution = selector.getBestSolution(moves);
 				context.tick();
 			}
-		} catch (UnsupportedMoveType e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
 		} catch (NotEvaluatedSolution e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();

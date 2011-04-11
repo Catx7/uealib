@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import common.Fabric;
 import common.Pair;
-import common.TicksStoppingCriteria;
+import common.alternative.TicksStoppingCriteria;
 
 import taboosearch.AdmissibilityChecker;
 import taboosearch.EliteCandidateList;
 import taboosearch.Initializator;
 import taboosearch.Context;
 import taboosearch.Evaluator;
-import taboosearch.Generation;
 import taboosearch.ParallelTabooSearchAlgorithm;
 import taboosearch.Selector;
 import taboosearch.TabooSearchAlgorithm;
@@ -19,12 +18,11 @@ import taboosearch.Taboolator;
 import taboosearch.Tickable;
 import taboosearch.tenures.ConstantTenureStrategy;
 
-public class Util<S extends Solution, M extends Move<S>, G extends Generation<S>>  {
+public class Util<S extends Solution, M extends Move<S>>  {
 	
-	public TabooSearchAlgorithm<S, M, G, Context<S, M, G>> getAlgorithm(			
-			AbstractGenerationAndSolutionFabric<S, G> fabric,
+	public TabooSearchAlgorithm<S, M, Context<S, M>> getAlgorithm(			
 			AbstractMoveFabric<S, M> moveFabric,
-			Initializator<S, G> initializator,
+			Initializator<S> initializator,
 			Evaluator<S, M> evaluator,
 			FrequencyMemory<S, M> frequencyMemory,
 			int dimensionality,
@@ -32,7 +30,7 @@ public class Util<S extends Solution, M extends Move<S>, G extends Generation<S>
 			int eliteListSize,
 			int numberOfIterations) {
 		
-		Context<S, M, G> context = new Context<S, M, G>();
+		Context<S, M> context = new Context<S, M>();
 		
 		Taboolator<S, M> taboolator
 			= new Taboolator<S, M>(new ConstantTenureStrategy(tabooTenure));
@@ -43,20 +41,20 @@ public class Util<S extends Solution, M extends Move<S>, G extends Generation<S>
 		EliteCandidateList<S, M> eliteList
 			= new EliteCandidateList<S, M>(eliteListSize, checker, evaluator);
 	
-		Generator<S, M, G> generator = new Generator<S, M, G>(dimensionality, moveFabric);
+		Generator<S, M> generator = new Generator<S, M>(dimensionality, moveFabric);
 		
-		TicksStoppingCriteria<S, G,	Context<S, M, G>> stoppingCriteria
-			= new TicksStoppingCriteria<S, G, Context<S, M, G>>(numberOfIterations);
+		TicksStoppingCriteria<S, Context<S, M>> stoppingCriteria
+			= new TicksStoppingCriteria<S, Context<S, M>>(numberOfIterations);
 		
-		ArrayList<Tickable<S, M>> ok = new ArrayList<Tickable<S, M>>();
-		ok.add(taboolator);
-		ok.add(frequencyMemory);
-		ok.add(eliteList);
+		ArrayList<Tickable<S, M>> tickables = new ArrayList<Tickable<S, M>>();
+		tickables.add(taboolator);
+		tickables.add(frequencyMemory);
+		tickables.add(eliteList);
 		
-		Selector<S, M, G, Context<S, M, G>> selector = new Selector<S, M, G, Context<S, M, G>>
-				(evaluator, checker, eliteList, fabric, ok, context);
+		Selector<S, M, Context<S, M>> selector =  new Selector<S, M, Context<S, M>>
+				(evaluator, checker, eliteList, tickables, context);
 		
-		return new TabooSearchAlgorithm<S, M, G, Context<S, M, G>>(
+		return new TabooSearchAlgorithm<S, M, Context<S, M>>(
 				initializator,
 				generator,
 				stoppingCriteria,
@@ -64,39 +62,38 @@ public class Util<S extends Solution, M extends Move<S>, G extends Generation<S>
 				context);
 	}
 	
-	abstract class SelectorFabric implements Fabric<Selector<S, M, G, Context<S, M, G>>> {
-		protected Context<S, M, G> context;
-		public SelectorFabric(Context<S, M, G> context) {
+	abstract class SelectorFabric implements Fabric<Selector<S, M, Context<S, M>>> {
+		protected Context<S, M> context;
+		public SelectorFabric(Context<S, M> context) {
 			this.context = context;
 		}		
 	}
 	
-	public ParallelTabooSearchAlgorithm<S, M, G, Context<S, M, G>> getParallelAlgorithm(			
-			final AbstractGenerationAndSolutionFabric<S, G> fabric,
+	public ParallelTabooSearchAlgorithm<S, M, Context<S, M>> getParallelAlgorithm(			
 			final AbstractMoveFabric<S, M> moveFabric,
-			final Initializator<S, G> initializator,
+			final Initializator<S> initializator,
 			final Fabric<Pair<FrequencyMemory<S, M>, Evaluator<S, M>>> evaluatorFabric,
 			final int dimensionality,
 			final int tabooTenure,
 			final int eliteListSize,
 			final int numberOfIterations) {
 		
-		Context<S, M, G> context = new Context<S, M, G>();
+		Context<S, M> context = new Context<S, M>();
 		
-		Fabric<taboosearch.Generator<S, M, G>> generatorFabric
-			= new Fabric<taboosearch.Generator<S, M, G>>() {
-				public taboosearch.Generator<S, M, G> getInstance() {
-					return new Generator<S, M, G>(dimensionality, moveFabric);
+		Fabric<taboosearch.Generator<S, M>> generatorFabric
+			= new Fabric<taboosearch.Generator<S, M>>() {
+				public taboosearch.Generator<S, M> make() {
+					return new Generator<S, M>(dimensionality, moveFabric);
 				}
 			  };
 		
-		Fabric<Selector<S, M, G, Context<S, M, G>>> selectorFabric
+		Fabric<Selector<S, M, Context<S, M>>> selectorFabric
 			= new SelectorFabric(context) {
 				@Override
-				public Selector<S, M, G, Context<S, M, G>> getInstance() {
+				public Selector<S, M, Context<S, M>> make() {
 					Taboolator<S, M> taboolator	= new Taboolator<S, M>(new ConstantTenureStrategy(tabooTenure));
 					
-					Pair<FrequencyMemory<S, M>, Evaluator<S, M>> pair = evaluatorFabric.getInstance();
+					Pair<FrequencyMemory<S, M>, Evaluator<S, M>> pair = evaluatorFabric.make();
 					Evaluator<S, M> evaluator = pair.getSecond();
 					FrequencyMemory<S, M> frequencyMemory = pair.getFirst();
 					
@@ -110,16 +107,16 @@ public class Util<S extends Solution, M extends Move<S>, G extends Generation<S>
 					tickables.add(frequencyMemory);
 					tickables.add(eliteList);
 					
-					return new Selector<S, M, G, Context<S, M, G>>(
-							evaluator, checker, eliteList, fabric, tickables, context);
+					return new Selector<S, M, Context<S, M>>(
+							evaluator, checker, eliteList, tickables, context);
 				}
 			  };
 				
-		TicksStoppingCriteria<S, G,	Context<S, M, G>> stoppingCriteria
-			= new TicksStoppingCriteria<S, G, Context<S, M, G>>(numberOfIterations);
+		TicksStoppingCriteria<S, Context<S, M>> stoppingCriteria
+			= new TicksStoppingCriteria<S, Context<S, M>>(numberOfIterations);
 		
 		
-		return new taboosearch.permutations.ParallelTabooSearchAlgorithm<S, M, G, Context<S, M, G>>(
+		return new taboosearch.permutations.ParallelTabooSearchAlgorithm<S, M, Context<S, M>>(
 				dimensionality,
 				initializator,
 				generatorFabric,

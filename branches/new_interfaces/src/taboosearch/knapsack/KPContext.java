@@ -1,11 +1,9 @@
 package taboosearch.knapsack;
 
 import org.jfree.data.xy.XYSeries;
-
 import taboosearch.Context;
-import taboosearch.Generation;
 
-public class KPContext extends Context<KPSolution, KPMove, Generation<KPSolution>> {
+public class KPContext extends Context<KPSolution, KPMove> {
 	public KPContext() {
 		this.bestSolutionEverCost = Double.MAX_VALUE;
 		this.series = new XYSeries("Cost");

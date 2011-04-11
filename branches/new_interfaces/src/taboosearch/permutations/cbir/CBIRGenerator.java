@@ -3,7 +3,7 @@ package taboosearch.permutations.cbir;
 import taboosearch.permutations.AbstractMoveFabric;
 
 public class CBIRGenerator
-	extends taboosearch.permutations.Generator<CBIRSolution, CBIRSwapMove, CBIRGeneration> {
+	extends taboosearch.permutations.Generator<CBIRSolution, CBIRSwapMove> {
 
 	public CBIRGenerator(
 			int n,

@@ -5,7 +5,7 @@ import taboosearch.exceptions.NotEvaluatedSolution;
 import taboosearch.exceptions.UnsupportedMoveType;
 import taboosearch.readers.KnapsackProblem;
 
-public class KPEvaluator implements Evaluator<KPSolution, KPMove> {
+public class KPEvaluator extends Evaluator<KPSolution, KPMove> {
 	private double[] values;
 	
 	public KPEvaluator(KnapsackProblem task) {
@@ -32,10 +32,5 @@ public class KPEvaluator implements Evaluator<KPSolution, KPMove> {
 			value -= values[droppedItem];
 		
 		return value;
-	}
-	
-	public double evaluateMove(KPSolution solution, KPMove move) throws UnsupportedMoveType, NotEvaluatedSolution {
-		double cost = solution.getCost();
-		return evaluate(solution, move) - cost;
 	}
 }

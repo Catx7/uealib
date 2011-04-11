@@ -32,7 +32,6 @@ public class AdmissibilityChecker<S extends Solution, M extends Move<S>> {
 	
 	public boolean isAdmissible(S solution, M move) throws UnsupportedMoveType, NotEvaluatedSolution {	
 		if (!taboolator.isTabu(solution, move)) {
-			//System.out.println("TABOO" + evaluator.evaluate(solution, move));
 			return true;
 		}
 		return false;

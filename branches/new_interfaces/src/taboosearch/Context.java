@@ -2,8 +2,7 @@ package taboosearch;
 
 import org.jfree.data.xy.XYSeries;
 
-public class Context<S extends Solution, M extends Move<S>, G extends Generation<S>>
-				implements common.TickableContext {
+public class Context<S extends Solution, M extends Move<S>> implements common.TickableContext {
 	protected int ticks = 0;
 	protected XYSeries series;
 	public S bestSolutionEver;

@@ -1,12 +1,12 @@
 package taboosearch.permutations;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import common.Pair;
-import taboosearch.Generation;
 
-public class Generator<S extends Solution, M extends Move<S>, G extends Generation<S>>
-		implements taboosearch.Generator<S, M, G> {
+public class Generator<S extends Solution, M extends Move<S>>
+			implements taboosearch.Generator<S, M> {
 	private AbstractMoveFabric<? extends S, ? extends M> moveFabric;
 	private List<M> moves;
 	
@@ -25,9 +25,7 @@ public class Generator<S extends Solution, M extends Move<S>, G extends Generati
 		return result;	
 	}
 
-	public Pair<S, List<M>> getNext(G generation) {
-		assert generation.size() == 1;
-		S solution = generation.get(0);		
-		return new Pair<S, List<M>>(solution, moves);
+	public Pair<S, Collection<M>> getMoves(S solution) {
+		return new Pair<S, Collection<M>>(solution, moves);
 	}
 }

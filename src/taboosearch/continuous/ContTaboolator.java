@@ -16,7 +16,6 @@ public class ContTaboolator extends Taboolator<ContSolution, ContMove> {
 	
 	public ContTaboolator(TenureStrategy strategy) {
 		super(strategy);
-		System.out.println("ASDASDASDASAS HEREEEEEEE" + strategy.getTenure());
 		balls = new ArrayList<Ball>();
 	}
 	
@@ -25,7 +24,7 @@ public class ContTaboolator extends Taboolator<ContSolution, ContMove> {
 		double newY = solution.getCoord(1) + move.deltaY;
 		for (int i = 0; i < balls.size(); ++i) {
 			Ball ball = balls.get(i);
-			if ( Math.pow(ball.centerX - newX, 2) + Math.pow(ball.centerY - newY, 2) < Math.pow(ball.radius, 2)) {
+			if (Math.pow(ball.centerX - newX, 2) + Math.pow(ball.centerY - newY, 2) < Math.pow(ball.radius, 2)) {
 				return true;
 			}
 		}

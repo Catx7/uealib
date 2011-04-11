@@ -62,7 +62,7 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 public class Main {
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		/*Context<ContSolution, ContMove> context = new Context<ContSolution, ContMove>();
+		Context<ContSolution, ContMove> context = new Context<ContSolution, ContMove>();
 				
 		ContEvaluator evaluator = new ContEvaluator();
 		ContTaboolator taboolator = new ContTaboolator(new ConstantTenureStrategy(10));
@@ -76,7 +76,7 @@ public class Main {
 		ContGenerator generator = new ContGenerator(checker);
 		
 		TicksStoppingCriteria<ContSolution, Context<ContSolution, ContMove>> stoppingCriteria
-			= new TicksStoppingCriteria<ContSolution, Context<ContSolution, ContMove>>(4000);
+			= new TicksStoppingCriteria<ContSolution, Context<ContSolution, ContMove>>(2000);
 		
 		ArrayList<Tickable<ContSolution, ContMove>> tickables = new ArrayList<Tickable<ContSolution, ContMove>>();
 		tickables.add(taboolator);
@@ -106,9 +106,9 @@ public class Main {
 		}
 		
 		// (new GUI(context.getSeries())).run();
-		*/
 		
 		
+		/*
 		KPContext context = new KPContext();
 		KnapsackProblemReader r = new KnapsackProblemReader();
 		KnapsackProblem task = r.readFromFile("/home/rrhu/workspace/uealib/knapsacks/2000.txt");
@@ -152,7 +152,7 @@ public class Main {
 		} catch (NotEvaluatedSolution e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		//(new GUI(context.getSeries())).run();
 		
 		//GeoCoordsGraphReader graphReader = new GeoCoordsGraphReader();

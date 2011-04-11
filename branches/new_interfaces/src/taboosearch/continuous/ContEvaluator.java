@@ -30,7 +30,8 @@ public class ContEvaluator extends Evaluator<ContSolution, ContMove> {
 	@Override
 	public double evaluate(ContSolution solution, ContMove move)
 			throws UnsupportedMoveType, NotEvaluatedSolution {
-		return function(solution.getCoord(0) + move.deltaX, solution.getCoord(1) + move.deltaY);
+		return function(solution.getCoord(0) + move.deltaX,
+						solution.getCoord(1) + move.deltaY);
 	}
 
 	@Override

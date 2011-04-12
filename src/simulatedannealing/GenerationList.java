@@ -13,10 +13,5 @@ public class GenerationList extends ArrayList<Solution> implements
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public Generation<Solution> getBest() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

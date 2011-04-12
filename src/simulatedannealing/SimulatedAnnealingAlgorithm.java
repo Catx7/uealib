@@ -65,6 +65,9 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 				tracer.Trace(currentIteration, ctx.getEvaluator().evaluate(
 						currentGeneration.get(0)));
 			
+			System.out.println(ctx.getEvaluator().evaluate(
+					currentGeneration.get(0)));
+			
 			ctx.getShedule().anneal();
 			currentIteration++;
 		}

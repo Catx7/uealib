@@ -1,23 +1,26 @@
 package simulatedannealing.continous;
 
 import core.Solution;
+import functions.Functions;
 import simulatedannealing.Evaluator;
+import usablefunctions.Function;
 
 public class FuncEvaluator implements Evaluator {
 
-	private static double func(double x, double y) {
-		return Math.sin(x * x + y * y) / (x * x + y * y);
+	private Function func;
+	public FuncEvaluator(Function func) {
+		this.func = func;
 	}
 
 	@Override
 	public int compare(Solution arg0, Solution arg1) {
-		return Double.compare(evaluate(arg0), evaluate(arg1));
+		return Double.compare(evaluate(arg1), evaluate(arg0));
 	}
 
 	@Override
 	public double evaluate(Solution s) {
 		Point a = (Point) s;
-		return func(a.x, a.y);
+		return func.apply(a.coords);
 	}
 
 }

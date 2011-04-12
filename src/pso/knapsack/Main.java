@@ -1,8 +1,8 @@
 package pso.knapsack;
 
-import readers.Collection;
+import readers.KnapsackTask;
 import readers.items.KnapsackDataReader;
-import readers.items.TestReader;
+import readers.items.KnapsackTestReader;
 import common.TicksStoppingCriteria;
 import common.UnconditionalTransitionCriteria;
 
@@ -13,9 +13,9 @@ import pso.Selector;
 public class Main {
 
 	public static void main(String[] args) {
-		KnapsackDataReader reader = new TestReader();
+		KnapsackDataReader reader = new KnapsackTestReader();
 		
-		Collection c = reader.readFromFile("knapsacks/100.txt");
+		KnapsackTask c = reader.readFromFile("knapsacks/100.txt");
 		KnapsackEvaluator evaluator = new KnapsackEvaluator(c);
 		KnapsackInitializator init = new KnapsackInitializator(c);
 		init.setGenerationSize(100);

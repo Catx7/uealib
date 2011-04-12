@@ -1,6 +1,6 @@
 package pso.knapsack;
 
-import readers.Collection;
+import readers.KnapsackTask;
 import readers.items.Item;
 
 //import diffevolution.knapsack.Item;
@@ -13,10 +13,10 @@ public class KnapsackEvaluator extends Evaluator<KnapsackSolution> {
 	private int n;
 	private double V;
 	
-	public KnapsackEvaluator(Collection c) {
+	public KnapsackEvaluator(KnapsackTask c) {
 		this.items = c.getItems();
 		this.n = c.getItemsNumber();
-		this.V = c.getConstrait();
+		this.V = c.getCapacity();
 	}
 	
 	public double evaluate(KnapsackSolution solution) {
@@ -25,8 +25,8 @@ public class KnapsackEvaluator extends Evaluator<KnapsackSolution> {
 		double value = 0.0;
 		double weights = 0.0;
 		for ( int i = 0; i < n; ++i ) {
-			value += solution.get(i)*items[i].utility;
-			weights += solution.get(i)*items[i].weight;
+			value += solution.get(i)*items[i].getUtility();
+			weights += solution.get(i)*items[i].getWeight();
 		}
 		value = -value;
 		if (weights > this.V)	// the total weight is more than limit

@@ -18,8 +18,7 @@ public class FuncInitializator implements Initializator<GenerationList> {
 		Random r = new Random();
 
 		for(int i=0;i<a.getDimension();++i) {
-			int direct = r.nextDouble() < 0.5 ? 1 : -1;
-			a.coords[i] = direct * r.nextDouble();
+			a.coords[i] = r.nextDouble()*(domain[i][1]-domain[i][0]) + domain[i][0];
 		}
 		
 		GenerationList b = new GenerationList();

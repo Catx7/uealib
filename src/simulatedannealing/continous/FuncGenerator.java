@@ -17,7 +17,7 @@ public class FuncGenerator implements Generator<GenerationList> {
 	public GenerationList getNext(GenerationList g) {
 		Random r = new Random();
 
-		double eps = r.nextDouble() / 10.;
+		double eps = 0.05;
 		Point a = (Point) g.get(0);
 		Point b = new Point(a.getDimension());
 		
@@ -25,13 +25,12 @@ public class FuncGenerator implements Generator<GenerationList> {
 		//TODO: математика ололо
 		for(int i = 0; i < a.getDimension(); ++i) {
 			int direct = r.nextDouble() < 0.5 ? 1 : -1;
-			b.coords[i] = (a.coords[i] + direct * eps);
-			if(b.coords[i] < domain[i][0]) {
-				b.coords[i] = b.coords[i] + (domain[i][1]-domain[i][0]);				
-			}
-			else if(b.coords[i] > domain[i][1]) {
-				b.coords[i] = b.coords[i] - (domain[i][1]-domain[i][0]);
-			}
+			
+			if(direct == 1)
+				b.coords[i] = a.coords[i] + (domain[i][1]-a.coords[i])*r.nextDouble()*eps;
+			else
+				b.coords[i] = a.coords[i] - (a.coords[i]-domain[i][0])*r.nextDouble()*eps;
+				         
 		}
 		GenerationList res = new GenerationList();
 		res.add(b);

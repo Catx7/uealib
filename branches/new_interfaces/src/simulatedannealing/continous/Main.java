@@ -2,6 +2,7 @@ package simulatedannealing.continous;
 
 import java.io.File;
 
+import readers.FunctionReader;
 import simulatedannealing.ChartTracer;
 import simulatedannealing.ChartTracer.Type;
 import simulatedannealing.Evaluator;
@@ -29,7 +30,7 @@ public class Main {
 		tracer.AddHeader("TaskName", "continous");
 		tracer.AddHeader("TaskDimension", Integer.toString(2));
 		
-		Function func = new Shubert2();
+		Function func = FunctionReader.getFunction("Brown1");
 		
 		Initializator<GenerationList> i = new FuncInitializator(func.getDomain());
 		Evaluator e = new FuncEvaluator(func);
@@ -37,6 +38,8 @@ public class Main {
 
 		SimulatedAnnealingAlgorithm alg = new SimulatedAnnealingAlgorithm(e, i,
 				g);
+		
+		alg.setIterationsPerStage(800);
 		
 		alg.setChartTracer(tracer);
 		

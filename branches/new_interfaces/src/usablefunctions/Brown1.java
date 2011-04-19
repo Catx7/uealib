@@ -25,7 +25,7 @@ public class Brown1 implements Function {
 					Math.pow(Math.E, 20*(xs[i] - xs[i+1]));
 		}
 		
-		return sum1 + sum2;
+		return Math.pow(sum1,2) + sum2;
 	}
 
 	@Override

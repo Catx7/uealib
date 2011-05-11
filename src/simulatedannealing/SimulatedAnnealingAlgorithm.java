@@ -1,20 +1,31 @@
 package simulatedannealing;
 
 import simulatedannealing.ChartTracer.Type;
-import core.Algorithm;
 import core.Generator;
-import core.Initializator;
+import core.Solution;
 
-public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
+public class SimulatedAnnealingAlgorithm <T extends Solution> {
 
 	private int iterationsPerStage;
-	private SimulatedAnnealingContext ctx;
+	private SimulatedAnnealingContext<T> ctx;
 	private ChartTracer tracer;
+	private ITransitionCriteria transitionCriteria;
+	private IStoppingCriteria stoppingCriteria;
+	
 
-	public SimulatedAnnealingAlgorithm(Evaluator e,
-			Initializator<GenerationList> i, Generator<GenerationList> g) {
-		super(i, g, null, null, null, null);
-		ctx = new SimulatedAnnealingContext();
+	public SimulatedAnnealingAlgorithm(IEvaluator e,
+			IInitializator<T> i, IGenerator<T> g) {
+		
+		this(e,i,g,0.98);
+		
+
+	}
+	
+	public SimulatedAnnealingAlgorithm(IEvaluator e,
+			IInitializator<T> i, IGenerator<T> g, double c) {
+		
+		tracer = null;
+		ctx = new SimulatedAnnealingContext<T>();
 
 		this.transitionCriteria = new MetropolisRule(ctx);
 		this.stoppingCriteria = new StabilyzedStoppingCriteria(20, ctx);
@@ -23,9 +34,8 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 		ctx.setInitializator(i);
 		ctx.setEvaluator(e);
 
-		ctx.initTemperatureShedule();
-		iterationsPerStage = 800; // TODO: по хорошему должно зависеть от
-		// степеней свободы задачи
+		ctx.initTemperatureShedule(c);
+		iterationsPerStage = 800; 
 
 	}
 
@@ -37,19 +47,20 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 		this.tracer = tracer;
 	}
 
-	public GenerationList solve() {
-		tracer.timeStart();
-		GenerationList currentGeneration = this.init.getInitialGeneration();
+	public T solve() {
+		if(tracer != null)
+			tracer.timeStart();
+		T currentSolution = this.ctx.getInitializator().getInitialSolution();
 		int currentIteration = 0;
 		
 		
-		while (!stoppingCriteria.isSatisfied(currentGeneration)) {
+		while (!stoppingCriteria.isSatisfied()) {
 			boolean nochange = true;
 			for (int i = 0; i < iterationsPerStage; ++i) {
-				GenerationList g = generator.getNext(currentGeneration);
+				T nextSolution = ctx.getGenerator().getNext(currentSolution);
 
-				if (transitionCriteria.isSatisfied(currentGeneration, g)) {
-					currentGeneration = g;
+				if (transitionCriteria.isSatisfied(currentSolution, nextSolution)) {
+					currentSolution = nextSolution;
 					nochange = false;
 				}
 			}
@@ -61,18 +72,22 @@ public class SimulatedAnnealingAlgorithm extends Algorithm<GenerationList> {
 				ctx.countToZero();
 			}
 			
-			if(tracer.getType() == Type.IterationToFitness)
-				tracer.Trace(currentIteration, ctx.getEvaluator().evaluate(
-						currentGeneration.get(0)));
+			if(tracer!=null) {
+				if(tracer.getType() == Type.IterationToFitness)
+					tracer.Trace(currentIteration, ctx.getEvaluator().evaluate(
+							currentSolution));
+			}
+				
 			
 			System.out.println(ctx.getEvaluator().evaluate(
-					currentGeneration.get(0)));
+					currentSolution));
 			
 			ctx.getShedule().anneal();
 			currentIteration++;
 		}
-		tracer.timeEnd();
+		if(tracer != null)
+			tracer.timeEnd();
 
-		return currentGeneration;
+		return currentSolution;
 	}
 }

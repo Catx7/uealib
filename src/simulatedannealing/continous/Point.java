@@ -1,8 +1,9 @@
 package simulatedannealing.continous;
 
+import simulatedannealing.AbstractSolution;
 import core.Solution;
 
-public class Point extends Solution {
+public class Point extends AbstractSolution {
 	public double[] coords;
 	public Point(int dimension) {
 		coords = new double[dimension];

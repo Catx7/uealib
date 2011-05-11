@@ -8,7 +8,7 @@ import core.TransitionCriteria;
  * 
  */
 
-public class MetropolisRule implements TransitionCriteria<GenerationList> {
+public class MetropolisRule implements ITransitionCriteria {
 
 	private SimulatedAnnealingContext ctx;
 	
@@ -19,12 +19,9 @@ public class MetropolisRule implements TransitionCriteria<GenerationList> {
 
 
 	@Override
-	public boolean isSatisfied(GenerationList g, GenerationList h) {
-		Evaluator e = ctx.getEvaluator();
+	public boolean isSatisfied(Solution current, Solution next) {
+		IEvaluator e = ctx.getEvaluator();
 		double t = ctx.getShedule().getTemperature();
-
-		Solution current = g.get(0);
-		Solution next = h.get(0);
 
 		int cmp = e.compare(current, next);
 

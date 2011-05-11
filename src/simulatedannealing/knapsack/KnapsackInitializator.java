@@ -4,11 +4,11 @@ import java.util.HashSet;
 
 import readers.KnapsackTask;
 import readers.items.Item;
-import simulatedannealing.GenerationList;
+import simulatedannealing.IInitializator;
 import core.Initializator;
 import core.Solution;
 
-public class KnapsackInitializator implements Initializator<GenerationList> {
+public class KnapsackInitializator implements IInitializator<ItemSet> {
 
 	private KnapsackTask problem;
 
@@ -17,7 +17,7 @@ public class KnapsackInitializator implements Initializator<GenerationList> {
 	}
 
 	@Override
-	public GenerationList getInitialGeneration() {
+	public ItemSet getInitialSolution() {
 		HashSet<Integer> used = new HashSet<Integer>();
 
 		Item[] items = problem.getItems();
@@ -31,10 +31,8 @@ public class KnapsackInitializator implements Initializator<GenerationList> {
 			++i;
 		}
 
-		Solution sol = new ItemSet(used, problem.getItemsNumber());
-		GenerationList res = new GenerationList();
-		res.add(sol);
-		return res;
+		ItemSet sol = new ItemSet(used, problem.getItemsNumber());
+		return sol;
 
 	}
 

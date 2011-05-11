@@ -17,19 +17,14 @@ import usablefunctions.Shubert2;
 import core.Generator;
 import core.Initializator;
 
-public class Main {
+public class DummyMain {
 
 	/**
 	 * @param args
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		File logDir = new File("./logs/");
-		logDir.mkdir();
 		
-		ChartTracer tracer = new ChartTracer(Type.IterationToFitness);
-		tracer.AddHeader("TaskName", "continous");
-		tracer.AddHeader("TaskDimension", Integer.toString(2));
 		
 		Function func = FunctionReader.getFunction("Brown1");
 		
@@ -41,14 +36,11 @@ public class Main {
 		
 		alg.setIterationsPerStage(800);
 		
-		alg.setChartTracer(tracer);
-		
+		long time = System.currentTimeMillis();
+		Point r = alg.solve();
+		System.out.println(System.currentTimeMillis()-time);
 
-		Point a = alg.solve();
-		
-		tracer.serializeToFile(logDir);
-
-		System.out.print(a.toString());
+		System.out.print(e.evaluate(r));
 
 	}
 

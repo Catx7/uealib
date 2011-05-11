@@ -2,9 +2,9 @@ package simulatedannealing.tsp;
 
 import core.Solution;
 import readers.Graph;
-import simulatedannealing.Evaluator;
+import simulatedannealing.IEvaluator;
 
-public class TSPEvaluator implements Evaluator {
+public class TSPEvaluator implements IEvaluator<TSPWay> {
 
 	double[][] weights;
 	
@@ -12,7 +12,7 @@ public class TSPEvaluator implements Evaluator {
 		weights = g.getWeights();
 	}
 	@Override
-	public int compare(Solution o1, Solution o2) {
+	public int compare(TSPWay o1, TSPWay o2) {
 		if(Math.abs(evaluate(o1) - evaluate(o2)) < 1e-10)
 			return 0;
 		
@@ -22,8 +22,11 @@ public class TSPEvaluator implements Evaluator {
 	}
 
 	@Override
-	public double evaluate(Solution s) {
-		TSPWay w = (TSPWay)s;
+	public double evaluate(TSPWay w) {
+		
+		if(w.getFitness() != null)
+			return w.getFitness();
+		
 		int[] way = w.getWay();
 		double result = 0;
 		
@@ -31,6 +34,7 @@ public class TSPEvaluator implements Evaluator {
 			result += weights[way[i]][way[(i+1)%way.length]];
 		}
 		
+		w.setFitness((new Double(result)));
 		return result;
 	}
 

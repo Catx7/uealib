@@ -1,11 +1,11 @@
 package simulatedannealing.tsp;
 
 import readers.Graph;
-import simulatedannealing.GenerationList;
+import simulatedannealing.IInitializator;
 import core.Initializator;
 import core.Solution;
 
-public class TSPInitializator implements Initializator<GenerationList>{
+public class TSPInitializator implements IInitializator<TSPWay>{
 
 	private int n;
 	
@@ -14,16 +14,13 @@ public class TSPInitializator implements Initializator<GenerationList>{
 	}
 	
 	@Override
-	public GenerationList getInitialGeneration() {
+	public TSPWay getInitialSolution() {
 		int way[] = new int[n];
 		for(int i=0; i<n ; ++i) {
 			way[i] = i;
 		}
-		Solution s = new TSPWay(way);
-		
-		GenerationList result = new GenerationList();
-		result.add(s);
-		return result;
+		TSPWay s = new TSPWay(way);
+		return s;
 	}
 
 }

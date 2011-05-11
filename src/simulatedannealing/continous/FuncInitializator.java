@@ -2,18 +2,18 @@ package simulatedannealing.continous;
 
 import java.util.Random;
 
-import simulatedannealing.GenerationList;
+import simulatedannealing.IInitializator;
 import usablefunctions.Function;
 import core.Initializator;
 
-public class FuncInitializator implements Initializator<GenerationList> {
+public class FuncInitializator implements IInitializator<Point> {
 	private double[][] domain;
 	public FuncInitializator(double[][] domain) {
 		this.domain = domain;
 	}
 	
 	@Override
-	public GenerationList getInitialGeneration() {
+	public Point  getInitialSolution() {
 		Point a = new Point(domain.length);
 		Random r = new Random();
 
@@ -21,9 +21,7 @@ public class FuncInitializator implements Initializator<GenerationList> {
 			a.coords[i] = r.nextDouble()*(domain[i][1]-domain[i][0]) + domain[i][0];
 		}
 		
-		GenerationList b = new GenerationList();
-		b.add(a);
-		return b;
+		return a;
 	}
 
 }

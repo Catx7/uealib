@@ -1,15 +1,8 @@
 package simulatedannealing;
 
-import core.StoppingCriteria;
 
-/**
- * Остановка, если даже при <code> stopCount </code> итерациях текущее решение
- * не изменилось
- * 
- */
 
-public class StabilyzedStoppingCriteria implements
-		StoppingCriteria<GenerationList> {
+public class StabilyzedStoppingCriteria implements IStoppingCriteria {
 	private int stopCount;
 	private SimulatedAnnealingContext ctx;
 
@@ -19,7 +12,7 @@ public class StabilyzedStoppingCriteria implements
 	}
 
 	@Override
-	public boolean isSatisfied(GenerationList g) {
+	public boolean isSatisfied() {
 		if (ctx.getCount() >= stopCount)
 			return true;
 

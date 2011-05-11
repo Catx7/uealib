@@ -2,9 +2,11 @@ package simulatedannealing.knapsack;
 
 import java.util.HashSet;
 
+import simulatedannealing.AbstractSolution;
+
 import core.Solution;
 
-public class ItemSet extends Solution {
+public class ItemSet extends AbstractSolution {
 	private HashSet<Integer> used;
 	private HashSet<Integer> unused;
 	private int N;

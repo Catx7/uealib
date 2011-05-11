@@ -5,10 +5,10 @@ import java.util.Random;
 
 import readers.KnapsackTask;
 import readers.items.Item;
-import simulatedannealing.GenerationList;
+import simulatedannealing.IGenerator;
 import core.Generator;
 
-public class KnapsackGenerator implements Generator<GenerationList> {
+public class KnapsackGenerator implements IGenerator<ItemSet> {
 
 	private KnapsackTask problem;
 
@@ -41,9 +41,8 @@ public class KnapsackGenerator implements Generator<GenerationList> {
 	}
 
 	@Override
-	public GenerationList getNext(GenerationList g) {
+	public ItemSet getNext(ItemSet sol) {
 
-		ItemSet sol = (ItemSet) g.get(0);
 		ItemSet result = new ItemSet((HashSet<Integer>) sol.getUsed().clone(),
 				sol.getN());
 		Item[] items = problem.getItems();
@@ -62,9 +61,7 @@ public class KnapsackGenerator implements Generator<GenerationList> {
 		unused.remove(toPut);
 		used.add(toPut);
 
-		GenerationList res = new GenerationList();
-		res.add(result);
-		return res;
+		return result;
 	}
 
 }

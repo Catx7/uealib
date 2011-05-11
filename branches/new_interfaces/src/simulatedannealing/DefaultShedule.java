@@ -2,30 +2,37 @@ package simulatedannealing;
 
 import core.Solution;
 
-class DefaultShedule implements TemperatureShedule {
+class DefaultShedule implements ITemperatureShedule {
 
 	private double T;
 	private double c;
-
-	public DefaultShedule(double percentOfDegradation, SimulatedAnnealingContext ctx) {
-		GenerationList initg = ctx.getInitializator().getInitialGeneration();
-		Evaluator e = ctx.getEvaluator();
-		Solution init = initg.get(0);
+	public DefaultShedule(double percentOfDegradation, SimulatedAnnealingContext ctx, double c) {
+		Solution initialSolution = ctx.getInitializator().getInitialSolution();
+		IEvaluator e = ctx.getEvaluator();
 		double sum = 0;
 
 		int count = 100;
 		for (int i = 0; i < count; ++i) {
-			GenerationList nextg = ctx.getGenerator().getNext(initg);
-			Solution next = nextg.get(0);
+			Solution nextSolution = ctx.getGenerator().getNext(initialSolution);
 
-			double delta = Math.abs(e.evaluate(next) - e.evaluate(init));
+			double delta = Math.abs(e.evaluate(nextSolution) - e.evaluate(initialSolution));
 			sum += delta;
 		}
 
 		double avg = sum / count;
 
 		T = -avg / Math.log(percentOfDegradation);
-		c = 0.98;
+		this.c = c;
+	}
+	public DefaultShedule(double percentOfDegradation, SimulatedAnnealingContext ctx) {
+		this(percentOfDegradation, ctx, 0.98);
+	}
+	
+
+	
+	
+	public void setC(double c) {
+		this.c = c;
 	}
 
 	@Override

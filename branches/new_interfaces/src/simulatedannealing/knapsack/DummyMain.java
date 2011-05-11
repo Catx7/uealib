@@ -14,24 +14,19 @@ import simulatedannealing.SimulatedAnnealingAlgorithm;
 import core.Generator;
 import core.Initializator;
 
-public class Main {
+public class DummyMain {
 
 	/**
 	 * @param args
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		File logsDir = new File("./logs/");
-		logsDir.mkdir();
-		
-		ChartTracer tracer = new ChartTracer(Type.IterationToFitness);
-		tracer.AddHeader("TaskName", "knapsack");
 		
 		
 		KnapsackDataReader kdr = new KnapsackTestReader();
-		KnapsackTask problem = kdr.readFromFile(args[0]);
+		KnapsackTask problem = kdr.readFromFile("./knapsacks/2000.txt");
 		
-		tracer.AddHeader("TaskDimension", Integer.toString(problem.getItemsNumber()));
+
 
 		IInitializator<ItemSet> i = new KnapsackInitializator(problem);
 		IEvaluator<ItemSet> e = new KnapsackEvaluator(problem);
@@ -39,12 +34,13 @@ public class Main {
 
 		SimulatedAnnealingAlgorithm<ItemSet> alg = new SimulatedAnnealingAlgorithm<ItemSet>(e, i, g);
 		alg.setIterationsPerStage(problem.getItemsNumber());
-		alg.setChartTracer(tracer);
 
-		ItemSet sol = alg.solve();
 
-		tracer.serializeToFile(logsDir);
-		System.out.println(e.evaluate(sol));
+		long time = System.currentTimeMillis();
+		ItemSet r = alg.solve();
+		System.out.println(System.currentTimeMillis()-time);
+
+		System.out.println(e.evaluate(r));
 
 		return;
 	}

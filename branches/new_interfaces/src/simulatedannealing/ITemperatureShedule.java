@@ -1,7 +1,6 @@
 package simulatedannealing;
 
-public interface TemperatureShedule {
+public interface ITemperatureShedule {
 	double getTemperature();
-
 	void anneal();
 }

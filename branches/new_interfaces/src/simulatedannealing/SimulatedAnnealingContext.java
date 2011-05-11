@@ -1,22 +1,25 @@
 package simulatedannealing;
 
-import core.Generator;
-import core.Initializator;
+import core.Solution;
 
-class SimulatedAnnealingContext implements core.Context {
-	private TemperatureShedule shedule;
+class SimulatedAnnealingContext <T extends Solution> implements core.Context {
+	private ITemperatureShedule shedule;
 	private int stabilyzedCount;
 
-	private Initializator<GenerationList> i;
-	private Generator<GenerationList> g;
-	private Evaluator e;
+	private IInitializator<T> i;
+	private IGenerator<T> g;
+	private IEvaluator e;
 
 	public SimulatedAnnealingContext() {
 		stabilyzedCount = 0;
 	}
 
 	public void initTemperatureShedule() {
-		shedule = new DefaultShedule(0.5, this);
+		initTemperatureShedule(0.5);
+	}
+	
+	public void initTemperatureShedule(double c) {
+		shedule = new DefaultShedule(0.5, this, c);
 	}
 
 	public int getCount() {
@@ -31,31 +34,31 @@ class SimulatedAnnealingContext implements core.Context {
 		stabilyzedCount = 0;
 	}
 
-	public TemperatureShedule getShedule() {
+	public ITemperatureShedule getShedule() {
 		return shedule;
 	}
 
-	public Initializator<GenerationList> getInitializator() {
+	public IInitializator<T> getInitializator() {
 		return i;
 	}
 
-	public void setInitializator(Initializator<GenerationList> i) {
+	public void setInitializator(IInitializator<T> i) {
 		this.i = i;
 	}
 
-	public Generator<GenerationList> getGenerator() {
+	public IGenerator<T> getGenerator() {
 		return g;
 	}
 
-	public void setGenerator(Generator<GenerationList> g) {
+	public void setGenerator(IGenerator<T> g) {
 		this.g = g;
 	}
 
-	public Evaluator getEvaluator() {
+	public IEvaluator getEvaluator() {
 		return e;
 	}
 
-	public void setEvaluator(Evaluator e) {
+	public void setEvaluator(IEvaluator e) {
 		this.e = e;
 	}
 

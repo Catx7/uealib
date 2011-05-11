@@ -3,14 +3,11 @@ package simulatedannealing;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import simulatedannealing.ChartTracer.Type;
 
 public class ChartTracer {
 	
@@ -28,7 +25,7 @@ public class ChartTracer {
 	
 	public ChartTracer(Type type) {
 		header = new HashMap<String, String>();
-		pointPull = new TreeMap<Integer, Double>();
+		pointPull = new TreeMap<Double, Double>();
 		this.type = type;
 		
 		setTraceCount(10);
@@ -36,7 +33,7 @@ public class ChartTracer {
 	
 	
 	private HashMap<String, String> header;
-	private SortedMap<Integer, Double> pointPull;
+	private SortedMap<Double, Double> pointPull;
 	
 	public void timeStart() {
 		timeStart = System.currentTimeMillis();
@@ -65,6 +62,9 @@ public class ChartTracer {
 	}
 	
 	public void AddPoint(int x, double y) {
+		pointPull.put((double)x, y);
+	}
+	public void AddPoint(double x, double y) {
 		pointPull.put(x, y);
 	}
 	
@@ -112,7 +112,7 @@ public class ChartTracer {
 		
 		out.println();
 		
-		for (Map.Entry<Integer, Double> entry : pointPull.entrySet()) {
+		for (Map.Entry<Double, Double> entry : pointPull.entrySet()) {
 			out.println(entry.getKey()+" "+entry.getValue());
 		}
 		out.flush();

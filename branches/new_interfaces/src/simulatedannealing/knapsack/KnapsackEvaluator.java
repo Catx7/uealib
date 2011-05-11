@@ -4,10 +4,10 @@ import java.util.HashSet;
 
 import readers.KnapsackTask;
 import readers.items.Item;
-import simulatedannealing.Evaluator;
+import simulatedannealing.IEvaluator;
 import core.Solution;
 
-public class KnapsackEvaluator implements Evaluator {
+public class KnapsackEvaluator implements IEvaluator<ItemSet> {
 
 	private KnapsackTask problem;
 
@@ -16,7 +16,7 @@ public class KnapsackEvaluator implements Evaluator {
 	}
 
 	@Override
-	public int compare(Solution arg0, Solution arg1) {
+	public int compare(ItemSet arg0, ItemSet arg1) {
 		double fit1 = evaluate(arg0);
 		double fit2 = evaluate(arg1);
 		if (Math.abs(fit1 - fit2) < 1e-10)
@@ -28,14 +28,20 @@ public class KnapsackEvaluator implements Evaluator {
 	}
 
 	@Override
-	public double evaluate(Solution s) {
-		ItemSet itemset = (ItemSet) s;
+	public double evaluate(ItemSet itemset) {
+		
+		if(itemset.getFitness() != null)
+			return itemset.getFitness();
+		
+		
 		double sum = 0;
 		HashSet<Integer> used = itemset.getUsed();
 		Item[] items = problem.getItems();
 		for (Integer itemID : used) {
 			sum += items[itemID].getUtility();
 		}
+		
+		itemset.setFitness(new Double(sum));
 		return sum;
 	}
 

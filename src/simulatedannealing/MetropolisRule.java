@@ -9,21 +9,20 @@ import core.TransitionCriteria;
  */
 
 public class MetropolisRule implements ITransitionCriteria {
-
-	private SimulatedAnnealingContext ctx;
+	private ITemperatureShedule temperatureShedule;
+	private IEvaluator evaluator;
 	
-	public MetropolisRule(SimulatedAnnealingContext ctx) {
-		super();
-		this.ctx = ctx;
+	public MetropolisRule(ITemperatureShedule temperatureShedule, IEvaluator evaluator) {
+		this.temperatureShedule = temperatureShedule;
+		this.evaluator = evaluator;
 	}
 
 
 	@Override
 	public boolean isSatisfied(Solution current, Solution next) {
-		IEvaluator e = ctx.getEvaluator();
-		double t = ctx.getShedule().getTemperature();
+		double t = temperatureShedule.getTemperature();
 
-		int cmp = e.compare(current, next);
+		int cmp = evaluator.compare(current, next);
 
 		if (cmp < 0) {
 			return true;
@@ -32,7 +31,7 @@ public class MetropolisRule implements ITransitionCriteria {
 		else if (cmp == 0)
 			return false;
 
-		double delta = Math.abs(e.evaluate(current) - e.evaluate(next));
+		double delta = Math.abs(evaluator.evaluate(current) - evaluator.evaluate(next));
 
 		if (Math.random() < Math.exp(-delta / t)) {
 			return true;

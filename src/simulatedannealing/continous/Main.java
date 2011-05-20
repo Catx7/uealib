@@ -9,13 +9,7 @@ import simulatedannealing.IEvaluator;
 import simulatedannealing.IGenerator;
 import simulatedannealing.IInitializator;
 import simulatedannealing.SimulatedAnnealingAlgorithm;
-import usablefunctions.Branin;
-import usablefunctions.Brown1;
-import usablefunctions.Brown3;
 import usablefunctions.Function;
-import usablefunctions.Shubert2;
-import core.Generator;
-import core.Initializator;
 
 public class Main {
 
